@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MainMenuItemView">
+        <attr name="menu_icon" format="reference"/>
+        <attr name="menu_name" format="string"/>
+        <attr name="menu_brief" format="string"/>
+        <attr name="is_checked" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,55 @@
+package com.tysci.ballq.base;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.ButterKnife;
+
+/**
+ * Created by HTT on 2016/5/28.
+ */
+public abstract class BaseFragment extends Fragment{
+    protected BaseActivity baseActivity;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if(!isCancledEventBus()){
+            EventBus.getDefault().register(this);
+        }
+        View view=inflater.inflate(getViewLayoutId(),container,false);
+        ButterKnife.bind(this,view);
+        initViews(view,savedInstanceState);
+        return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.baseActivity= (BaseActivity) context;
+    }
+
+    /**获取布局ID*/
+    protected abstract int getViewLayoutId();
+    /**是否取消EventBus*/
+    protected abstract boolean isCancledEventBus();
+    /**初始化控件*/
+    protected abstract void initViews(View view,Bundle savedInstanceState);
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        if(!isCancledEventBus()){
+            EventBus.getDefault().unregister(this);
+        }
+    }
+}
