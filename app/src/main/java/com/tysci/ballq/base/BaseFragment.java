@@ -1,6 +1,5 @@
 package com.tysci.ballq.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
@@ -35,6 +36,11 @@ public abstract class BaseFragment extends Fragment{
     public void onAttach(Context context) {
         super.onAttach(context);
         this.baseActivity= (BaseActivity) context;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEventBus(String message){
+
     }
 
     /**获取布局ID*/

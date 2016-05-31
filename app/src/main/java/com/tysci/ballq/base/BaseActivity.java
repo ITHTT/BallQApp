@@ -1,8 +1,8 @@
 package com.tysci.ballq.base;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,9 +12,10 @@ import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.views.widgets.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
-import okhttp3.OkHttpClient;
 
 /**
  * Created by HTT on 2016/5/28.
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getContentViewId());
         titleBar= (TitleBar) this.findViewById(R.id.title_bar);
         setTitleBarLeftIcon(R.mipmap.icon_back_gold);
@@ -48,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     protected void setTitleBarLeftIcon(int res){
         if(titleBar!=null){
-            titleBar.setTitleBarLeftIcon(res,this);
+            titleBar.setTitleBarLeftIcon(res, this);
         }
     }
 
@@ -83,6 +85,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         saveInstanceState(outState);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEventBus(String message){
+
     }
 
     @Override

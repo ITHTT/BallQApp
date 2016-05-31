@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
@@ -33,7 +32,7 @@ public class MainMenuItemView extends LinearLayout {
     private String menuName;
     private String menuBrief;
 
-    private int checkedColor=Color.parseColor("##050404");
+    private int checkedColor=Color.parseColor("#050404");
 
     public MainMenuItemView(Context context) {
         super(context);
@@ -84,6 +83,7 @@ public class MainMenuItemView extends LinearLayout {
                 tvMenuBrief.setVisibility(View.GONE);
             }
         }
+        setCheckedState(isChecked);
     }
 
     public void setCheckedState(boolean isChecked){

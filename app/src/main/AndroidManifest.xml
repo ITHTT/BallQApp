@@ -2,12 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tysci.ballq" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+
     <application
+        android:name=".app.BallQApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_ballq_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+
+        <!--友盟配置-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="@string/umeng_key" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="@string/umeng_channel" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="@string/umeng_secret" />
+
         <activity android:name=".activitys.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,6 +35,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wx764a44d6325f4975" />
+                <!-- 注意这里，似乎对程序有影响，要加上 -->
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

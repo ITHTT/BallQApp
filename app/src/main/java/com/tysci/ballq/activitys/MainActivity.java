@@ -1,14 +1,17 @@
 package com.tysci.ballq.activitys;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.base.BaseFragment;
+import com.tysci.ballq.fragments.BallQHomeFragment;
+import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.views.widgets.MainMenuItemView;
 import com.tysci.ballq.views.widgets.slidingmenu.SlidingMenu;
 
@@ -26,8 +29,10 @@ public class MainActivity extends BaseActivity {
     protected void initViews() {
         initSlidingMenu();
         setTitleBarLeftIcon(R.mipmap.icon_main_left_menu);
-        titleBar.setRightMenuIcon(R.mipmap.icon_main_right_menu,this);
+        titleBar.setRightMenuIcon(R.mipmap.icon_main_right_menu, this);
         addMenusItemOnClickListener();
+
+        setSelectedMenuItem(R.id.menu_index);
     }
 
     @Override
@@ -44,7 +49,7 @@ public class MainActivity extends BaseActivity {
 //        menu.setShadowDrawable(R.drawable.shadow);
 
         // 设置滑动菜单视图的宽度
-        slidingMenu.setBehindOffset(200);
+        slidingMenu.setBehindOffset(CommonUtils.getScreenDisplayMetrics(this).widthPixels/4);
         // 设置渐入渐出效果的值
         slidingMenu.setFadeDegree(0.5f);
         mainLeftMenu= LayoutInflater.from(this).inflate(R.layout.layout_main_left_menu,null);
@@ -83,7 +88,7 @@ public class MainActivity extends BaseActivity {
         for(int i=0;i<size;i++){
             View v=layoutLeftMenus.getChildAt(i);
             if(v instanceof MainMenuItemView){
-                ((MainMenuItemView)v).setCheckedState(v==view);
+                ((MainMenuItemView)v).setCheckedState(v == view);
             }
         }
 
@@ -95,6 +100,24 @@ public class MainActivity extends BaseActivity {
                 ((MainMenuItemView)v).setCheckedState(v == view);
             }
         }
+        setSelectedMenuItem(view.getId());
+    }
+
+    private void setSelectedMenuItem(int id){
+        BaseFragment fragment=null;
+        switch (id){
+            case R.id.menu_index:
+                slidingMenu.setTouchModeAbove(SlidingMenu.TOUCH_MODE_MARGIN);
+                fragment=new BallQHomeFragment();
+                break;
+        }
+
+        if(fragment!=null){
+            FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.layout_container,fragment,fragment.getClass().getSimpleName());
+            transaction.commitAllowingStateLoss();
+        }
+
     }
 
     @Override
