@@ -3,7 +3,14 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
+    signingConfigs {
+        config {
+            keyAlias 'ballq'
+            keyPassword '123456'
+            storeFile file('../ballq.keystore')
+            storePassword '123456'
+        }
+    }
     defaultConfig {
         applicationId "com.tysci.ballq"
         minSdkVersion 15
@@ -15,7 +22,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }
 
@@ -28,4 +45,8 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:design:23.2.0'
+    compile 'com.alibaba:fastjson:1.2.12'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    //友盟统计
+    compile project(':libammsdk')
 }
