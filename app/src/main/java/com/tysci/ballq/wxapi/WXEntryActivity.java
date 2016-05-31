@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 
 /**
@@ -13,7 +14,7 @@ public class WXEntryActivity extends BaseActivity {
 
     @Override
     protected int getContentViewId() {
-        return 0;
+        return R.layout.activity_login_or_register;
     }
 
     @Override
