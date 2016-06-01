@@ -42,6 +42,8 @@ public class HttpUrls {
     public static final String GET_WECHAT_TOKEN_URL="https://api.weixin.qq.com/sns/oauth2/access_token";
     /**获取微信用户信息*/
     public static final String GET_WECHAT_USER_IFNO_URL="https://api.weixin.qq.com/sns/userinfo";
+    /**检测手机号是否已注册*/
+    public static final String CHECK_USER_PHONE_URL=HOST_URL_V1+"user/check_user_name/";
 
     /**获取用户信息*/
     public static final String getUserInfoUrl(String userId){

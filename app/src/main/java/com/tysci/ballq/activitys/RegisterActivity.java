@@ -2,6 +2,7 @@ package com.tysci.ballq.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,9 +15,16 @@ import android.widget.TextView;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.networks.HttpClientUtil;
+import com.tysci.ballq.networks.HttpUrls;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
 
 /**
  * Created by Administrator on 2016/6/1.
@@ -147,15 +155,35 @@ public class RegisterActivity extends BaseActivity{
     /**
      * 获取验证码
      */
-    private void getVCode(){
+    private void getVCode(String phone){
 
     }
 
     /**
      * 检查手机号
      */
-    private void checkPhone(){
+    private void checkPhone(String phone){
+        Map<String,String>params=new HashMap<>(2);
+        params.put("username",phone);
+        params.put("check_type","phone_number");
+        HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.CHECK_USER_PHONE_URL, params, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
 
+            }
+            @Override
+            public void onError(Call call, Exception error) {
+
+            }
+            @Override
+            public void onSuccess(Call call, String response) {
+
+            }
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
     }
 
     @Override
@@ -176,5 +204,29 @@ public class RegisterActivity extends BaseActivity{
     @Override
     protected void onViewClick(View view) {
 
+    }
+
+    public class TimeCount extends CountDownTimer{
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
     }
 }
