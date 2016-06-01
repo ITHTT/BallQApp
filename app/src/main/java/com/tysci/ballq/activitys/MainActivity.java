@@ -12,8 +12,10 @@ import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.fragments.BallQHomeFragment;
 import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.MainMenuItemView;
 import com.tysci.ballq.views.widgets.slidingmenu.SlidingMenu;
+import com.tysci.ballq.wxapi.WXEntryActivity;
 
 public class MainActivity extends BaseActivity {
     private SlidingMenu slidingMenu=null;
@@ -57,6 +59,9 @@ public class MainActivity extends BaseActivity {
         slidingMenu.setMenu(mainLeftMenu);
         slidingMenu.setSecondaryMenu(mainRightMenu);
         slidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+
+        mainRightMenu.findViewById(R.id.iv_user_header).setOnClickListener(this);
+        mainRightMenu.findViewById(R.id.tv_user_name).setOnClickListener(this);
     }
 
     /**
@@ -135,8 +140,30 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void goLogin(){
+        Intent intent=new Intent(this, WXEntryActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onViewClick(View view) {
+        int id=view.getId();
+        switch(id){
+            case R.id.iv_user_header:
+                if(UserInfoUtil.checkLogin(this)){
+
+                }else{
+                    goLogin();
+                }
+                break;
+            case R.id.tv_user_name:
+                if(UserInfoUtil.checkLogin(this)){
+
+                }else{
+                    goLogin();
+                }
+                break;
+        }
 
     }
 }

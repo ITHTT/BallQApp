@@ -48,6 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    public TitleBar getTitleBar(){
+        return titleBar;
+    }
+
     protected void setTitleBarLeftIcon(int res){
         if(titleBar!=null){
             titleBar.setTitleBarLeftIcon(res, this);

@@ -47,6 +47,7 @@ public class ConvenientBanner<T> extends LinearLayout {
     private boolean canTurn = false;
     private boolean manualPageable = true;
     private boolean canLoop = true;
+    private boolean isShowIndicator=true;
     public enum PageIndicatorAlign{
         ALIGN_PARENT_LEFT,ALIGN_PARENT_RIGHT,CENTER_HORIZONTAL
     }
@@ -61,6 +62,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        isShowIndicator=a.getBoolean(R.styleable.ConvenientBanner_show_indicator,true);
         a.recycle();
         init(context);
     }
@@ -70,6 +72,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        isShowIndicator=a.getBoolean(R.styleable.ConvenientBanner_show_indicator,true);
         a.recycle();
         init(context);
     }
@@ -79,6 +82,7 @@ public class ConvenientBanner<T> extends LinearLayout {
         super(context, attrs, defStyleAttr, defStyleRes);
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ConvenientBanner);
         canLoop = a.getBoolean(R.styleable.ConvenientBanner_canLoop,true);
+        isShowIndicator=a.getBoolean(R.styleable.ConvenientBanner_show_indicator,true);
         a.recycle();
         init(context);
     }
@@ -89,6 +93,11 @@ public class ConvenientBanner<T> extends LinearLayout {
         viewPager = (CBLoopViewPager) hView.findViewById(R.id.cbLoopViewPager);
         loPageTurningPoint = (ViewGroup) hView
                 .findViewById(R.id.loPageTurningPoint);
+        if(isShowIndicator){
+            loPageTurningPoint.setVisibility(View.VISIBLE);
+        }else{
+            loPageTurningPoint.setVisibility(View.GONE);
+        }
         initViewPagerScroll();
 
         adSwitchTask = new AdSwitchTask(this);

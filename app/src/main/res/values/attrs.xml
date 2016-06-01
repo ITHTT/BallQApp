@@ -25,5 +25,6 @@
 
     <declare-styleable name="ConvenientBanner">
         <attr name="canLoop" format="boolean" />
+        <attr name="show_indicator" format="boolean"/>
     </declare-styleable>
 </resources>

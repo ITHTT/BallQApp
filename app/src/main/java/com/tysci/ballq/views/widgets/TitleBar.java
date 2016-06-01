@@ -66,6 +66,14 @@ public class TitleBar extends LinearLayout{
         return tvTitle;
     }
 
+    public void resetTitle(){
+        tvTitle.setBackgroundResource(0);
+        tvTitle.setCompoundDrawables(null, null, null, null);
+        tvTitle.setTextSize(16f);
+        tvTitle.setTextColor(this.getResources().getColor(R.color.gold));
+        tvTitle.setOnClickListener(null);
+    }
+
     public void setRightMenuIcon(int res,View.OnClickListener onClickListener){
         ivNextMenu01.setVisibility(View.VISIBLE);
         ivNextMenu01.setImageResource(res);

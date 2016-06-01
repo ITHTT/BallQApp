@@ -80,8 +80,7 @@
                 android:layout_height="wrap_content"
                 app:menu_icon="@mipmap/icon_main_menu_ballq_go"
                 app:menu_name="大战球商GO"
-                app:menu_brief="PK球商GO赢大奖"
-                app:is_checked="true"/>
+                app:menu_brief="PK球商GO赢大奖"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

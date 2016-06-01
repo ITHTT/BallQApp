@@ -9,6 +9,7 @@ import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.views.adapters.BallQFragmentPagerAdapter;
 import com.tysci.ballq.views.widgets.SlidingTabLayout;
+import com.tysci.ballq.views.widgets.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class BallQHomeFragment extends BaseFragment{
 
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
+        setTitle();
         tabLayout.setTabPxWidth(CommonUtils.getScreenDisplayMetrics(this.getContext()).widthPixels/3);
         List<BaseFragment> fragments=new ArrayList<>(3);
         fragments.add(new BallQHomeTipOffListFragment());
@@ -47,5 +49,14 @@ public class BallQHomeFragment extends BaseFragment{
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(fragments.size());
         tabLayout.setViewPager(viewPager);
+    }
+
+    private void setTitle(){
+        TitleBar titleBar=baseActivity.getTitleBar();
+        if(titleBar!=null) {
+            titleBar.resetTitle();
+            titleBar.setTitleBarTitle("资讯");
+        }
+
     }
 }

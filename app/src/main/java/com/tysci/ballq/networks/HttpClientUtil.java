@@ -292,7 +292,11 @@ public class HttpClientUtil {
                         if(TextUtils.isEmpty(finalResult)||finalError !=null) {
                             responseCallBack.onError(call, finalError);
                         }else{
-                            responseCallBack.onSuccess(call,finalResult);
+                            try {
+                                responseCallBack.onSuccess(call, finalResult);
+                            }catch(Exception e){
+                                responseCallBack.onError(call,e);
+                            }
                         }
                         responseCallBack.onFinish(resultCall);
                     }

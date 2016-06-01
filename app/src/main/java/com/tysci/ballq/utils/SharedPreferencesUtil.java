@@ -55,7 +55,7 @@ public class SharedPreferencesUtil {
 
     public static int getIntValue(Context context,String fileName,String key){
         SharedPreferences sharedPreferences=context.getSharedPreferences(fileName,Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(key, 0);
+        return sharedPreferences.getInt(key, -1);
     }
 
     public static void setLongValue(Context context,String key,long value){

@@ -14,6 +14,9 @@ public class HttpUrls {
      */
     public static final String HOST_URL = "http://int.ballq.cn:8004";
 
+    //public static final String CIRCLE_HOST_URL="http://apijt.ballq.cn/ballq/api/v1/";
+   // public static final String HOST_URL="http://apit.ballq.cn";
+
     public static final String HOST_URL_V1 = HOST_URL + "/api/v1/";
     public static final String HOST_URL_V2 = HOST_URL + "/api/v2/";
     public static final String HOST_URL_V3 = HOST_URL + "/api/v3/";
@@ -32,4 +35,20 @@ public class HttpUrls {
      * 球经列表URL
      */
     public static final String BALLQ_INFO_LIST_URL = HOST_URL_V5 + "articles/";
+
+    /**手机登录*/
+    public static final String USER_PHONE_LOGIN_URL=HOST_URL_V1+"token/new/";
+    /**获取微信Token*/
+    public static final String GET_WECHAT_TOKEN_URL="https://api.weixin.qq.com/sns/oauth2/access_token";
+    /**获取微信用户信息*/
+    public static final String GET_WECHAT_USER_IFNO_URL="https://api.weixin.qq.com/sns/userinfo";
+
+    /**获取用户信息*/
+    public static final String getUserInfoUrl(String userId){
+        return HOST_URL_V5+"user/"+userId+"/profile/";
+    }
+
+
+
+
 }
