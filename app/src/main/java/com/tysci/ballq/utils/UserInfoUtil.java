@@ -10,6 +10,8 @@ import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -25,6 +27,8 @@ public class UserInfoUtil {
     private static final String USER_INFO="user_info";
     private static final String USER_RANK="user_rank";
     private static final String USER_PORTRAIT="user_portrait";
+    private static final String USER_WECHAT_TOKEN_INFO="user_wechat_token";
+    private static final String USER_WECHAT_USER_INFO="user_wecaht_user_info";
 
     public static void setUserToken(Context context,String token){
         SharedPreferencesUtil.setStringValue(context,userFileName,USER_TOKEN,token);
@@ -85,6 +89,50 @@ public class UserInfoUtil {
         return SharedPreferencesUtil.getStringValue(context,userFileName,USER_PORTRAIT);
     }
 
+        public static void setUserWechatTokenInfo(Context context,String info){
+        SharedPreferencesUtil.setStringValue(context,userFileName,USER_WECHAT_TOKEN_INFO,info);
+    }
+
+    public static void setUserWechatTokenInfo(Context context,JSONObject info){
+        if(info!=null) {
+            SharedPreferencesUtil.setStringValue(context, userFileName, USER_WECHAT_TOKEN_INFO, info.toJSONString());
+        }
+    }
+
+    public static JSONObject getUserWechatTokenInfo(Context context){
+        String info=SharedPreferencesUtil.getStringValue(context,userFileName,USER_WECHAT_TOKEN_INFO);
+        if(!TextUtils.isEmpty(info)){
+            return JSONObject.parseObject(info);
+        }
+        return null;
+    }
+
+    public static void setWechatUserInfo(Context context,String info){
+        SharedPreferencesUtil.setStringValue(context,userFileName,USER_WECHAT_USER_INFO,info);
+    }
+
+    public static void setWechatUserInfo(Context context,JSONObject info){
+        if(info!=null) {
+            SharedPreferencesUtil.setStringValue(context, userFileName, USER_WECHAT_USER_INFO, info.toJSONString());
+        }
+    }
+
+    public static JSONObject getWechatUserInfo(Context context){
+        String info=SharedPreferencesUtil.getStringValue(context,userFileName,USER_WECHAT_USER_INFO);
+        if(!TextUtils.isEmpty(info)){
+            return JSONObject.parseObject(info);
+        }
+        return null;
+    }
+
+    public static void saveUserInfo(Context context,JSONObject data){
+        UserInfoUtil.setUserRank(context,data.getIntValue("rank"));
+        UserInfoUtil.setUserAccount(context, data.getString("user"));
+        UserInfoUtil.setUserAccount(context, data.getString("nickname"));
+        UserInfoUtil.setUserToken(context, data.getString("token"));
+        UserInfoUtil.setUserPortrait(context,data.getString("portrait"));
+    }
+
     public static boolean checkLogin(Context context){
         String userId=getUserId(context);
         String token=getUserToken(context);
@@ -138,6 +186,8 @@ public class UserInfoUtil {
                                     if(loadingProgressDialog!=null){
                                         context.setResult(Activity.RESULT_OK);
                                         context.finish();
+
+                                        EventBus.getDefault().post("登录成功...");
                                     }
                                 }
                             }

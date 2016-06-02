@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
+        <!--Glide自定义-->
+        <meta-data
+            android:name="com.tysci.ballq.base.BallQGlideModule"
+            android:value="GlideModule" />
+
         <!--友盟配置-->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -40,7 +45,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

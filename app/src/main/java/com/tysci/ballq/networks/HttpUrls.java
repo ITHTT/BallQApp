@@ -44,10 +44,25 @@ public class HttpUrls {
     public static final String GET_WECHAT_USER_IFNO_URL="https://api.weixin.qq.com/sns/userinfo";
     /**检测手机号是否已注册*/
     public static final String CHECK_USER_PHONE_URL=HOST_URL_V1+"user/check_user_name/";
+    /**获取验证码*/
+    public static final String GET_VCODE_URL=HOST_URL_V1+"user/verify_code_send/";
+    /**重置密码*/
+    public static final String RESET_USER_PASSWORD_URL=HOST_URL_V1+"user/reset_password/";
+    /**用户注册*/
+    public static final String USER_REGISTER_URL=HOST_URL_V1+"user/register_by_phone/";
+    /**用户微信登录方式*/
+    public static final String USER_WECHAT_LOGIN_URL=HOST_URL_V1+"user/wechat_login/";
 
     /**获取用户信息*/
     public static final String getUserInfoUrl(String userId){
         return HOST_URL_V5+"user/"+userId+"/profile/";
+    }
+
+    public static String getImageUrl(String url){
+        if(!url.contains("http://")&&!url.contains("https://")){
+            return IMAGE_HOST_URL+url;
+        }
+        return url;
     }
 
 

@@ -12,6 +12,7 @@ import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.fragments.BallQHomeFragment;
 import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.MainMenuItemView;
 import com.tysci.ballq.views.widgets.slidingmenu.SlidingMenu;
@@ -122,7 +123,12 @@ public class MainActivity extends BaseActivity {
             transaction.replace(R.id.layout_container,fragment,fragment.getClass().getSimpleName());
             transaction.commitAllowingStateLoss();
         }
+    }
 
+    @Override
+    public void handleEventBus(String message) {
+        super.handleEventBus(message);
+        KLog.e("接收到的消息:"+message);
     }
 
     @Override

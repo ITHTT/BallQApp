@@ -51,7 +51,7 @@
                         android:singleLine="true"
                         android:textColor="#3a3a3a"
                         android:textColorHint="#3a3a3a"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                     <CheckBox
                         android:id="@+id/cbPhoneNumberRight"
                         android:layout_width="20dp"
@@ -65,7 +65,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:background="#b4b4b4" />
             </LinearLayout>
 
@@ -81,7 +81,7 @@
                 android:orientation="horizontal">
                 <EditText
                     android:id="@+id/etVCode"
-                    android:layout_width="130dp"
+                    android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/icon_input_vcode_bg"
                     android:digits="0123456789"
@@ -106,7 +106,7 @@
                     android:gravity="center"
                     android:text="获取验证码"
                     android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    android:textSize="12.5sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -145,7 +145,7 @@
                         android:paddingRight="5dp"
                         android:textColor="#3a3a3a"
                         android:textColorHint="#3a3a3a"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                     <CheckBox
                         android:id="@+id/cbShowPassword"
                         android:layout_width="20dp"
@@ -159,7 +159,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:background="#b4b4b4" />
             </LinearLayout>
 
@@ -173,7 +173,7 @@
                 android:textSize="12sp" />
 
             <LinearLayout
-                android:id="@+id/vgAgreeBallQRules"
+                android:id="@+id/layout_agree_BallQRules"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"

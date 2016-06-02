@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
@@ -40,4 +42,15 @@ public class LoadingProgressDialog extends Dialog {
     public void setMessage(String message){
         tvMessage.setText(message);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window window = this.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.dimAmount = 0.3f;
+        window.setAttributes(lp);
+    }
+
+
 }

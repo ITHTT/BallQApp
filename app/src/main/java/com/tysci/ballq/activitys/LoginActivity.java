@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.johnpersano.supertoasts.SuperToast;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.networks.HttpClientUtil;
@@ -33,6 +35,7 @@ import okhttp3.Request;
  * Created by Administrator on 2016/6/1.
  */
 public class LoginActivity extends BaseActivity{
+    private static final int REQUEST_CODE_FORGET_PASSWORD=0x0001;
     @Bind(R.id.etPhoneNum)
     protected EditText etPhoneNum;
     @Bind(R.id.etPassword)
@@ -67,12 +70,14 @@ public class LoginActivity extends BaseActivity{
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String text = s.toString();
                 checkPhoneNum.setVisibility(text.length() == 11 ? View.VISIBLE : View.INVISIBLE);
                 checkLogin();
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -84,10 +89,12 @@ public class LoginActivity extends BaseActivity{
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 checkLogin();
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -142,8 +149,12 @@ public class LoginActivity extends BaseActivity{
         UserInfoUtil.setUserPortrait(this,data.getString("portrait"));
     }
 
-    @OnClick(R.id.bt_login)
+    @OnClick(R.id.tv_login)
     protected void login(View view){
+        userLogin();
+    }
+
+    private void userLogin(){
         String phone=etPhoneNum.getText().toString();
         String password=etPassword.getText().toString();
         if(TextUtils.isEmpty(phone)){
@@ -153,43 +164,79 @@ public class LoginActivity extends BaseActivity{
             return;
         }
         Map<String,String>params=new HashMap<>(2);
-        params.put("username",phone);
-        params.put("password",password);
+        params.put("username", phone);
+        params.put("password", password);
         HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.USER_PHONE_LOGIN_URL, params, new HttpClientUtil.StringResponseCallBack() {
             @Override
             public void onBefore(Request request) {
-                if(loadingProgressDialog==null){
-                    loadingProgressDialog=new LoadingProgressDialog(LoginActivity.this);
+                if (loadingProgressDialog == null) {
+                    loadingProgressDialog = new LoadingProgressDialog(LoginActivity.this);
                     loadingProgressDialog.setMessage("登录中...");
                     loadingProgressDialog.setCanceledOnTouchOutside(false);
                 }
                 loadingProgressDialog.show();
             }
+
             @Override
             public void onError(Call call, Exception error) {
                 KLog.e("请求失败");
                 loadingProgressDialog.dismiss();
             }
+
             @Override
             public void onSuccess(Call call, String response) {
+                SuperToast superToast=SuperToast.create(LoginActivity.this, "登录请求", 5000);
+                superToast.setGravity(Gravity.CENTER,0,0);
+                superToast.show();
                 KLog.json(response);
-                if(!TextUtils.isEmpty(response)){
-                    JSONObject responseObj=JSONObject.parseObject(response);
-                    if(responseObj!=null&&!responseObj.isEmpty()){
-                        JSONObject data=responseObj.getJSONObject("data");
-                        if(data!=null&&!data.isEmpty()){
+                if (!TextUtils.isEmpty(response)) {
+                    JSONObject responseObj = JSONObject.parseObject(response);
+                    if (responseObj != null && !responseObj.isEmpty()) {
+                        JSONObject data = responseObj.getJSONObject("data");
+                        if (data != null && !data.isEmpty()) {
                             cacheUserInfo(data);
-                            String userId=data.getString("user");
-                            UserInfoUtil.getUserInfo(LoginActivity.this,Tag,userId,loadingProgressDialog);
+                            String userId = data.getString("user");
+                            UserInfoUtil.getUserInfo(LoginActivity.this, Tag, userId, loadingProgressDialog);
+                            return;
                         }
                     }
                 }
+                loadingProgressDialog.dismiss();
             }
+
             @Override
             public void onFinish(Call call) {
 
             }
         });
+    }
+
+    @OnClick(R.id.tv_forget_password)
+    protected void forgetPassword(View view){
+        Intent intent=new Intent(this,RegisterActivity.class);
+        intent.putExtra(RegisterActivity.class.getSimpleName(),true);
+        startActivityForResult(intent,REQUEST_CODE_FORGET_PASSWORD);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            if(requestCode==REQUEST_CODE_FORGET_PASSWORD){
+                if(data!=null){
+                    String phone=data.getStringExtra("phone");
+                    String password=data.getStringExtra("password");
+                    if(!TextUtils.isEmpty(phone)&&!TextUtils.isEmpty(password)) {
+                        etPhoneNum.setText(phone);
+                        etPhoneNum.setSelection(phone.length());
+                        etPassword.setText(password);
+                        etPassword.setSelection(password.length());
+                        userLogin();
+                    }
+
+                }
+            }
+        }
     }
 
     @Override

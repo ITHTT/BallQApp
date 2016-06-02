@@ -49,7 +49,7 @@
                         android:singleLine="true"
                         android:textColor="#3a3a3a"
                         android:textColorHint="#3a3a3a"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:typeface="monospace" />
 
                     <CheckBox
@@ -66,7 +66,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:background="#b4b4b4" />
             </LinearLayout>
 
@@ -106,7 +106,7 @@
                         android:paddingRight="5dp"
                         android:textColor="#3a3a3a"
                         android:textColorHint="#3a3a3a"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:typeface="monospace" />
                     <CheckBox
                         android:id="@+id/cbShowPassword"
@@ -120,7 +120,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:background="#b4b4b4" />
             </LinearLayout>
 

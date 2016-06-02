@@ -11,12 +11,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
+import com.tysci.ballq.utils.KLog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,8 +49,12 @@ public class RegisterActivity extends BaseActivity{
     protected CheckBox cbAgree;
     @Bind(R.id.tv_commit)
     protected TextView tvCommit;
+    @Bind(R.id.layout_agree_BallQRules)
+    protected LinearLayout layoutAgreeBallQRules;
 
     private boolean isModifyPassword=false;
+
+    private TimeCount timeCount=null;
 
     @Override
     protected int getContentViewId() {
@@ -62,6 +69,7 @@ public class RegisterActivity extends BaseActivity{
         showPassword.setChecked(false);
         tvCommit.setEnabled(false);
         setViewListener();
+        timeCount=new TimeCount(60000,1000);
     }
 
     @Override
@@ -70,6 +78,7 @@ public class RegisterActivity extends BaseActivity{
             isModifyPassword=intent.getBooleanExtra(Tag,false);
             if(isModifyPassword){
                 setTitle("忘记密码");
+                layoutAgreeBallQRules.setVisibility(View.GONE);
             }
         }
     }
@@ -149,24 +158,185 @@ public class RegisterActivity extends BaseActivity{
      */
     @OnClick(R.id.tvGetVerify)
     protected void onClickGetVCode(View view){
-
+        String phone=etPhoneNum.getText().toString();
+        if(TextUtils.isEmpty(phone)||phone.length()<6){
+            return;
+        }
+        etVCode.requestFocus();
+        if(isModifyPassword){
+            getVCode(phone);
+        }else{
+            checkPhone(phone);
+        }
     }
 
     /**
      * 获取验证码
      */
     private void getVCode(String phone){
+        Map<String,String>params=new HashMap<>(1);
+        params.put("phone_number", phone);
+        HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.GET_VCODE_URL, params, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
+                etPhoneNum.setEnabled(false);
+                tvGetVCode.setEnabled(false);
+                tvGetVCode.setText("请求中...");
+
+            }
+
+            @Override
+            public void onError(Call call, Exception error) {
+                etPhoneNum.setEnabled(true);
+                tvGetVCode.setEnabled(true);
+                tvGetVCode.setText("获取验证码");
+            }
+
+            @Override
+            public void onSuccess(Call call, String response) {
+                timeCount.start();
+            }
+
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
 
     }
 
     /**
      * 检查手机号
      */
-    private void checkPhone(String phone){
+    private void checkPhone(final String phone){
         Map<String,String>params=new HashMap<>(2);
         params.put("username",phone);
         params.put("check_type","phone_number");
         HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.CHECK_USER_PHONE_URL, params, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
+                etPhoneNum.setEnabled(false);
+                tvGetVCode.setEnabled(false);
+                tvGetVCode.setText("请求中...");
+            }
+
+            @Override
+            public void onError(Call call, Exception error) {
+                etPhoneNum.setEnabled(true);
+                tvGetVCode.setEnabled(true);
+                tvGetVCode.setText("获取验证码");
+            }
+
+            @Override
+            public void onSuccess(Call call, String response) {
+                if (!TextUtils.isEmpty(response)) {
+                    JSONObject obj = JSONObject.parseObject(response);
+                    if (obj != null && !obj.isEmpty()) {
+                        int status = obj.getIntValue("status");
+                        String msg = obj.getString("message");
+                        if (status == 0 && !TextUtils.isEmpty(msg) && msg.equalsIgnoreCase("ok")) {
+                            getVCode(phone);
+                            return;
+                        }
+                    }
+                }
+                etPhoneNum.setEnabled(true);
+                tvGetVCode.setEnabled(true);
+                tvGetVCode.setText("获取验证码");
+            }
+
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
+    }
+
+    /**
+     * 重置密码
+     */
+    private void resetUserPassword(){
+        final String phone=etPhoneNum.getText().toString();
+        String vcode=etVCode.getText().toString();
+        final String password=etPassword.getText().toString();
+        if(TextUtils.isEmpty(phone)||phone.length()<11){
+            return;
+        }
+
+        if(TextUtils.isEmpty(vcode)||vcode.length()<6){
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)||password.length()<6){
+            return;
+        }
+
+        Map<String,String>params=new HashMap<String,String>(3);
+        params.put("username",phone);
+        params.put("new_password",vcode);
+        params.put("verify_code",password);
+        HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.RESET_USER_PASSWORD_URL, params, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
+
+            }
+
+            @Override
+            public void onError(Call call, Exception error) {
+
+            }
+
+            @Override
+            public void onSuccess(Call call, String response) {
+                KLog.json(response);
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        int status=obj.getIntValue("status");
+                        if(status==307){
+                            Intent intent=getIntent();
+                            intent.putExtra("phone",phone);
+                            intent.putExtra("password",password);
+                            setResult(RESULT_OK,intent);
+                            finish();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
+    }
+
+    /**
+     * 用户注册
+     */
+    private void register(){
+        final String phone=etPhoneNum.getText().toString();
+        String vcode=etVCode.getText().toString();
+        final String password=etPassword.getText().toString();
+        if(TextUtils.isEmpty(phone)||phone.length()<11){
+            return;
+        }
+
+        if(TextUtils.isEmpty(vcode)||vcode.length()<6){
+            return;
+        }
+
+        if(TextUtils.isEmpty(password)||password.length()<6){
+            return;
+        }
+
+        Map<String,String>params=new HashMap<String,String>(3);
+        params.put("phone_number",phone);
+        params.put("password",vcode);
+        params.put("verify_code",password);
+        params.put("nickname","BallQ"+System.currentTimeMillis());
+        HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.USER_REGISTER_URL, params, new HttpClientUtil.StringResponseCallBack() {
             @Override
             public void onBefore(Request request) {
 
@@ -177,14 +347,43 @@ public class RegisterActivity extends BaseActivity{
             }
             @Override
             public void onSuccess(Call call, String response) {
-
+                KLog.json(response);
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        int status=obj.getIntValue("status");
+                        if(status==307){
+                            Intent intent=getIntent();
+                            intent.putExtra("phone",phone);
+                            intent.putExtra("password", password);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                            return;
+                        }
+                    }
+                }
             }
+
             @Override
             public void onFinish(Call call) {
 
             }
         });
     }
+
+    @OnClick(R.id.tv_commit)
+    protected void userRegister(View view){
+        if(isModifyPassword){
+            resetUserPassword();
+        }else{
+            if(!cbAgree.isChecked()){
+                return;
+            }
+            register();
+        }
+    }
+
+
 
     @Override
     protected boolean isCanceledEventBus() {
@@ -206,6 +405,14 @@ public class RegisterActivity extends BaseActivity{
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(timeCount!=null) {
+            timeCount.cancel();
+        }
+    }
+
     public class TimeCount extends CountDownTimer{
 
         /**
@@ -221,12 +428,14 @@ public class RegisterActivity extends BaseActivity{
 
         @Override
         public void onTick(long millisUntilFinished) {
-
+            tvGetVCode.setText("获取验证码("+millisUntilFinished/1000+")");
         }
 
         @Override
         public void onFinish() {
-
+            etPhoneNum.setEnabled(true);
+            tvGetVCode.setEnabled(true);
+            tvGetVCode.setText("获取验证码");
         }
     }
 }

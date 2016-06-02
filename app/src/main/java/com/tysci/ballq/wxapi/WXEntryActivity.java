@@ -3,6 +3,7 @@ package com.tysci.ballq.wxapi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
+import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.utils.WeChatUtil;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 import com.tysci.ballq.views.widgets.convenientbanner.ConvenientBanner;
@@ -26,7 +28,9 @@ import com.tysci.ballq.views.widgets.convenientbanner.holder.CBViewHolderCreator
 import com.tysci.ballq.views.widgets.convenientbanner.holder.Holder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -175,7 +179,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     public void onResp(BaseResp baseResp) {
-        KLog.e("错误码:"+baseResp.errCode);
+        KLog.e("错误码:" + baseResp.errCode);
         switch(baseResp.errCode){
             case BaseResp.ErrCode.ERR_OK:
                 KLog.e("授权成功");
@@ -213,8 +217,18 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
             @Override
             public void onSuccess(Call call, String response) {
-
-
+                KLog.json(response);
+                if (!TextUtils.isEmpty(response)) {
+                    JSONObject obj = JSONObject.parseObject(response);
+                    if (obj != null && !obj.isEmpty()) {
+                        if(!TextUtils.isEmpty(obj.getString("access_token"))) {
+                            UserInfoUtil.setUserWechatTokenInfo(WXEntryActivity.this,obj);
+                            getWeChatUserInfo(obj);
+                            return;
+                        }
+                    }
+                }
+                dimssProgressDialog();
             }
 
             @Override
@@ -244,7 +258,66 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
             @Override
             public void onSuccess(Call call, String response) {
+                KLog.json(response);
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        if(!TextUtils.isEmpty(obj.getString("openid"))) {
+                            UserInfoUtil.setWechatUserInfo(WXEntryActivity.this,obj);
+                            userWeChatLogin(obj);
+                            return;
+                        }
+                    }
+                }
+                dimssProgressDialog();
+            }
 
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
+    }
+
+    private void userWeChatLogin(JSONObject weChatUserInfo){
+        Map<String,String>params=new HashMap<>(9);
+        params.put("openid",weChatUserInfo.getString("openid"));
+        params.put("nickname",weChatUserInfo.getString("nickname"));
+        params.put("sex",String.valueOf(weChatUserInfo.getIntValue("sex")));
+        params.put("province",weChatUserInfo.getString("province"));
+        params.put("city",weChatUserInfo.getString("city"));
+        params.put("country",weChatUserInfo.getString("country"));
+        params.put("headimgurl",weChatUserInfo.getString("headimgurl"));
+        params.put("unionid",weChatUserInfo.getString("unionid"));
+        params.put("origin_type", "5");
+        for (String key : params.keySet()) {
+            KLog.e(key + " = " + params.get(key));
+        }
+        HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.USER_WECHAT_LOGIN_URL, params, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
+
+            }
+            @Override
+            public void onError(Call call, Exception error) {
+                dimssProgressDialog();
+            }
+            @Override
+            public void onSuccess(Call call, String response) {
+                KLog.json(response);
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        JSONObject data=obj.getJSONObject("data");
+                        if(data!=null&&!data.isEmpty()){
+                            UserInfoUtil.saveUserInfo(WXEntryActivity.this, data);
+                            String userId = data.getString("user");
+                            UserInfoUtil.getUserInfo(WXEntryActivity.this, Tag, userId, loadingProgressDialog);
+                            return;
+                        }
+                    }
+                }
+                dimssProgressDialog();
             }
 
             @Override
