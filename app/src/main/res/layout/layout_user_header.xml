@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/app_name"
         android:padding="3dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/ic_ballq_logo"
         app:border_color="@color/white"
         app:border_width="3dp"/>
     <ImageView
