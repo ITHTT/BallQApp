@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
@@ -402,6 +403,26 @@ public class RegisterActivity extends BaseActivity{
 
     @Override
     protected void onViewClick(View view) {
+
+    }
+
+    @Override
+    protected void userLogin(UserInfoEntity userInfoEntity) {
+
+    }
+
+    @Override
+    protected void userExit() {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
 
     }
 

@@ -51,11 +51,13 @@
             android:id="@+id/iv_titlebar_next_menu01"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:scaleType="fitXY"
             android:visibility="gone"/>
         <ImageView
             android:id="@+id/iv_titlebar_next_menu02"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:scaleType="fitXY"
             android:layout_marginLeft="10dp"
             android:visibility="gone"/>
         <TextView

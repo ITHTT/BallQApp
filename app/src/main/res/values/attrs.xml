@@ -27,4 +27,12 @@
         <attr name="canLoop" format="boolean" />
         <attr name="show_indicator" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="TriangleView">
+        <attr name="background_color" format="color"/>
+        <attr name="shadow_color" format="color"/>
+        <attr name="shadow_radius" format="color"/>
+        <attr name="shadow_dx" format="dimension"/>
+        <attr name="shadow_dy" format="dimension"/>
+    </declare-styleable>
 </resources>

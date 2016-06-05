@@ -8,4 +8,6 @@ public class EventType {
     public static final String EVENT_USER_LOGIN="event_user_login";
     /**用户退出*/
     public static final String EVENT_USER_EXIT="event_user_exit";
+    /**刷新用户信息*/
+    public static final String EVENT_REFRESH_USER_INFO="event_user_info";
 }

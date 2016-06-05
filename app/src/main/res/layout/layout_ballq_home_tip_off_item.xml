@@ -2,57 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#c6c9ce"
     android:paddingTop="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_marginRight="5dp"
-                android:paddingLeft="5dp"
-                android:background="@drawable/icon_ballq_tip_off_mark_bg"
-                android:gravity="center_vertical">
-                <TextView
-                    android:id="@+id/tvMatchTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/app_name"
-                    android:textColor="#1b1b1b"
-                    android:textSize="13sp" />
-                <TextView
-                    android:id="@+id/tvMatchName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="法国足球甲级联赛"
-                    android:textColor="#1b1b1b"
-                    android:textSize="13sp" />
-                <TextView
-                    android:id="@+id/tvMatchDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/app_name"
-                    android:textColor="#1b1b1b"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </LinearLayout>
-
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
             <LinearLayout
@@ -168,7 +131,6 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
-
             <TextView
                 android:id="@+id/tvChoice"
                 android:layout_width="wrap_content"
@@ -232,12 +194,13 @@
                 <TextView
                     android:id="@+id/tvContent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
+                    android:gravity="center_vertical"
                     android:ellipsize="end"
-                    android:lines="3"
+                    android:maxLines="3"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:text=""
+                    android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                     android:textColor="#676767"
                     android:textSize="13sp" />
                 <LinearLayout
@@ -322,13 +285,12 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="55dp"
             android:background="#828282"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="27dp"
-            android:layout_marginLeft="65dp"
-            android:layout_marginStart="65dp"
+            android:layout_marginLeft="55dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <TextView
@@ -370,7 +332,6 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
                     android:contentDescription=""
                     android:src="@mipmap/icon_tip_win_rate" />
                 <TextView
@@ -423,10 +384,58 @@
             android:layout_height="5dp"
             android:background="#c6c9ce"/>
     </LinearLayout>
+    <com.tysci.ballq.views.widgets.bubbleview.BubbleLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="3dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:gravity="center_vertical"
+        app:bb_arrowTo="@+id/ivHtLogo"
+        app:bb_arrowDirection="Down"
+        app:bb_fillColor="@color/gold"
+        app:bb_arrowHeight="10dp"
+        app:bb_arrowWidth="15dp"
+        app:bb_borderColor="@color/gray"
+        app:bb_borderWidth="1dp"
+        app:bb_cornerBottomLeftRadius="0dp"
+        app:bb_cornerBottomRightRadius="5dp"
+        app:bb_cornerTopLeftRadius="0dp"
+        app:bb_cornerTopRightRadius="5dp">
+        <TextView
+            android:id="@+id/tvMatchTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#1b1b1b"
+            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/tvMatchName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
+            android:text="法国足球甲级联赛"
+            android:textColor="#1b1b1b"
+            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/tvMatchDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#1b1b1b"
+            android:textSize="13sp" />
+    </com.tysci.ballq.views.widgets.bubbleview.BubbleLinearLayout>
     <include
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="4dp"
         android:layout_gravity="bottom"
         layout="@layout/layout_user_header"/>
 </FrameLayout>

@@ -1,6 +1,8 @@
 package com.tysci.ballq.views.widgets;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,7 @@ public class TitleBar extends LinearLayout{
         initViews(context);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TitleBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initViews(context);

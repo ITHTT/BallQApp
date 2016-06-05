@@ -17,6 +17,7 @@ import com.tysci.ballq.R;
 import com.tysci.ballq.activitys.LoginActivity;
 import com.tysci.ballq.activitys.RegisterActivity;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
@@ -312,7 +313,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                         if(data!=null&&!data.isEmpty()){
                             UserInfoUtil.saveUserInfo(WXEntryActivity.this, data);
                             String userId = data.getString("user");
-                            UserInfoUtil.getUserInfo(WXEntryActivity.this, Tag, userId, loadingProgressDialog);
+                            UserInfoUtil.getUserInfo(WXEntryActivity.this, Tag, userId,true, loadingProgressDialog);
                             return;
                         }
                     }
@@ -333,11 +334,31 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     }
 
     @Override
+    protected void userLogin(UserInfoEntity userInfoEntity) {
+
+    }
+
+    @Override
+    protected void userExit() {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK){
             if(requestCode==REQUEST_CODE_LOGIN){
-
+                this.finish();
             }else if(requestCode==REQUEST_CODE_REGISTER){
 
             }

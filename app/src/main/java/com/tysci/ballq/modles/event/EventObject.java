@@ -36,8 +36,16 @@ public class EventObject {
         }
     }
 
+    public SparseArray<Class> getReceivers(){
+        return receivers;
+    }
+
     public Bundle getData(){
         return data;
+    }
+
+    public String getEventAction(){
+        return eventAction;
     }
 
     public static void postEventObject(EventObject eventObject,String action){

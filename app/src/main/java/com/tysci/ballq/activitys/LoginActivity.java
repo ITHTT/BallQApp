@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
@@ -196,7 +197,7 @@ public class LoginActivity extends BaseActivity{
                         if (data != null && !data.isEmpty()) {
                             cacheUserInfo(data);
                             String userId = data.getString("user");
-                            UserInfoUtil.getUserInfo(LoginActivity.this, Tag, userId, loadingProgressDialog);
+                            UserInfoUtil.getUserInfo(LoginActivity.this, Tag, userId, true,loadingProgressDialog);
                             return;
                         }
                     }
@@ -241,6 +242,26 @@ public class LoginActivity extends BaseActivity{
 
     @Override
     protected void onViewClick(View view) {
+
+    }
+
+    @Override
+    protected void userLogin(UserInfoEntity userInfoEntity) {
+
+    }
+
+    @Override
+    protected void userExit() {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
 
     }
 }

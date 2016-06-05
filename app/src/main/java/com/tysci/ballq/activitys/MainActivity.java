@@ -3,20 +3,29 @@ package com.tysci.ballq.activitys;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.fragments.BallQHomeFragment;
+import com.tysci.ballq.modles.UserInfoEntity;
+import com.tysci.ballq.modles.event.EventType;
+import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
+import com.tysci.ballq.views.widgets.CircleImageView;
 import com.tysci.ballq.views.widgets.MainMenuItemView;
 import com.tysci.ballq.views.widgets.slidingmenu.SlidingMenu;
 import com.tysci.ballq.wxapi.WXEntryActivity;
+
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
     private SlidingMenu slidingMenu=null;
@@ -170,6 +179,69 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
         }
+    }
 
+    /**
+     * 显示用户信息
+     * @param userInfo
+     */
+    private void showUserInfo(UserInfoEntity userInfo){
+        if(userInfo!=null) {
+            CircleImageView ivUserHeader = (CircleImageView) mainRightMenu.findViewById(R.id.iv_user_header);
+            GlideImageLoader.loadImage(this,userInfo.getPt(),R.mipmap.icon_user_default,ivUserHeader);
+            ImageView ivMark=(ImageView)mainRightMenu.findViewById(R.id.iv_user_v);
+            UserInfoUtil.setUserHeaderVMark(userInfo.getIsv(),ivMark,ivUserHeader);
+            ImageView ivUserAchievement01= (ImageView) mainRightMenu.findViewById(R.id.iv_user_achievement_01);
+            ImageView ivUserAchievement02=(ImageView)mainRightMenu.findViewById(R.id.iv_user_achievement_02);
+            if(TextUtils.isEmpty(userInfo.getTitle1())){
+                ivUserAchievement01.setVisibility(View.GONE);
+            }else{
+                ivUserAchievement01.setVisibility(View.VISIBLE);
+                GlideImageLoader.loadImage(this,userInfo.getTitle1(),R.mipmap.icon_user_achievement_circle_mark,ivUserAchievement01);
+            }
+            if(TextUtils.isEmpty(userInfo.getTitle2())){
+                ivUserAchievement02.setVisibility(View.GONE);
+            }else{
+                ivUserAchievement02.setVisibility(View.VISIBLE);
+                GlideImageLoader.loadImage(this,userInfo.getTitle2(),R.mipmap.icon_user_achievement_circle_mark,ivUserAchievement02);
+            }
+            TextView tvUserName=(TextView)mainRightMenu.findViewById(R.id.tv_user_name);
+            tvUserName.setText(userInfo.getFname());
+            TextView tvUserBio=(TextView)mainRightMenu.findViewById(R.id.tv_user_bio);
+            if(TextUtils.isEmpty(userInfo.getBio())){
+                tvUserBio.setVisibility(View.GONE);
+            }else{
+                tvUserBio.setVisibility(View.VISIBLE);
+                tvUserBio.setText(userInfo.getBio());
+            }
+            TextView tvUserROI=(TextView)mainRightMenu.findViewById(R.id.tv_ROI);
+            tvUserROI.setText(String.format(Locale.getDefault(),"%.2f",userInfo.getRor())+"%");
+            TextView tvUserLossAndProfit=(TextView)mainRightMenu.findViewById(R.id.tv_total_profi_and_loss);
+            tvUserLossAndProfit.setText(String.format(Locale.getDefault(),"%.2f",(float)userInfo.getTearn()/100));
+            TextView tvUserWinRate=(TextView)mainRightMenu.findViewById(R.id.tv_winning_probability);
+            tvUserWinRate.setText(String.format(Locale.getDefault(),"%.2f",userInfo.getWins()*100)+"%");
+        }
+    }
+
+    @Override
+    protected void userLogin(UserInfoEntity userInfoEntity) {
+        showUserInfo(userInfoEntity);
+    }
+
+    @Override
+    protected void userExit() {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+        if(action.equals(EventType.EVENT_REFRESH_USER_INFO)){
+
+        }
     }
 }

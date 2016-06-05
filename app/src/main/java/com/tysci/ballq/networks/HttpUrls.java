@@ -52,6 +52,8 @@ public class HttpUrls {
     public static final String USER_REGISTER_URL=HOST_URL_V1+"user/register_by_phone/";
     /**用户微信登录方式*/
     public static final String USER_WECHAT_LOGIN_URL=HOST_URL_V1+"user/wechat_login/";
+    /**爆料列表*/
+    public static final String TIP_OFF_LIST_URL=HOST_URL_V5+"tips/?settled=-1&etype=";
 
     /**获取用户信息*/
     public static final String getUserInfoUrl(String userId){

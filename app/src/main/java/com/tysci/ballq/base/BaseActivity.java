@@ -5,9 +5,15 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.View;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
+import com.tysci.ballq.modles.UserInfoEntity;
+import com.tysci.ballq.modles.event.EventObject;
+import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.views.widgets.TitleBar;
 
@@ -73,6 +79,20 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     /**控件点击事件*/
     protected abstract void onViewClick(View view);
 
+    protected abstract void notifyEvent(String action);
+
+    protected abstract void notifyEvent(String action,Bundle data);
+
+    /**用户登录*/
+    protected void userLogin(UserInfoEntity userInfoEntity){
+
+    }
+
+    /**用户退出*/
+    protected  void userExit(){
+
+    }
+
     protected void back(){
         this.finish();
     }
@@ -92,7 +112,40 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleEventBus(String message){
+    public void handleEventBus(EventObject eventObject){
+        if(eventObject!=null){
+            String action=eventObject.getEventAction();
+            if(action.equals(EventType.EVENT_USER_LOGIN)){
+                String data=eventObject.getData().getString("user_info");
+                if(!TextUtils.isEmpty(data)){
+                    UserInfoEntity userInfoEntity= JSONObject.parseObject(data,UserInfoEntity.class);
+                    if(userInfoEntity!=null){
+                        userLogin(userInfoEntity);
+                    }
+                }
+            }else{
+               SparseArray<Class> receivers= eventObject.getReceivers();
+                if(receivers.size()>0){
+                    int size=receivers.size();
+                    for(int i=0;i<size;i++){
+                        if(receivers.valueAt(i)==this.getClass()){
+                            notifyEvent(action,eventObject.getData());
+                        }
+                    }
+                }else{
+                    notifyEvent(action,eventObject.getData());
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEventBus(String action){
+        if(action.equals(EventType.EVENT_USER_EXIT)){
+            userExit();
+        }else{
+            notifyEvent(action);
+        }
 
     }
 

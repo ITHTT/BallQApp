@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tysci.ballq.networks.HttpClientUtil;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -18,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by HTT on 2016/5/28.
  */
 public abstract class BaseFragment extends Fragment{
+    protected final String Tag=this.getClass().getSimpleName();
     protected BaseActivity baseActivity;
 
     @Nullable
@@ -53,6 +56,7 @@ public abstract class BaseFragment extends Fragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
+        HttpClientUtil.getHttpClientUtil().cancelTag(Tag);
         ButterKnife.unbind(this);
         if(!isCancledEventBus()){
             EventBus.getDefault().unregister(this);

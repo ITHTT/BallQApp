@@ -47,7 +47,7 @@ public class UserInfoEntity {
     private int btyc;
     private int rank;
     private int btc;
-    private String ror;
+    private float ror;
     private int frc;
     private int is_old_user;
     private String pt;
@@ -63,7 +63,7 @@ public class UserInfoEntity {
     private int acount;
     private int bgc;
     private int ccount;
-    private String wins;
+    private float wins;
     private int isv;
     private int show_assert;
     private int flc;
@@ -89,7 +89,7 @@ public class UserInfoEntity {
         this.btc = btc;
     }
 
-    public void setRor(String ror) {
+    public void setRor(float ror) {
         this.ror = ror;
     }
 
@@ -153,7 +153,7 @@ public class UserInfoEntity {
         this.ccount = ccount;
     }
 
-    public void setWins(String wins) {
+    public void setWins(float wins) {
         this.wins = wins;
     }
 
@@ -193,7 +193,7 @@ public class UserInfoEntity {
         return btc;
     }
 
-    public String getRor() {
+    public float getRor() {
         return ror;
     }
 
@@ -257,7 +257,7 @@ public class UserInfoEntity {
         return ccount;
     }
 
-    public String getWins() {
+    public float getWins() {
         return wins;
     }
 

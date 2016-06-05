@@ -2,13 +2,19 @@ package com.tysci.ballq.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.modles.UserInfoEntity;
+import com.tysci.ballq.modles.event.EventObject;
+import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
+import com.tysci.ballq.views.widgets.CircleImageView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -155,6 +161,16 @@ public class UserInfoUtil {
         setUserInfo(context,"");
     }
 
+    public static void setUserHeaderVMark(int isV, ImageView iV, CircleImageView userHeader){
+        if(isV==1){
+            iV.setVisibility(View.VISIBLE);
+            userHeader.setBorderColor(Color.parseColor("#ffc90c"));
+        }else{
+            iV.setVisibility(View.GONE);
+            userHeader.setBorderColor(Color.parseColor("#e6e6e6"));
+        }
+    }
+
     /**
      * 获取用户信息
      * @param context
@@ -162,7 +178,7 @@ public class UserInfoUtil {
      * @param userId
      * @param loadingProgressDialog
      */
-    public static void getUserInfo(final Activity context,String tag,String userId, final LoadingProgressDialog loadingProgressDialog){
+    public static void getUserInfo(final Activity context, String tag, String userId, final boolean isLogin, final LoadingProgressDialog loadingProgressDialog){
         String url= HttpUrls.getUserInfoUrl(userId);
         KLog.e("url:"+url);
         HttpClientUtil.getHttpClientUtil().sendPostRequest(tag,url,null, new HttpClientUtil.StringResponseCallBack() {
@@ -183,11 +199,15 @@ public class UserInfoUtil {
                                 String userInfo =responseObj.getString("data");
                                 if(!TextUtils.isEmpty(userInfo)){
                                     UserInfoUtil.setUserInfo(context,userInfo);
-                                    if(loadingProgressDialog!=null){
+                                    EventObject eventObject=new EventObject();
+                                    eventObject.getData().putString("user_info",userInfo);
+                                    if(isLogin){
                                         context.setResult(Activity.RESULT_OK);
                                         context.finish();
-
-                                        EventBus.getDefault().post("登录成功...");
+                                        /**发布登录事件*/
+                                        EventObject.postEventObject(eventObject, EventType.EVENT_USER_LOGIN);
+                                    }else{
+                                        EventObject.postEventObject(eventObject, EventType.EVENT_REFRESH_USER_INFO);
                                     }
                                 }
                             }
