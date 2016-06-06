@@ -1,5 +1,6 @@
 package com.tysci.ballq.views.adapters;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.BallQBallWarpDetailActivity;
 import com.tysci.ballq.modles.BallQBallWarpInfoEntity;
+import com.tysci.ballq.networks.GlideImageLoader;
+import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.CircleImageView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,65 +37,40 @@ public class BallQBallWarpInfoAdapter extends RecyclerView.Adapter<BallQBallWarp
     @Override
     public void onBindViewHolder(final BallQBallWarpInfoViewHolder holder, int position) {
         final BallQBallWarpInfoEntity info=ballQInfoListItemEntityList.get(position);
+        GlideImageLoader.loadImage(holder.itemView.getContext(), info.getCover(), R.mipmap.icon_ball_wrap_default_img, holder.ivInfoConver);
         holder.tvUserName.setText(info.getFname());
         holder.tvLikeCounts.setText(String.valueOf(info.getLike_count()));
         holder.tvCommentCounts.setText(String.valueOf(info.getComcount()));
         holder.tvReadCounts.setText(String.valueOf(info.getReading_count()));
         holder.tvRewardCounts.setText(String.valueOf(info.getBoncount()));
         holder.tvTitle.setText(info.getTitle());
-//        try {
-//            holder.tvCreateDate.setText(CalendarUtils.parseStringTZ(info.getCtime()).toString(CalendarUtils.ToString.MM_dd__HHmm));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        Glide.with(holder.itemView.getContext())
-//                .load(ApiUtils.imgUrl(info.getCover()))
-//                .asBitmap()
-//                .placeholder(R.mipmap.article_def_img)
-//                .into(holder.ivInfoConver);
-//
-//        Glide.with(holder.itemView.getContext())
-//                .load(ApiUtils.imgUrl(info.getPt()))
-//                .asBitmap()
-//                .placeholder(R.mipmap.user_icon_default)
-//                .into(holder.ivUserHeader);
 
-//        if(info.getIsv()==1){
-//            holder.isV.setVisibility(View.VISIBLE);
-//            holder.ivUserHeader.setBorderColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.c_ffc90c));
-//        }else{
-//            holder.isV.setVisibility(View.GONE);
-//            holder.ivUserHeader.setBorderColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.c_e6e6e6));
-//        }
+        Date date= CommonUtils.getDateAndTimeFromGMT(info.getCtime());
+        if(date!=null){
+            holder.tvCreateDate.setText(CommonUtils.getDateAndTimeFormatString(date));
+        }else{
+            holder.tvCreateDate.setText("");
+        }
 
-//        if(!TextUtils.isEmpty(info.getTitle1())){
-//            holder.ivUserAchievement01.setVisibility(View.VISIBLE);
-//            Glide.with(holder.itemView.getContext())
-//                    .load(ApiUtils.imgUrl(info.getTitle1()))
-//                    .asBitmap()
-//                    .placeholder(R.color.gray)
-//                    .into(holder.ivUserAchievement01);
-//        }else{
-//            holder.ivUserAchievement01.setVisibility(View.GONE);
-//        }
-//
-//        if(!TextUtils.isEmpty(info.getTitle2())){
-//            holder.ivUserAchievement02.setVisibility(View.VISIBLE);
-//            Glide.with(holder.itemView.getContext())
-//                    .load(ApiUtils.imgUrl(info.getTitle2()))
-//                    .asBitmap()
-//                    .placeholder(R.color.gray)
-//                    .into(holder.ivUserAchievement02);
-//        }else{
-//            holder.ivUserAchievement02.setVisibility(View.GONE);
-//        }
+        GlideImageLoader.loadImage(holder.itemView.getContext(),info.getPt(),R.mipmap.icon_user_default,holder.ivUserHeader);
+        UserInfoUtil.setUserHeaderVMark(info.getIsv(), holder.isV, holder.ivUserHeader);
+        UserInfoUtil.setUserAchievementInfo(holder.itemView.getContext(),info.getTitle1(),holder.ivUserAchievement01,
+                info.getTitle2(),holder.ivUserAchievement02);
 
         if(position==0){
             holder.divider.setVisibility(View.VISIBLE);
         }else{
             holder.divider.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(holder.itemView.getContext(), BallQBallWarpDetailActivity.class);
+                intent.putExtra(BallQBallWarpDetailActivity.class.getSimpleName(),info);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
 
 //    public void notifyDatas(String type,String id,int value){

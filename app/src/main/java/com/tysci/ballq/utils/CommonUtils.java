@@ -4,12 +4,13 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.tysci.ballq.R;
+import com.alibaba.fastjson.JSONArray;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -17,6 +18,37 @@ import java.util.TimeZone;
  * Created by Administrator on 2016/5/31.
  */
 public class CommonUtils {
+
+    public static void getJSONListObject(JSONArray jsonArray,List list,Class cls){
+        if(jsonArray!=null&&!jsonArray.isEmpty()&&list!=null){
+            int size=jsonArray.size();
+            for(int i=0;i<size;i++){
+                list.add(jsonArray.getObject(i,cls));
+            }
+        }
+    }
+
+    public static void getListDatas(List listDatas,List sourceDatas){
+        if(listDatas!=null&&sourceDatas!=null){
+            if(listDatas.size()>0){
+                listDatas.clear();
+            }
+            int size=sourceDatas.size();
+            for(int i=0;i<size;i++){
+                listDatas.add(sourceDatas.get(i));
+            }
+        }
+    }
+
+    public static void addListDatas(List listDatas,List sourceDatas){
+        if(listDatas != null && sourceDatas!=null&&sourceDatas.size()>0){
+            int size=sourceDatas.size();
+            for(int i=0;i<size;i++){
+                listDatas.add(sourceDatas.get(i));
+            }
+
+        }
+    }
 
     public static DisplayMetrics getScreenDisplayMetrics(Context context){
         DisplayMetrics dm = new DisplayMetrics();

@@ -30,9 +30,14 @@ public abstract class BaseFragment extends Fragment{
             EventBus.getDefault().register(this);
         }
         View view=inflater.inflate(getViewLayoutId(),container,false);
-        ButterKnife.bind(this,view);
-        initViews(view,savedInstanceState);
+        ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view,savedInstanceState);
     }
 
     @Override
@@ -48,10 +53,10 @@ public abstract class BaseFragment extends Fragment{
 
     /**获取布局ID*/
     protected abstract int getViewLayoutId();
-    /**是否取消EventBus*/
-    protected abstract boolean isCancledEventBus();
     /**初始化控件*/
     protected abstract void initViews(View view,Bundle savedInstanceState);
+    /**是否取消EventBus*/
+    protected abstract boolean isCancledEventBus();
 
     @Override
     public void onDestroy() {

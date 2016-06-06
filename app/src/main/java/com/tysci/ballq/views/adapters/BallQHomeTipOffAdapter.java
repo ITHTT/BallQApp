@@ -13,10 +13,12 @@ import com.tysci.ballq.R;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.CircleImageView;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,13 +64,23 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         }else{
             holder.tvChoice.setText("");
         }
-
         Date tipDate=CommonUtils.getDateAndTimeFromGMT(info.getCtime());
         if(tipDate!=null){
             holder.tvTipCreateTime.setText(CommonUtils.getDateAndTimeFormatString(tipDate));
         }else{
             holder.tvTipCreateTime.setText("");
         }
+        holder.tvContent.setText(info.getCont().trim());
+        holder.tvReadingCount.setText(String.valueOf(info.getReading_count()));
+        holder.tvLikeCount.setText(String.valueOf(info.getLike_count()));
+        holder.tvCommentNum.setText(String.valueOf(info.getComcount()));
+        holder.tvBonCount.setText(String.valueOf(info.getBtyc()));
+        holder.tvWinPercent.setText(String.format(Locale.getDefault(),"%.2f",info.getWins()*100)+"%");
+        holder.tvTipCount.setText(String.valueOf(info.getTipcount()));
+
+        holder.tvUserNickName.setText(info.getFname());
+        GlideImageLoader.loadImage(holder.itemView.getContext(), info.getPt(), R.mipmap.icon_user_default, holder.ivUserIcon);
+        UserInfoUtil.setUserHeaderVMark(info.getIsv(),holder.isV,holder.ivUserIcon);
 
     }
 

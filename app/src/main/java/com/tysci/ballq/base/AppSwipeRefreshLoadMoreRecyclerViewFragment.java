@@ -30,34 +30,43 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         swipeRefresh.setOnRefreshListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(baseActivity));
         recyclerView.setOnLoadMoreListener(this);
+        super.onViewCreated(view, savedInstanceState);
     }
 
-    private void setRefreshing(){
-        swipeRefresh.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefresh.setRefreshing(true);
-            }
-        });
+    protected void setRefreshing(){
+        if(!swipeRefresh.isRefreshing()) {
+            swipeRefresh.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefresh.setRefreshing(true);
+                }
+            });
+        }
     }
 
-    private void onRefreshCompelete(){
-        swipeRefresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefresh.setRefreshing(false);
-            }
-        }, 1000);
+    protected void onRefreshCompelete(){
+        if(swipeRefresh.isRefreshing()) {
+            swipeRefresh.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefresh.setRefreshing(false);
+                }
+            }, 1000);
+        }
     }
 
     @Override
     public void onLoadMore() {
         if(!swipeRefresh.isRefreshing()){
-            onLoadMoreData();
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onLoadMoreData();
+                }
+            },300);
         }else{
             recyclerView.setLoadMoreDataComplete(refreshTip);
         }

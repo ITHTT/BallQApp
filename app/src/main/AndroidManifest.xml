@@ -60,6 +60,9 @@
         <activity android:name=".activitys.RegisterActivity"
             android:launchMode="singleTop"/>
 
+        <activity android:name=".activitys.BallQBallWarpDetailActivity"
+            android:launchMode="singleTop"/>
+
 
     </application>
 

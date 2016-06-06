@@ -8,15 +8,15 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.tysci.ballq.R;
 import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventObject;
 import com.tysci.ballq.modles.event.EventType;
+import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 import com.tysci.ballq.views.widgets.CircleImageView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import okhttp3.Call;
 import okhttp3.Request;
@@ -168,6 +168,22 @@ public class UserInfoUtil {
         }else{
             iV.setVisibility(View.GONE);
             userHeader.setBorderColor(Color.parseColor("#e6e6e6"));
+        }
+    }
+
+    public static void setUserAchievementInfo(Context context,String achieve1,ImageView iv1,String achieve2,ImageView iv2){
+        if(TextUtils.isEmpty(achieve1)){
+            iv1.setVisibility(View.GONE);
+        }else{
+            iv1.setVisibility(View.VISIBLE);
+            GlideImageLoader.loadImage(context,achieve1, R.mipmap.icon_user_achievement_circle_mark,iv1);
+        }
+
+        if(TextUtils.isEmpty(achieve2)){
+            iv2.setVisibility(View.GONE);
+        }else{
+            iv2.setVisibility(View.VISIBLE);
+            GlideImageLoader.loadImage(context, achieve2, R.mipmap.icon_user_achievement_circle_mark, iv2);
         }
     }
 
