@@ -2,6 +2,7 @@ package com.tysci.ballq.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 import com.tysci.ballq.views.widgets.CircleImageView;
+import com.tysci.ballq.wxapi.WXEntryActivity;
 
 import okhttp3.Call;
 import okhttp3.Request;
@@ -129,6 +131,11 @@ public class UserInfoUtil {
             return JSONObject.parseObject(info);
         }
         return null;
+    }
+
+    public static void userLogin(Context context){
+        Intent intent=new Intent(context, WXEntryActivity.class);
+        context.startActivity(intent);
     }
 
     public static void saveUserInfo(Context context,JSONObject data){

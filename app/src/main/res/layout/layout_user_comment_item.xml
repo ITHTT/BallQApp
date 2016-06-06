@@ -41,6 +41,7 @@
                     android:layout_marginLeft="5dp"
                     android:src="@mipmap/icon_user_achievement_circle_mark"/>
                 <TextView
+                    android:id="@+id/tv_create_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"

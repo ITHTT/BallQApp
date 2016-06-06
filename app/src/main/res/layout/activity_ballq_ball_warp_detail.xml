@@ -63,7 +63,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/icon_like_count"/>
+            android:src="@drawable/icon_user_like_selector"/>
         <Button
             android:id="@+id/btnPublish"
             android:layout_width="60dp"

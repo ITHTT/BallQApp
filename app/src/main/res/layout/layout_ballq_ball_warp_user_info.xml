@@ -85,5 +85,5 @@
         android:layout_marginRight="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@mipmap/icon_user_collect_uncheck"/>
+        android:src="@drawable/icon_user_collect_selector"/>
 </RelativeLayout>
