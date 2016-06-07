@@ -63,6 +63,9 @@
         <activity android:name=".activitys.BallQBallWarpDetailActivity"
             android:launchMode="singleTop"/>
 
+        <activity android:name=".activitys.BallQTipOffDetailActivity"
+            android:launchMode="singleTop"/>
+
 
     </application>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
         layout="@layout/layout_title_bar"/>
@@ -36,7 +37,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/icon_comment_edit_bg"
@@ -62,7 +63,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tvIWantGuess"
+            android:id="@+id/tvGuess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -77,7 +78,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            android:id="@+id/ivZan"
+            android:id="@+id/ivLike"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:contentDescription=""
@@ -91,7 +92,8 @@
             android:layout_marginRight="5dp"
             android:background="@mipmap/icon_publish"
             android:gravity="center"
-            android:padding="3dp" />
+            android:padding="3dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>

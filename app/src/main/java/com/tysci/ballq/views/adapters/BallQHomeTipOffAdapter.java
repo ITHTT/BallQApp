@@ -1,5 +1,7 @@
 package com.tysci.ballq.views.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.BallQTipOffDetailActivity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
@@ -40,8 +43,8 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
     }
 
     @Override
-    public void onBindViewHolder(BallQHomeTipOffViewHolder holder, int position) {
-        BallQTipOffEntity info=ballQTipOffEntityList.get(position);
+    public void onBindViewHolder(final BallQHomeTipOffViewHolder holder, int position) {
+        final BallQTipOffEntity info=ballQTipOffEntityList.get(position);
         holder.tvMatchName.setText(info.getTourname());
         Date matchDate= CommonUtils.getDateAndTimeFromGMT(info.getMtime());
         if(matchDate!=null) {
@@ -80,7 +83,17 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
 
         holder.tvUserNickName.setText(info.getFname());
         GlideImageLoader.loadImage(holder.itemView.getContext(), info.getPt(), R.mipmap.icon_user_default, holder.ivUserIcon);
-        UserInfoUtil.setUserHeaderVMark(info.getIsv(),holder.isV,holder.ivUserIcon);
+        UserInfoUtil.setUserHeaderVMark(info.getIsv(), holder.isV, holder.ivUserIcon);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context=holder.itemView.getContext();
+                Intent intent=new Intent(context, BallQTipOffDetailActivity.class);
+                intent.putExtra(BallQTipOffDetailActivity.class.getSimpleName(),info);
+                context.startActivity(intent);
+            }
+        });
 
     }
 

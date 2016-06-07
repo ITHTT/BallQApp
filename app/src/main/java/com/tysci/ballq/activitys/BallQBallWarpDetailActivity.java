@@ -3,14 +3,17 @@ package com.tysci.ballq.activitys;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
@@ -32,8 +35,6 @@ import com.tysci.ballq.views.adapters.BallQUserCommentAdapter;
 import com.tysci.ballq.views.adapters.BallQUserRewardHeaderAdapter;
 import com.tysci.ballq.views.widgets.CircleImageView;
 import com.tysci.ballq.views.widgets.loadmorerecyclerview.AutoLoadMoreRecyclerView;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,6 +58,8 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
     protected EditText etUserCommentInfo;
     @Bind(R.id.ivLike)
     protected ImageView ivLike;
+    @Bind(R.id.btnPublish)
+    protected Button btPublish;
 
     private View headerView=null;
     private BallQBallWarpInfoEntity ballWarpInfo=null;
@@ -82,7 +85,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
     protected void initViews() {
         setTitle("球经详情");
         titleBar.setRightMenuIcon(R.mipmap.icon_share_gold,this);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         headerView= LayoutInflater.from(this).inflate(R.layout.layout_ballq_ball_warp_header,null);
         recyclerView.addHeaderView(headerView);
         ivLike.setOnClickListener(this);
@@ -90,6 +93,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
 
     @Override
     protected void getIntentData(Intent intent) {
+        KLog.e("获取数据。。。");
         ballWarpInfo=intent.getParcelableExtra(Tag);
         if(ballWarpInfo!=null) {
             getBallQBallWarpInfo(ballWarpInfo.getId());
@@ -119,6 +123,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
             }
             @Override
             public void onSuccess(Call call, String response) {
+                KLog.json(response);
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){
@@ -141,27 +146,29 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
     }
 
     private void initBallWarpInfo(View view,BallQBallWarpInfoEntity data){
+        RelativeLayout layoutUserInfo=(RelativeLayout)view.findViewById(R.id.layout_user_info);
         CircleImageView ivUserHeader= (CircleImageView) view.findViewById(R.id.ivUserIcon);
         ImageView isV=(ImageView)view.findViewById(R.id.isV);
         TextView tvUserName=(TextView)view.findViewById(R.id.tv_user_name);
-        ImageView ivAchievement01=(ImageView)view.findViewById(R.id.iv_user_achievement01);
+        ImageView ivAchievement01=(ImageView)view.findViewById(R.id.iv_user_achievement_01);
         ImageView ivAchievement02=(ImageView)view.findViewById(R.id.iv_user_achievement_02);
         TextView tvWriteCounts=(TextView)view.findViewById(R.id.tv_user_write_article_counts);
-        TextView tvCreateDate=(TextView)view.findViewById(R.id.tv_create_time);
+        TextView tvCreateDate=(TextView)view.findViewById(R.id.tv_create_date);
         ImageView ivUserCollect=(ImageView)view.findViewById(R.id.iv_user_collection);
         ivUserCollect.setOnClickListener(this);
-        TextView tvTitle=(TextView)view.findViewById(R.id.tv_title);
+        TextView tvTitle=(TextView)view.findViewById(R.id.tvTitle);
         FrameLayout webLayout=(FrameLayout)view.findViewById(R.id.webLayout);
 
-        GlideImageLoader.loadImage(this,data.getPt(),R.mipmap.icon_user_default,ivUserHeader);
-        UserInfoUtil.setUserHeaderVMark(data.getIsv(),isV,ivUserHeader);
+        GlideImageLoader.loadImage(this, data.getPt(), R.mipmap.icon_user_default, ivUserHeader);
+        UserInfoUtil.setUserHeaderVMark(data.getIsv(), isV, ivUserHeader);
         tvUserName.setText(data.getFname());
-        UserInfoUtil.setUserAchievementInfo(this,data.getTitle1(),ivAchievement01,data.getTitle2(),ivAchievement02);
+        UserInfoUtil.setUserAchievementInfo(this, data.getTitle1(), ivAchievement01, data.getTitle2(), ivAchievement02);
         tvWriteCounts.setText(String.valueOf(data.getArtcount()));
-        Date date= CommonUtils.getDateAndTimeFromGMT(data.getCtime());
-        if(date!=null){
-            tvCreateDate.setText(CommonUtils.getDateAndTimeFormatString(date));
-        }
+         Date date= CommonUtils.getDateAndTimeFromGMT(data.getCtime());
+         if(date!=null){
+           tvCreateDate.setText(CommonUtils.getDateAndTimeFormatString(date));
+         }
+        KLog.e("显示数据xxx");
         isCollect=data.getIsc();
         isLike=data.getIs_like();
         fid=data.getFid();
@@ -171,7 +178,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
             ivUserCollect.setSelected(false);
         }
         tvTitle.setText(data.getTitle());
-        WebView webView= WebViewUtil.getHtmlWebView(this,data.getCont());
+        WebView webView= WebViewUtil.getHtmlWebView(this, data.getCont());
         if(webView!=null){
             if(webLayout.getChildCount()==0){
                 webLayout.addView(webView);
@@ -182,7 +189,9 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
         }else{
             ivLike.setSelected(false);
         }
-        if(userCommentEntityList==null){
+        KLog.e("初始化数据...");
+        if(userCommentEntityList==null||userCommentAdapter==null){
+            KLog.e("添加适配器...");
             userCommentEntityList=new ArrayList<>(10);
             userCommentAdapter=new BallQUserCommentAdapter(userCommentEntityList);
             recyclerView.setAdapter(userCommentAdapter);
@@ -206,6 +215,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
             }
             @Override
             public void onSuccess(Call call, String response) {
+                KLog.json(response);
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){
@@ -260,6 +270,7 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
             }
             @Override
             public void onSuccess(Call call, String response) {
+                KLog.json(response);
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){

@@ -14,6 +14,7 @@ import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.fragments.BallQHomeFragment;
+import com.tysci.ballq.fragments.BallQMatchFragment;
 import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.GlideImageLoader;
@@ -56,7 +57,7 @@ public class MainActivity extends BaseActivity {
         slidingMenu = new SlidingMenu(this);
         slidingMenu.setMode(SlidingMenu.LEFT_RIGHT);
         // 设置触摸屏幕的模式
-        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCH_MODE_FULLSCREEN);
+        slidingMenu.setTouchModeAbove(SlidingMenu.TOUCH_MODE_MARGIN);
         slidingMenu.setShadowWidth(200);
 //        menu.setShadowDrawable(R.drawable.shadow);
 
@@ -122,8 +123,10 @@ public class MainActivity extends BaseActivity {
         BaseFragment fragment=null;
         switch (id){
             case R.id.menu_index:
-                slidingMenu.setTouchModeAbove(SlidingMenu.TOUCH_MODE_MARGIN);
                 fragment=new BallQHomeFragment();
+                break;
+            case R.id.menu_match:
+                fragment=new BallQMatchFragment();
                 break;
         }
 
@@ -162,6 +165,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onViewClick(View view) {
+        onMenuItemClick(view);
         int id=view.getId();
         switch(id){
             case R.id.iv_user_header:

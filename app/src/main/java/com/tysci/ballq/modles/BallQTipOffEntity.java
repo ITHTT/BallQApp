@@ -1,9 +1,12 @@
 package com.tysci.ballq.modles;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by HTT on 2016/6/5.
  */
-public class BallQTipOffEntity {
+public class BallQTipOffEntity implements Parcelable {
     private int fid;
     private int atid;
     private int uid;
@@ -45,6 +48,7 @@ public class BallQTipOffEntity {
     private String otype;
     private float wins;
     private int htid;
+    private int mtcount;
 
     public int getFid() {
         return fid;
@@ -373,4 +377,121 @@ public class BallQTipOffEntity {
     public void setHtid(int htid) {
         this.htid = htid;
     }
+
+    public int getMtcount() {
+        return mtcount;
+    }
+
+    public void setMtcount(int mtcount) {
+        this.mtcount = mtcount;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.fid);
+        dest.writeInt(this.atid);
+        dest.writeInt(this.uid);
+        dest.writeString(this.atlogo);
+        dest.writeString(this.odata);
+        dest.writeInt(this.atscore);
+        dest.writeString(this.choice);
+        dest.writeInt(this.rtype);
+        dest.writeInt(this.reading_count);
+        dest.writeInt(this.eid);
+        dest.writeString(this.htname);
+        dest.writeInt(this.sam);
+        dest.writeString(this.htlogo);
+        dest.writeInt(this.id);
+        dest.writeInt(this.tournament_id);
+        dest.writeInt(this.isc);
+        dest.writeString(this.cont);
+        dest.writeInt(this.etype);
+        dest.writeString(this.fname);
+        dest.writeFloat(this.ror);
+        dest.writeInt(this.btyc);
+        dest.writeString(this.atname);
+        dest.writeInt(this.comcount);
+        dest.writeString(this.title1);
+        dest.writeInt(this.status);
+        dest.writeString(this.title2);
+        dest.writeInt(this.is_like);
+        dest.writeInt(this.tipcount);
+        dest.writeString(this.mtime);
+        dest.writeInt(this.fcount);
+        dest.writeInt(this.mstatus);
+        dest.writeInt(this.confidence);
+        dest.writeInt(this.isv);
+        dest.writeString(this.ctime);
+        dest.writeInt(this.htscore);
+        dest.writeInt(this.like_count);
+        dest.writeString(this.pt);
+        dest.writeString(this.tourname);
+        dest.writeString(this.otype);
+        dest.writeFloat(this.wins);
+        dest.writeInt(this.htid);
+        dest.writeInt(this.mtcount);
+    }
+
+    public BallQTipOffEntity() {
+    }
+
+    private BallQTipOffEntity(Parcel in) {
+        this.fid = in.readInt();
+        this.atid = in.readInt();
+        this.uid = in.readInt();
+        this.atlogo = in.readString();
+        this.odata = in.readString();
+        this.atscore = in.readInt();
+        this.choice = in.readString();
+        this.rtype = in.readInt();
+        this.reading_count = in.readInt();
+        this.eid = in.readInt();
+        this.htname = in.readString();
+        this.sam = in.readInt();
+        this.htlogo = in.readString();
+        this.id = in.readInt();
+        this.tournament_id = in.readInt();
+        this.isc = in.readInt();
+        this.cont = in.readString();
+        this.etype = in.readInt();
+        this.fname = in.readString();
+        this.ror = in.readFloat();
+        this.btyc = in.readInt();
+        this.atname = in.readString();
+        this.comcount = in.readInt();
+        this.title1 = in.readString();
+        this.status = in.readInt();
+        this.title2 = in.readString();
+        this.is_like = in.readInt();
+        this.tipcount = in.readInt();
+        this.mtime = in.readString();
+        this.fcount = in.readInt();
+        this.mstatus = in.readInt();
+        this.confidence = in.readInt();
+        this.isv = in.readInt();
+        this.ctime = in.readString();
+        this.htscore = in.readInt();
+        this.like_count = in.readInt();
+        this.pt = in.readString();
+        this.tourname = in.readString();
+        this.otype = in.readString();
+        this.wins = in.readFloat();
+        this.htid = in.readInt();
+        this.mtcount=in.readInt();
+    }
+
+    public static final Parcelable.Creator<BallQTipOffEntity> CREATOR = new Parcelable.Creator<BallQTipOffEntity>() {
+        public BallQTipOffEntity createFromParcel(Parcel source) {
+            return new BallQTipOffEntity(source);
+        }
+
+        public BallQTipOffEntity[] newArray(int size) {
+            return new BallQTipOffEntity[size];
+        }
+    };
 }
