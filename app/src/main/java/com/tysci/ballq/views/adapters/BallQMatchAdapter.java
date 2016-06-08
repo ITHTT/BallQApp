@@ -1,5 +1,7 @@
 package com.tysci.ballq.views.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.BallQMatchDetailActivity;
 import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.BallQMatchStateUtil;
@@ -37,8 +40,8 @@ public class BallQMatchAdapter extends RecyclerView.Adapter<BallQMatchAdapter.Ba
     }
 
     @Override
-    public void onBindViewHolder(BallQMatchViewHolder holder, int position) {
-        BallQMatchEntity info=ballQMatchEntityList.get(position);
+    public void onBindViewHolder(final BallQMatchViewHolder holder, int position) {
+        final BallQMatchEntity info=ballQMatchEntityList.get(position);
         holder.tvMatchName.setText(info.getTourname());
         Date date= CommonUtils.getDateAndTimeFromGMT(info.getMtime());
         if(date!=null){
@@ -52,11 +55,18 @@ public class BallQMatchAdapter extends RecyclerView.Adapter<BallQMatchAdapter.Ba
         holder.tvHtName.setText(info.getHtname());
         GlideImageLoader.loadImage(holder.itemView.getContext(), info.getAtlogo(), R.drawable.icon_default_team_logo, holder.ivAtLogo);
         holder.tvAtName.setText(info.getAtname());
-        holder.tvMatchState.setText(BallQMatchStateUtil.getMatchState(info.getStatus(),info.getEtype()));
+        holder.tvMatchState.setText(BallQMatchStateUtil.getMatchState(info.getStatus(), info.getEtype()));
         holder.tvTipNum.setText(String.valueOf(info.getTipcount()));
 
-
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context=holder.itemView.getContext();
+                Intent intent=new Intent(context, BallQMatchDetailActivity.class);
+                intent.putExtra(BallQMatchDetailActivity.class.getSimpleName(),info);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

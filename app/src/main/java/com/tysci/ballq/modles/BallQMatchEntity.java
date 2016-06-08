@@ -1,9 +1,12 @@
 package com.tysci.ballq.modles;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Administrator on 2016/5/1.
  */
-public class BallQMatchEntity {
+public class BallQMatchEntity implements Parcelable {
 
     /**
      * status : 90
@@ -50,6 +53,7 @@ public class BallQMatchEntity {
     private int group_id;
     private int tipcount;
     private int isf;
+    private int is_live=0;
 
     public void setStatus(int status) {
         this.status = status;
@@ -218,4 +222,81 @@ public class BallQMatchEntity {
     public int getIsf() {
         return isf;
     }
+
+    public int getIs_live() {
+        return is_live;
+    }
+
+    public void setIs_live(int is_live) {
+        this.is_live = is_live;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.status);
+        dest.writeString(this.atscore);
+        dest.writeInt(this.betcount);
+        dest.writeInt(this.tourid);
+        dest.writeInt(this.atid);
+        dest.writeString(this.htlogo);
+        dest.writeInt(this.htid);
+        dest.writeInt(this.champion_id);
+        dest.writeString(this.tourname);
+        dest.writeInt(this.comcount);
+        dest.writeString(this.htscore);
+        dest.writeInt(this.utourid);
+        dest.writeString(this.atlogo);
+        dest.writeString(this.htname);
+        dest.writeInt(this.eid);
+        dest.writeString(this.mtime);
+        dest.writeInt(this.etype);
+        dest.writeString(this.atname);
+        dest.writeInt(this.group_id);
+        dest.writeInt(this.tipcount);
+        dest.writeInt(this.isf);
+        dest.writeInt(this.is_live);
+    }
+
+    public BallQMatchEntity() {
+    }
+
+    private BallQMatchEntity(Parcel in) {
+        this.status = in.readInt();
+        this.atscore = in.readString();
+        this.betcount = in.readInt();
+        this.tourid = in.readInt();
+        this.atid = in.readInt();
+        this.htlogo = in.readString();
+        this.htid = in.readInt();
+        this.champion_id = in.readInt();
+        this.tourname = in.readString();
+        this.comcount = in.readInt();
+        this.htscore = in.readString();
+        this.utourid = in.readInt();
+        this.atlogo = in.readString();
+        this.htname = in.readString();
+        this.eid = in.readInt();
+        this.mtime = in.readString();
+        this.etype = in.readInt();
+        this.atname = in.readString();
+        this.group_id = in.readInt();
+        this.tipcount = in.readInt();
+        this.isf = in.readInt();
+        this.is_live=in.readInt();
+    }
+
+    public static final Parcelable.Creator<BallQMatchEntity> CREATOR = new Parcelable.Creator<BallQMatchEntity>() {
+        public BallQMatchEntity createFromParcel(Parcel source) {
+            return new BallQMatchEntity(source);
+        }
+
+        public BallQMatchEntity[] newArray(int size) {
+            return new BallQMatchEntity[size];
+        }
+    };
 }

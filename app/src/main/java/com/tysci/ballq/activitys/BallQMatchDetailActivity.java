@@ -10,8 +10,15 @@ import android.widget.TextView;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.modles.BallQMatchEntity;
+import com.tysci.ballq.networks.GlideImageLoader;
+import com.tysci.ballq.networks.HttpClientUtil;
+import com.tysci.ballq.networks.HttpUrls;
+import com.tysci.ballq.utils.KLog;
 
 import butterknife.Bind;
+import okhttp3.Call;
+import okhttp3.Request;
 
 /**
  * Created by Administrator on 2016/6/7.
@@ -49,7 +56,43 @@ public class BallQMatchDetailActivity extends BaseActivity{
 
     @Override
     protected void getIntentData(Intent intent) {
+        BallQMatchEntity data=intent.getParcelableExtra(Tag);
+        if(data!=null){
+            getMatchDetailInfo(data.getEid(),data.getEtype());
+        }
+    }
 
+    private void getMatchDetailInfo(int matchId,int etype){
+        String url= HttpUrls.HOST_URL_V5 + "match/" + matchId + "/?etype=" + etype;
+        HttpClientUtil.getHttpClientUtil().sendGetRequest(Tag, url, 60, new HttpClientUtil.StringResponseCallBack() {
+            @Override
+            public void onBefore(Request request) {
+
+            }
+
+            @Override
+            public void onError(Call call, Exception error) {
+
+            }
+
+            @Override
+            public void onSuccess(Call call, String response) {
+                KLog.json(response);
+            }
+
+            @Override
+            public void onFinish(Call call) {
+
+            }
+        });
+    }
+
+    private void initMatchInfo(BallQMatchEntity data){
+        GlideImageLoader.loadImage(this,data.getHtlogo(),R.drawable.icon_circle_item_bg,ivHomeTeamIcon);
+        tvHomeTeamName.setText(data.getHtname());
+        GlideImageLoader.loadImage(this,data.getAtlogo(),R.drawable.icon_circle_item_bg,ivAwayTeamIcon);
+        tvAwayTeamName.setText(data.getAtname());
+        tvGameLeagueName.setText(data.getTourname());
     }
 
     @Override
