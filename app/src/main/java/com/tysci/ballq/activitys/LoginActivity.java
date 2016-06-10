@@ -144,7 +144,7 @@ public class LoginActivity extends BaseActivity{
      */
     private void cacheUserInfo(JSONObject data){
         UserInfoUtil.setUserRank(this,data.getIntValue("rank"));
-        UserInfoUtil.setUserAccount(this, data.getString("user"));
+        UserInfoUtil.setUserId(this, data.getString("user"));
         UserInfoUtil.setUserAccount(this, data.getString("nickname"));
         UserInfoUtil.setUserToken(this, data.getString("token"));
         UserInfoUtil.setUserPortrait(this,data.getString("portrait"));

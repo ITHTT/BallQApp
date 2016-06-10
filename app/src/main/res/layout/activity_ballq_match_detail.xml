@@ -16,7 +16,8 @@
         app:tabTextColor="#848484"
         app:tabSelectedTextColor="#b9a163"
         app:tabIndicatorColor="#b9a163"
-        app:tabIndicatorHeight="2dp"/>
+        app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

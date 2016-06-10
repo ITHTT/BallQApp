@@ -49,6 +49,8 @@ public class BallQTipOffEntity implements Parcelable {
     private float wins;
     private int htid;
     private int mtcount;
+    private int sorder;
+    private int settled;
 
     public int getFid() {
         return fid;
@@ -386,6 +388,22 @@ public class BallQTipOffEntity implements Parcelable {
         this.mtcount = mtcount;
     }
 
+    public int getSettled() {
+        return settled;
+    }
+
+    public void setSettled(int settled) {
+        this.settled = settled;
+    }
+
+    public int getSorder() {
+        return sorder;
+    }
+
+    public void setSorder(int sorder) {
+        this.sorder = sorder;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -435,6 +453,8 @@ public class BallQTipOffEntity implements Parcelable {
         dest.writeFloat(this.wins);
         dest.writeInt(this.htid);
         dest.writeInt(this.mtcount);
+        dest.writeInt(this.settled);
+        dest.writeInt(this.sorder);
     }
 
     public BallQTipOffEntity() {
@@ -483,6 +503,8 @@ public class BallQTipOffEntity implements Parcelable {
         this.wins = in.readFloat();
         this.htid = in.readInt();
         this.mtcount=in.readInt();
+        this.settled=in.readInt();
+        this.sorder=in.readInt();
     }
 
     public static final Parcelable.Creator<BallQTipOffEntity> CREATOR = new Parcelable.Creator<BallQTipOffEntity>() {

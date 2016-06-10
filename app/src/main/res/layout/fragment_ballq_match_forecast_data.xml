@@ -10,9 +10,11 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp">
         <com.tysci.ballq.views.widgets.SegmentTabLayout
-            android:id="@+id/tab_match_data"
+            android:id="@+id/tab_layout_match_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             app:tl_indicator_color="#b9a163"
             app:tl_indicator_corner_radius="5dp"/>
     </FrameLayout>

@@ -10,11 +10,22 @@ import android.widget.TextView;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
+import com.tysci.ballq.base.BaseFragment;
+import com.tysci.ballq.fragments.BallQMatchBettingScaleDataFragment;
+import com.tysci.ballq.fragments.BallQMatchClashDataFragment;
+import com.tysci.ballq.fragments.BallQMatchForecastDataFragment;
+import com.tysci.ballq.fragments.BallQMatchLeagueTableDataFragment;
+import com.tysci.ballq.fragments.BallQMatchLineupDataFragment;
+import com.tysci.ballq.fragments.BallQMatchTipOffListFragment;
 import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
+import com.tysci.ballq.views.adapters.BallQFragmentPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import okhttp3.Call;
@@ -43,6 +54,7 @@ public class BallQMatchDetailActivity extends BaseActivity{
     protected TabLayout tabLayout;
     @Bind(R.id.view_pager)
     protected ViewPager viewPager;
+    private String[] titles={"爆料","预测","比例","对阵","阵容","积分榜"};
 
     @Override
     protected int getContentViewId() {
@@ -54,10 +66,35 @@ public class BallQMatchDetailActivity extends BaseActivity{
 
     }
 
+    private void addFragments(BallQMatchEntity matchEntity){
+        List<BaseFragment> fragments=new ArrayList<>(6);
+
+        Bundle data=new Bundle();
+        data.putParcelable("match_data",matchEntity);
+
+        BaseFragment baseFragment=new BallQMatchTipOffListFragment();
+        baseFragment.setArguments(data);
+        fragments.add(baseFragment);
+
+        if(matchEntity.getEtype()==0) {
+            fragments.add(new BallQMatchForecastDataFragment());
+            fragments.add(new BallQMatchBettingScaleDataFragment());
+            fragments.add(new BallQMatchClashDataFragment());
+            fragments.add(new BallQMatchLineupDataFragment());
+            fragments.add(new BallQMatchLeagueTableDataFragment());
+        }
+
+        BallQFragmentPagerAdapter adapter=new BallQFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     @Override
     protected void getIntentData(Intent intent) {
         BallQMatchEntity data=intent.getParcelableExtra(Tag);
         if(data!=null){
+            initMatchInfo(data);
+            addFragments(data);
             getMatchDetailInfo(data.getEid(),data.getEtype());
         }
     }

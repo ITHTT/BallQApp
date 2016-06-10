@@ -140,7 +140,7 @@ public class UserInfoUtil {
 
     public static void saveUserInfo(Context context,JSONObject data){
         UserInfoUtil.setUserRank(context,data.getIntValue("rank"));
-        UserInfoUtil.setUserAccount(context, data.getString("user"));
+        UserInfoUtil.setUserId(context, data.getString("user"));
         UserInfoUtil.setUserAccount(context, data.getString("nickname"));
         UserInfoUtil.setUserToken(context, data.getString("token"));
         UserInfoUtil.setUserPortrait(context,data.getString("portrait"));
