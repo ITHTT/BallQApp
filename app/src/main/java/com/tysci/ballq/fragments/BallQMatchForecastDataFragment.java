@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseFragment;
+import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.views.adapters.BallQFragmentPagerAdapter;
 import com.tysci.ballq.views.widgets.SegmentTabLayout;
 
@@ -35,17 +36,22 @@ public class BallQMatchForecastDataFragment extends BaseFragment{
         tabLayout.setTabData(titles);
         Bundle data=getArguments();
         if(data!=null){
-            List<BaseFragment> fragments=new ArrayList<>(2);
-            BaseFragment baseFragment=new MatchForecastDataFragment();
-            BallQFragmentPagerAdapter adapter=null;
+            BallQMatchEntity matchEntity=data.getParcelable("match_data");
+            if(matchEntity!=null) {
+                List<BaseFragment> fragments = new ArrayList<>(2);
+                MatchForecastDataFragment baseFragment = new MatchForecastDataFragment();
+                baseFragment.setMatchEntity((BallQMatchEntity) data.getParcelable("match_data"));
+                baseFragment.setOddsType(5);
+                fragments.add(baseFragment);
 
-
-
-
-
+                baseFragment=new MatchForecastDataFragment();
+                baseFragment.setMatchEntity((BallQMatchEntity) data.getParcelable("match_data"));
+                baseFragment.setOddsType(2);
+                fragments.add(baseFragment);
+                BallQFragmentPagerAdapter adapter = new BallQFragmentPagerAdapter(this.getChildFragmentManager(),fragments);
+                viewPager.setAdapter(adapter);
+            }
         }
-
-
     }
 
     @Override
