@@ -137,7 +137,7 @@
                 android:textColor="#cdaa44"
                 android:textSize="11sp" />
             <LinearLayout
-                android:id="@+id/xinxilinearlayout"
+                android:id="@+id/layout_confidence_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -152,17 +152,17 @@
                     android:text="信心指数："
                     android:textColor="#cdaa44"
                     android:textSize="11sp"/>
-                <RatingBar
+                <com.tysci.ballq.views.widgets.CustomRattingBar
                     android:id="@+id/rating_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:isIndicator="false"
                     android:gravity="center_vertical"
                     android:layout_gravity="center_vertical"
-                    style="@style/SmallRatingBarStyle"
-                    android:numStars="5"
-                    android:stepSize="1" />
+                    app:rattingBar_width="12dp"
+                    app:rattingBar_height="12dp"
+                    app:rattingBar_num="5"
+                    app:rattingBar_padding="2dp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/tvTipCreateTime"

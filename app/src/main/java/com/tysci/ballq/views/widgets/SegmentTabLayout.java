@@ -40,6 +40,8 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     private float mTabPadding;
     private boolean mTabSpaceEqual;
     private float mTabWidth;
+    private float mTabPaddingTop;
+    private float mTabPaddingBottom;
 
     /** indicator */
     private int mIndicatorColor;
@@ -141,6 +143,8 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
         mTabSpaceEqual = ta.getBoolean(R.styleable.SegmentTabLayout_tl_tab_space_equal, true);
         mTabWidth = ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_width, dp2px(-1));
         mTabPadding = ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_padding, mTabSpaceEqual || mTabWidth > 0 ? dp2px(0) : dp2px(10));
+        mTabPaddingTop=ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_paddingTop,0);
+        mTabPaddingBottom=ta.getDimension(R.styleable.SegmentTabLayout_tl_tab_paddingBottom,0);
 
         mBarColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_color, Color.TRANSPARENT);
         mBarStrokeColor = ta.getColor(R.styleable.SegmentTabLayout_tl_bar_stroke_color, mIndicatorColor);
@@ -208,7 +212,7 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
     private void updateTabStyles() {
         for (int i = 0; i < mTabCount; i++) {
             View tabView = mTabsContainer.getChildAt(i);
-            tabView.setPadding((int) mTabPadding, 0, (int) mTabPadding, 0);
+            tabView.setPadding((int) mTabPadding, (int)mTabPaddingTop, (int) mTabPadding, (int)mTabPaddingBottom);
             TextView tv_tab_title = (TextView) tabView.findViewById(R.id.tv_tab_title);
             tv_tab_title.setTextColor(i == mCurrentTab ? mTextSelectColor : mTextUnselectColor);
             tv_tab_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextsize);

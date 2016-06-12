@@ -37,6 +37,7 @@ public class BallQMatchForecastDataFragment extends BaseFragment{
         Bundle data=getArguments();
         if(data!=null){
             BallQMatchEntity matchEntity=data.getParcelable("match_data");
+
             if(matchEntity!=null) {
                 List<BaseFragment> fragments = new ArrayList<>(2);
                 MatchForecastDataFragment baseFragment = new MatchForecastDataFragment();

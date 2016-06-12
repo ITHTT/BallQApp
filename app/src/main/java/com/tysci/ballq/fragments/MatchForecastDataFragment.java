@@ -34,6 +34,7 @@ public class MatchForecastDataFragment extends BaseFragment{
 
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
+        requestDatas();
 
     }
 

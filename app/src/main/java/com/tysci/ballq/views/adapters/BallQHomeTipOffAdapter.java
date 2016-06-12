@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -16,8 +17,10 @@ import com.tysci.ballq.activitys.BallQTipOffDetailActivity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.CircleImageView;
+import com.tysci.ballq.views.widgets.CustomRattingBar;
 
 import java.util.Date;
 import java.util.List;
@@ -58,7 +61,7 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         holder.tvHtName.setText(info.getHtname());
         holder.tvHtScore.setText(String.valueOf(info.getHtscore()));
         GlideImageLoader.loadImage(holder.itemView.getContext(),info.getAtlogo(),R.mipmap.ic_ballq_logo,holder.ivAtLogo);
-        holder.tvHtName.setText(info.getAtname());
+        holder.tvAtName.setText(info.getAtname());
         holder.tvAtScore.setText(String.valueOf(info.getAtscore()));
 
         String bettingInfo=getBettingInfo(info.getChoice(),info.getOtype(),info.getOdata());
@@ -84,6 +87,14 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         holder.tvUserNickName.setText(info.getFname());
         GlideImageLoader.loadImage(holder.itemView.getContext(), info.getPt(), R.mipmap.icon_user_default, holder.ivUserIcon);
         UserInfoUtil.setUserHeaderVMark(info.getIsv(), holder.isV, holder.ivUserIcon);
+
+        if(info.getConfidence()==0){
+            holder.layoutConfidenceData.setVisibility(View.GONE);
+        }else{
+            holder.layoutConfidenceData.setVisibility(View.VISIBLE);
+            KLog.e("confidence:"+info.getConfidence());
+            holder.rattingBar.setRattingValue(info.getConfidence()/10);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,10 +245,10 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         protected ImageView isV;
         @Bind(R.id.ivBetResult)
         protected ImageView ivBetResult;
-
-
-
-
+        @Bind(R.id.rating_bar)
+        protected CustomRattingBar rattingBar;
+        @Bind(R.id.layout_confidence_data)
+        protected LinearLayout layoutConfidenceData;
 
 
         public BallQHomeTipOffViewHolder(View itemView) {

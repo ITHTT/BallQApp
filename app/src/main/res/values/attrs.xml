@@ -35,4 +35,11 @@
         <attr name="shadow_dx" format="dimension"/>
         <attr name="shadow_dy" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomRattingBar">
+        <attr name="rattingBar_width" format="dimension"/>
+        <attr name="rattingBar_height" format="dimension"/>
+        <attr name="rattingBar_num" format="integer"/>
+        <attr name="rattingBar_padding" format="dimension"/>
+    </declare-styleable>
 </resources>

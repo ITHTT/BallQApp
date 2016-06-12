@@ -16,7 +16,9 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             app:tl_indicator_color="#b9a163"
-            app:tl_indicator_corner_radius="5dp"/>
+            app:tl_indicator_corner_radius="5dp"
+            app:tl_tab_paddingTop="5dp"
+            app:tl_tab_paddingBottom="5dp"/>
     </FrameLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

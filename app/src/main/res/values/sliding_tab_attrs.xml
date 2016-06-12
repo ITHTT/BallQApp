@@ -60,6 +60,8 @@
     <attr name="tl_tab_space_equal" format="boolean"/>
     <!-- 设置tab固定大小 -->
     <attr name="tl_tab_width" format="dimension"/>
+    <attr name="tl_tab_paddingTop" format="dimension"/>
+    <attr name="tl_tab_paddingBottom" format="dimension"/>
 
     <!-- title -->
     <!-- 设置字体大小 -->
@@ -99,6 +101,8 @@
 
         <!-- tab -->
         <attr name="tl_tab_padding"/>
+        <attr name="tl_tab_paddingTop"/>
+        <attr name="tl_tab_paddingBottom"/>
         <attr name="tl_tab_space_equal"/>
         <attr name="tl_tab_width"/>
 
@@ -131,6 +135,8 @@
 
         <!-- tab -->
         <attr name="tl_tab_padding"/>
+        <attr name="tl_tab_paddingTop"/>
+        <attr name="tl_tab_paddingBottom"/>
         <attr name="tl_tab_space_equal"/>
         <attr name="tl_tab_width"/>
 

@@ -77,7 +77,9 @@ public class BallQMatchDetailActivity extends BaseActivity{
         fragments.add(baseFragment);
 
         if(matchEntity.getEtype()==0) {
-            fragments.add(new BallQMatchForecastDataFragment());
+            baseFragment=new BallQMatchForecastDataFragment();
+            baseFragment.setArguments(data);
+            fragments.add(baseFragment);
             fragments.add(new BallQMatchBettingScaleDataFragment());
             fragments.add(new BallQMatchClashDataFragment());
             fragments.add(new BallQMatchLineupDataFragment());

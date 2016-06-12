@@ -8,6 +8,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,6 +76,7 @@ public class BallQTipOffDetailActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         titleBar.setRightMenuIcon(R.mipmap.icon_share_gold, this);
         headerView= LayoutInflater.from(this).inflate(R.layout.layout_ballq_tip_off_header,null);
+        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         recyclerView.addHeaderView(headerView);
     }
 

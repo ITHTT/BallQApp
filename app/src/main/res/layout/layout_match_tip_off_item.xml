@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
+        android:layout_width="70dp"
+        android:layout_height="fill_parent">
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -29,7 +29,7 @@
             android:background="#3a3a3a" />
         <TextView
             android:id="@+id/tvTipCreateTime"
-            android:layout_width="35dp"
+            android:layout_width="40dp"
             android:layout_height="15dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="18dp"
@@ -40,7 +40,7 @@
             android:typeface="monospace" />
         <TextView
             android:id="@+id/tvTipCreateDate"
-            android:layout_width="35dp"
+            android:layout_width="40dp"
             android:layout_height="15dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="38dp"
@@ -64,6 +64,7 @@
                 android:id="@+id/ivUserIcon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/icon_user_default"/>
             <RelativeLayout
@@ -73,7 +74,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:paddingRight="15dp">
+                    android:paddingRight="15dp"
+                    android:gravity="center_vertical">
                     <TextView
                         android:id="@+id/tvUserNickName"
                         android:layout_width="0dp"
@@ -146,8 +148,8 @@
                         android:typeface="monospace" />
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@id/tvWinPercent"
@@ -236,14 +238,25 @@
                 android:textColor="#cdaa44"
                 android:textSize="13sp"
                 android:typeface="monospace" />
+            <com.tysci.ballq.views.widgets.CustomRattingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                app:rattingBar_width="25dp"
+                app:rattingBar_height="25dp"
+                app:rattingBar_num="5"
+                app:rattingBar_padding="5dp"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tvContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/app_name"
             android:textColor="#3a3a3a"
             android:textSize="15sp"
