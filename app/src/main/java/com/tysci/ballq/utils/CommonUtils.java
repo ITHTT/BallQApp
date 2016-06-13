@@ -73,6 +73,10 @@ public class CommonUtils {
         return new SimpleDateFormat("MM/dd HH:mm").format(date);
     }
 
+    public static String getMMdd(Date date){
+        return new SimpleDateFormat("MM/dd").format(date);
+    }
+
     public static String getMM_ddString(Date date){
         return new SimpleDateFormat("MM-dd").format(date);
     }

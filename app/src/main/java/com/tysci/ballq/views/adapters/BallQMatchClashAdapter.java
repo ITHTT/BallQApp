@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.tysci.ballq.R;
 import com.tysci.ballq.modles.BallQMatchClashEntity;
+import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.views.widgets.recyclerviewstickyheader.StickyHeaderAdapter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +35,14 @@ public class BallQMatchClashAdapter extends RecyclerView.Adapter<BallQMatchClash
 
     @Override
     public void onBindViewHolder(BallQMatchClashViewHolder holder, int position) {
-
+        BallQMatchClashEntity info=matchClashEntityList.get(position);
+        holder.tvMatchHTeam.setText(info.getHome_team());
+        holder.tvMatchATeam.setText(info.getAway_team());
+        Date date= CommonUtils.getDateAndTimeFromGMT(info.getMatch_time());
+        if(date!=null){
+            holder.tvMatchDate.setText(CommonUtils.getMMdd(date));
+        }
+        holder.tvMatchScoreState.setText(info.getHome_team_score()+":"+info.getAway_team_score());
     }
 
     @Override
@@ -43,17 +52,24 @@ public class BallQMatchClashAdapter extends RecyclerView.Adapter<BallQMatchClash
 
     @Override
     public String getHeaderId(int position) {
-        return null;
+        if(position>=0&&position<getItemCount()){
+            return matchClashEntityList.get(position).getMatchType();
+        }
+        return "";
     }
 
     @Override
     public BallQMatchClashViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-        return null;
+        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_ballq_match_clash_titiel,parent,false);
+        return new BallQMatchClashViewHolder(view);
     }
 
     @Override
     public void onBindHeaderViewHolder(BallQMatchClashViewHolder viewholder, int position) {
-
+        if(position>=0&&position<getItemCount()){
+            TextView title= (TextView) viewholder.itemView.findViewById(R.id.tv_match_clash_title);
+            title.setText(getHeaderId(position));
+        }
     }
 
     public static final class BallQMatchClashViewHolder extends RecyclerView.ViewHolder{

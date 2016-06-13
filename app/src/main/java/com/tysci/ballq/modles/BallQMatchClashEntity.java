@@ -45,6 +45,7 @@ public class BallQMatchClashEntity {
     private String away_team_score;
     private String id;
     private String home_team_score;
+    private String matchType;
 
     public void setStatus(String status) {
         this.status = status;
@@ -188,5 +189,13 @@ public class BallQMatchClashEntity {
 
     public String getHome_team_score() {
         return home_team_score;
+    }
+
+    public String getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(String matchType) {
+        this.matchType = matchType;
     }
 }
