@@ -36,8 +36,7 @@
                 android:layout_marginStart="20dp"
                 android:typeface="monospace"
                 android:text="爆"
-                android:textColor="#ffffff"
-                />
+                android:textColor="#ffffff" />
         </LinearLayout>
         <ImageView
             android:layout_width="1dp"

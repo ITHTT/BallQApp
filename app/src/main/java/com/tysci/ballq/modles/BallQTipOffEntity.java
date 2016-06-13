@@ -51,6 +51,7 @@ public class BallQTipOffEntity implements Parcelable {
     private int mtcount;
     private int sorder;
     private int settled;
+    private int boncount;
 
     public int getFid() {
         return fid;
@@ -402,6 +403,14 @@ public class BallQTipOffEntity implements Parcelable {
 
     public void setSorder(int sorder) {
         this.sorder = sorder;
+    }
+
+    public int getBoncount() {
+        return boncount;
+    }
+
+    public void setBoncount(int boncount) {
+        this.boncount = boncount;
     }
 
     @Override

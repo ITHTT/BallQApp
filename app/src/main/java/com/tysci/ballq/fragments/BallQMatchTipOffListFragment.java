@@ -29,7 +29,7 @@ import okhttp3.Request;
 /**
  * Created by Administrator on 2016/6/7.
  */
-public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,AutoLoadMoreRecyclerView.OnLoadMoreListener{
     @Bind(R.id.swipe_refresh)
     protected SwipeRefreshLayout swipeRefresh;
     @Bind(R.id.recycler_view)
@@ -49,6 +49,7 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
     protected void initViews(View view, Bundle savedInstanceState) {
         swipeRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(baseActivity));
+        recyclerView.setOnLoadMoreListener(this);
         Bundle data=getArguments();
         if(data!=null){
             ballQMatchEntity=data.getParcelable("match_data");
@@ -76,7 +77,6 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
         }, 1000);
     }
 
-
     private void requestDatas(int matchId,int etype,int pages, final boolean isLoadMore){
         String url= HttpUrls.HOST_URL_V5 + "match/" + matchId + "/tips/?etype=" + etype + "&p=" + pages;
         KLog.e("url:"+url);
@@ -88,9 +88,9 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
 
             @Override
             public void onError(Call call, Exception error) {
-                if(!isLoadMore){
+                if (!isLoadMore) {
                     recyclerView.setStartLoadMore();
-                }else{
+                } else {
                     recyclerView.setLoadMoreDataFailed();
                 }
             }
@@ -98,32 +98,32 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
-                if(!TextUtils.isEmpty(response)){
-                    JSONObject obj=JSONObject.parseObject(response);
-                    if(obj!=null){
-                        JSONArray arrays=obj.getJSONArray("data");
-                        if(arrays!=null&&!arrays.isEmpty()){
-                            if(matchTipOffList==null){
-                                matchTipOffList=new ArrayList<BallQTipOffEntity>(10);
+                if (!TextUtils.isEmpty(response)) {
+                    JSONObject obj = JSONObject.parseObject(response);
+                    if (obj != null) {
+                        JSONArray arrays = obj.getJSONArray("data");
+                        if (arrays != null && !arrays.isEmpty()) {
+                            if (matchTipOffList == null) {
+                                matchTipOffList = new ArrayList<BallQTipOffEntity>(10);
                             }
-                            if(!isLoadMore&&!matchTipOffList.isEmpty()){
+                            if (!isLoadMore && !matchTipOffList.isEmpty()) {
                                 matchTipOffList.clear();
                             }
-                            CommonUtils.getJSONListObject(arrays,matchTipOffList,BallQTipOffEntity.class);
-                            if(adapter==null){
-                                adapter=new BallQMatchTipOffAdapter(matchTipOffList);
+                            CommonUtils.getJSONListObject(arrays, matchTipOffList, BallQTipOffEntity.class);
+                            if (adapter == null) {
+                                adapter = new BallQMatchTipOffAdapter(matchTipOffList);
                                 recyclerView.setAdapter(adapter);
-                            }else{
+                            } else {
                                 adapter.notifyDataSetChanged();
                             }
-                            if(arrays.size()<10){
+                            if (arrays.size() < 10) {
                                 recyclerView.setLoadMoreDataComplete("没有更多数据了...");
-                            }else{
+                            } else {
                                 recyclerView.setStartLoadMore();
-                                if(isLoadMore){
+                                if (isLoadMore) {
                                     currentPages++;
-                                }else{
-                                    currentPages=2;
+                                } else {
+                                    currentPages = 2;
                                 }
                                 return;
                             }
@@ -135,7 +135,7 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
 
             @Override
             public void onFinish(Call call) {
-                if(!isLoadMore){
+                if (!isLoadMore) {
                     onRefreshCompelete();
                 }
             }
@@ -152,7 +152,13 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
     }
 
     @Override
+    public void onLoadMore() {
+
+    }
+
+    @Override
     protected boolean isCancledEventBus() {
         return false;
     }
+
 }

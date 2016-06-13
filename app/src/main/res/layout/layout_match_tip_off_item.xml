@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
-        android:layout_width="70dp"
-        android:layout_height="fill_parent">
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
         <ImageView
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -29,25 +30,25 @@
             android:background="#3a3a3a" />
         <TextView
             android:id="@+id/tvTipCreateTime"
-            android:layout_width="40dp"
+            android:layout_width="match_parent"
             android:layout_height="15dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="21dp"
             android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="19:30"
             android:textColor="#f26c64"
-            android:textSize="12sp"
+            android:textSize="11.5sp"
             android:typeface="monospace" />
         <TextView
             android:id="@+id/tvTipCreateDate"
-            android:layout_width="40dp"
+            android:layout_width="match_parent"
             android:layout_height="15dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="21dp"
             android:layout_marginTop="38dp"
             android:gravity="center"
             android:text="16日"
             android:textColor="#3a3a3a"
-            android:textSize="12sp"
+            android:textSize="11.5sp"
             android:typeface="monospace" />
     </RelativeLayout>
 
@@ -206,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textColor="#3a3a3a"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:typeface="monospace" />
             <ImageView
                 android:layout_width="18dp"
@@ -215,13 +216,13 @@
                 android:contentDescription="@string/app_name"
                 android:src="@mipmap/icon_gold" />
             <TextView
-                android:id="@+id/tvRewardNum"
+                android:id="@+id/tvBettingNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="0"
                 android:textColor="#3a3a3a"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:typeface="monospace" />
         </LinearLayout>
         <LinearLayout
@@ -245,8 +246,8 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical"
-                app:rattingBar_width="25dp"
-                app:rattingBar_height="25dp"
+                app:rattingBar_width="20dp"
+                app:rattingBar_height="20dp"
                 app:rattingBar_num="5"
                 app:rattingBar_padding="5dp"/>
         </LinearLayout>

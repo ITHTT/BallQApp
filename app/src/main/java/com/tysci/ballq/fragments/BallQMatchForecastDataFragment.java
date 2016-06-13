@@ -41,12 +41,12 @@ public class BallQMatchForecastDataFragment extends BaseFragment{
             if(matchEntity!=null) {
                 List<BaseFragment> fragments = new ArrayList<>(2);
                 MatchForecastDataFragment baseFragment = new MatchForecastDataFragment();
-                baseFragment.setMatchEntity((BallQMatchEntity) data.getParcelable("match_data"));
+                baseFragment.setMatchEntity(matchEntity);
                 baseFragment.setOddsType(5);
                 fragments.add(baseFragment);
 
                 baseFragment=new MatchForecastDataFragment();
-                baseFragment.setMatchEntity((BallQMatchEntity) data.getParcelable("match_data"));
+                baseFragment.setMatchEntity(matchEntity);
                 baseFragment.setOddsType(2);
                 fragments.add(baseFragment);
                 BallQFragmentPagerAdapter adapter = new BallQFragmentPagerAdapter(this.getChildFragmentManager(),fragments);

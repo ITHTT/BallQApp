@@ -48,13 +48,17 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
     }
 
     protected void onRefreshCompelete(){
-        if(swipeRefresh.isRefreshing()) {
-            swipeRefresh.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefresh.setRefreshing(false);
-                }
-            }, 1000);
+        if(swipeRefresh!=null) {
+            if (swipeRefresh.isRefreshing()) {
+                swipeRefresh.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(swipeRefresh!=null) {
+                            swipeRefresh.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
+            }
         }
     }
 

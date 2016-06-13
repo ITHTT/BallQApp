@@ -80,15 +80,22 @@ public class BallQMatchDetailActivity extends BaseActivity{
             baseFragment=new BallQMatchForecastDataFragment();
             baseFragment.setArguments(data);
             fragments.add(baseFragment);
+
             fragments.add(new BallQMatchBettingScaleDataFragment());
-            fragments.add(new BallQMatchClashDataFragment());
+
+            baseFragment=new BallQMatchClashDataFragment();
+            baseFragment.setArguments(data);
+            fragments.add(baseFragment);
+
             fragments.add(new BallQMatchLineupDataFragment());
             fragments.add(new BallQMatchLeagueTableDataFragment());
         }
 
         BallQFragmentPagerAdapter adapter=new BallQFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(fragments.size());
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     @Override

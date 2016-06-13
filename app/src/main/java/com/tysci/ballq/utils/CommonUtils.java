@@ -65,6 +65,10 @@ public class CommonUtils {
         return new SimpleDateFormat("MM-dd HH:mm").format(times);
     }
 
+    public static String getDayOfMonth(Date date){
+        return new SimpleDateFormat("dd").format(date);
+    }
+
     public static String getMMddString(Date date){
         return new SimpleDateFormat("MM/dd HH:mm").format(date);
     }

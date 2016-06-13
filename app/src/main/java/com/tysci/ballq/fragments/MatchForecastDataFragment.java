@@ -35,7 +35,6 @@ public class MatchForecastDataFragment extends BaseFragment{
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
         requestDatas();
-
     }
 
     public void setMatchEntity(BallQMatchEntity matchEntity) {
