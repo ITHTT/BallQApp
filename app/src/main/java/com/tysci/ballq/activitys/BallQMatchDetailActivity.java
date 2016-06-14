@@ -87,7 +87,10 @@ public class BallQMatchDetailActivity extends BaseActivity{
             baseFragment.setArguments(data);
             fragments.add(baseFragment);
 
-            fragments.add(new BallQMatchLineupDataFragment());
+            baseFragment=new BallQMatchLineupDataFragment();
+            baseFragment.setArguments(data);
+            fragments.add(baseFragment);
+
             fragments.add(new BallQMatchLeagueTableDataFragment());
         }
 
