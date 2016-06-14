@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BallQApp.iml" filepath="$PROJECT_DIR$/BallQApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DanmakuFlameMaster/DanmakuFlameMaster.iml" filepath="$PROJECT_DIR$/DanmakuFlameMaster/DanmakuFlameMaster.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fabreveallayout/fabreveallayout.iml" filepath="$PROJECT_DIR$/fabreveallayout/fabreveallayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libammsdk/libammsdk.iml" filepath="$PROJECT_DIR$/libammsdk/libammsdk.iml" />
     </modules>
   </component>
 </project>
