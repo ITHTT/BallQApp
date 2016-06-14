@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/tv_player_number"
@@ -58,7 +58,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_first"
+        android:id="@+id/tv_player_first"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -71,7 +71,7 @@
         android:textColor="#3a3a3a"
         />
     <TextView
-        android:id="@+id/tv_score"
+        android:id="@+id/tv_player_score"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lines="1"

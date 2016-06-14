@@ -50,10 +50,12 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
 
             @Override
             public void onError(Call call, Exception error) {
-                if(!isLoadMore){
-                    recyclerView.setStartLoadMore();
-                }else{
-                    recyclerView.setLoadMoreDataFailed();
+                if(recyclerView!=null) {
+                    if (!isLoadMore) {
+                        recyclerView.setStartLoadMore();
+                    } else {
+                        recyclerView.setLoadMoreDataFailed();
+                    }
                 }
             }
 

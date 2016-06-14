@@ -37,7 +37,7 @@ public class BallQMatchLineupEntity {
     /**阵型名*/
     private String lineupFormation;
     private String lineupTitle;
-    private List<String>map;
+    private List<Integer>map;
 
 
 
@@ -129,11 +129,11 @@ public class BallQMatchLineupEntity {
         this.lineupTitle = lineupTitle;
     }
 
-    public List<String> getMap() {
+    public List<Integer> getMap() {
         return map;
     }
 
-    public void setMap(List<String> map) {
+    public void setMap(List<Integer> map) {
         this.map = map;
     }
 
