@@ -8,12 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f8f8f8">
-        <LinearLayout
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp">
-            <CheckBox
+            <RadioButton
                 android:id="@+id/tvAll"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
@@ -24,31 +24,33 @@
                 android:textColor="@drawable/icon_match_league_menu_text_color_selector"
                 android:textSize="14sp"
                 android:typeface="monospace" />
-            <TextView
+            <RadioButton
                 android:id="@+id/tvHome"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:button="@null"
                 android:background="@drawable/icon_league_table_menu_selector"
                 android:gravity="center"
                 android:text="主场"
                 android:textColor="@drawable/icon_match_league_menu_text_color_selector"
                 android:textSize="14sp"
                 android:typeface="monospace" />
-            <TextView
+            <RadioButton
                 android:id="@+id/tvAway"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
+                android:button="@null"
                 android:background="@drawable/icon_league_table_menu_selector"
                 android:gravity="center"
                 android:text="客场"
                 android:textColor="@drawable/icon_match_league_menu_text_color_selector"
                 android:textSize="14sp"
                 android:typeface="monospace" />
-        </LinearLayout>
+        </RadioGroup>
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="50dp"

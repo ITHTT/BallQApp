@@ -76,8 +76,10 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
             swipeRefresh.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (swipeRefresh != null)
+                    if (swipeRefresh != null) {
                         swipeRefresh.setRefreshing(false);
+                        recyclerView.setStartLoadMore();
+                    }
                 }
             }, 1000);
         }

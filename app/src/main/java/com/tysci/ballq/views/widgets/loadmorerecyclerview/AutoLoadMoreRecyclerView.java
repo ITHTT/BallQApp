@@ -142,6 +142,7 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
      */
     public void setLoadMoreDataComplete(){
         isLoadFinished=true;
+        isLoadMoreing=false;
         if(loadMoreFooterView!=null){
             loadMoreFooterView.setLoadMoreDataFinishedState(false);
         }
@@ -149,6 +150,7 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
 
     public void setLoadMoreDataComplete(String tip){
         isLoadFinished=true;
+        isLoadMoreing=false;
         if(loadMoreFooterView!=null){
             loadMoreFooterView.setLoadFinishedTip(tip);
             loadMoreFooterView.setLoadMoreDataFinishedState(true);
@@ -198,6 +200,8 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
                 if (mFootView!=null) {
                     mFootView.setVisibility(VISIBLE);
                 }
+                KLog.e("开始尝试加载更多...");
+
                 if(isCanLoadMore()){
                     setLoadingMore();
                     isLoadMoreing=true;
@@ -227,6 +231,7 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
      * @return
      */
     private boolean isCanLoadMore(){
+        KLog.e("isLoading:"+isLoadMoreing+" isLoadFinished:"+isLoadFinished);
         if(!isLoadMore){
             return false;
         }

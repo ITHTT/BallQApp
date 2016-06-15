@@ -55,6 +55,7 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
                     public void run() {
                         if(swipeRefresh!=null) {
                             swipeRefresh.setRefreshing(false);
+                            recyclerView.setStartLoadMore();
                         }
                     }
                 }, 1000);

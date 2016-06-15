@@ -22,6 +22,7 @@ import com.tysci.ballq.views.widgets.loadmorerecyclerview.AutoLoadMoreRecyclerVi
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import okhttp3.Call;
@@ -52,6 +53,7 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
 
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
+        swipeRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(baseActivity));
         recyclerView.setOnLoadMoreListener(this);
         headerView= LayoutInflater.from(baseActivity).inflate(R.layout.layout_match_forecast_data_header,null);
@@ -67,6 +69,27 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         this.oddsType=type;
     }
 
+    private void setRefreshing(){
+        swipeRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(true);
+            }
+        });
+    }
+
+    private void onRefreshCompelete(){
+        if(swipeRefresh!=null) {
+            swipeRefresh.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (swipeRefresh != null)
+                        swipeRefresh.setRefreshing(false);
+                }
+            }, 1000);
+        }
+    }
+
     private void requestDatas(int pages, final boolean isLoadMore){
         String url="http://apib.ballq.cn/bigdata/oroc/v1/"+matchEntity.getEid()+"/"+oddsType
                    +"/?limit=10&p="+pages;
@@ -79,7 +102,13 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
 
             @Override
             public void onError(Call call, Exception error) {
-
+                if(recyclerView!=null) {
+                    if (!isLoadMore) {
+                        recyclerView.setStartLoadMore();
+                    } else {
+                        recyclerView.setLoadMoreDataFailed();
+                    }
+                }
             }
 
             @Override
@@ -132,7 +161,9 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
 
             @Override
             public void onFinish(Call call) {
-
+                if(!isLoadMore){
+                    onRefreshCompelete();
+                }
             }
         });
     }
@@ -142,32 +173,38 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         if(data.getRate1()+data.getRate2()+data.getRate3()==0){
             PieChartData pie01=new PieChartData();
             pie01.setValue(1/3);
+            pie01.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie01.getValue())+"%");
             pie01.setColor(Color.parseColor("#ca574b"));
             pieChartDataList.add(pie01);
 
             PieChartData pie02=new PieChartData();
             pie02.setValue(1/3);
+            pie02.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie02.getValue())+"%");
             pie02.setColor(Color.parseColor("#c3c3c3"));
             pieChartDataList.add(pie02);
 
             PieChartData pie03=new PieChartData();
             pie03.setValue(1/3);
+            pie03.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie03.getValue())+"%");
             pie03.setColor(Color.parseColor("#66b249"));
             pieChartDataList.add(pie03);
 
         }else{
             PieChartData pie01=new PieChartData();
             pie01.setValue(data.getRate1());
+            pie01.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie01.getValue())+"%");
             pie01.setColor(Color.parseColor("#ca574b"));
             pieChartDataList.add(pie01);
 
             PieChartData pie02=new PieChartData();
             pie02.setValue(data.getRate2());
+            pie02.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie02.getValue())+"%");
             pie02.setColor(Color.parseColor("#c3c3c3"));
             pieChartDataList.add(pie02);
 
             PieChartData pie03=new PieChartData();
             pie03.setValue(data.getRate3());
+            pie03.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie03.getValue())+"%");
             pie03.setColor(Color.parseColor("#66b249"));
             pieChartDataList.add(pie03);
         }
@@ -178,12 +215,25 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
 
     @Override
     public void onRefresh() {
-
+        if(recyclerView.isLoadMoreing()){
+            onRefreshCompelete();
+        }else{
+            requestDatas(1,false);
+        }
     }
 
     @Override
     public void onLoadMore() {
-
+        if(swipeRefresh.isRefreshing()){
+            recyclerView.setLoadMoreDataComplete("刷新数据中...");
+        }else{
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    requestDatas(currentPages,true);
+                }
+            },300);
+        }
     }
 
     @Override
