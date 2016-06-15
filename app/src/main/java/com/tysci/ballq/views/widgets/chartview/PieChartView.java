@@ -3,6 +3,8 @@ package com.tysci.ballq.views.widgets.chartview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,7 +20,7 @@ public class PieChartView extends View {
     private float maxValue=100f;
     /**是否开启动画*/
     private boolean isAnimated=true;
-    /**圆半径*/
+
     private float radius;
 
     private float animatedSpeed=6.5f;
@@ -29,6 +31,8 @@ public class PieChartView extends View {
 
     private int width;
     private int height;
+    private RectF rectF=null;
+    private Paint paint=null;
 
     public PieChartView(Context context) {
         super(context);
@@ -53,13 +57,16 @@ public class PieChartView extends View {
 
     private void initViews(Context context,AttributeSet attrs){
         this.context=context;
-        if(attrs!=null){
-
-        }
+        rectF=new RectF();
+        paint=new Paint();
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStrokeWidth(2f);
+        paint.setAntiAlias(true);
     }
 
     public void setPieChartDataList(List<PieChartData>pieChartDataList){
         this.pieChartDataList=pieChartDataList;
+        postInvalidate();
     }
 
     public void setRadius(float radius){
@@ -75,19 +82,6 @@ public class PieChartView extends View {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
-        int width=MeasureSpec.getSize(widthMeasureSpec);
-        int height=MeasureSpec.getSize(heightMeasureSpec);
-        if(width<radius){
-            width= (int) (radius+1);
-        }
-        if(height<radius){
-            height=(int)(radius+1);
-        }
-        setMeasuredDimension(width,height);
-    }
-
-    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         width=w;
@@ -97,5 +91,32 @@ public class PieChartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int size=Math.min(width,height);
+        radius=(float)size/2;
+        float centerX=(float)width/2;
+        float centerY=(float)height/2;
+
+        rectF.top=centerY-radius;
+        rectF.left=centerX-radius;
+        rectF.right=centerX+radius;
+        rectF.bottom=centerY+radius;
+        drawPies(pieChartDataList,canvas,paint);
     }
+
+    protected void drawPies(List<PieChartData>datas,Canvas canvas,Paint paint){
+        float startAngle=-90f;
+        float percentAngle=0f;
+        int size=datas.size();
+        for(int i=0;i<size;i++){
+            PieChartData data=datas.get(i);
+            paint.setColor(data.getColor());
+            percentAngle=data.getValue()*360;
+            canvas.drawArc(rectF,startAngle,percentAngle,true,paint);
+            startAngle+=percentAngle;
+        }
+    }
+
+
+
+
 }

@@ -91,7 +91,9 @@ public class BallQMatchDetailActivity extends BaseActivity{
             baseFragment.setArguments(data);
             fragments.add(baseFragment);
 
-            fragments.add(new BallQMatchLeagueTableDataFragment());
+            baseFragment=new BallQMatchLeagueTableDataFragment();
+            baseFragment.setArguments(data);
+            fragments.add(baseFragment);
         }
 
         BallQFragmentPagerAdapter adapter=new BallQFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
