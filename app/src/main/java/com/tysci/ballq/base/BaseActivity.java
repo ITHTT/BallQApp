@@ -16,6 +16,7 @@ import com.tysci.ballq.modles.event.EventObject;
 import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.views.widgets.TitleBar;
+import com.tysci.ballq.views.widgets.loading.LoadingViewController;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,6 +30,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
     protected final String Tag=this.getClass().getSimpleName();
     protected TitleBar titleBar;
+    protected LoadingViewController loadingViewController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +39,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         setContentView(getContentViewId());
         titleBar= (TitleBar) this.findViewById(R.id.title_bar);
         setTitleBarLeftIcon(R.mipmap.icon_back_gold);
+        if(getLoadingTargetView()!=null){
+            loadingViewController=new LoadingViewController(getLoadingTargetView());
+        }
         if(!isCanceledEventBus()){
             EventBus.getDefault().register(this);
         }
@@ -68,6 +73,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected abstract int getContentViewId();
     /**初始化控件*/
     protected abstract void initViews();
+    /**设置加载效果所在布局的目标视图*/
+    protected abstract View getLoadingTargetView();
     /**获取Intent中的数据*/
     protected abstract void getIntentData(Intent intent);
     /**是否取消EventBus*/
@@ -149,9 +156,40 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    protected void showLoading(){
+        if(loadingViewController!=null)
+           loadingViewController.showLoading(null);
+    }
+
+    protected void showErrorInfo(View.OnClickListener onClickListener){
+        if(loadingViewController!=null)
+           loadingViewController.showErrorInfo("当前网络不是很好",onClickListener);
+    }
+
+    protected void showEmptyInfo(){
+        if(loadingViewController!=null)
+           loadingViewController.showEmptyInfo("暂无相关数据");
+    }
+
+    protected void showEmptyInfo(String empty){
+        if(loadingViewController!=null)
+           loadingViewController.showEmptyInfo(empty);
+    }
+
+    protected void showEmptyInfo(String emptyInfo,String clickInfo,View.OnClickListener clickListener){
+        if(loadingViewController!=null)
+           loadingViewController.showEmptyInfo(emptyInfo,clickInfo,clickListener);
+    }
+
+    protected void hideLoad(){
+        if(loadingViewController!=null)
+           loadingViewController.restore();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        loadingViewController=null;
         ButterKnife.unbind(this);
         if(!isCanceledEventBus()){
             EventBus.getDefault().unregister(this);

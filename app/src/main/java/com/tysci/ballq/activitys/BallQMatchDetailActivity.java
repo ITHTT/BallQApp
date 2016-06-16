@@ -66,6 +66,11 @@ public class BallQMatchDetailActivity extends BaseActivity{
 
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void addFragments(BallQMatchEntity matchEntity){
         List<BaseFragment> fragments=new ArrayList<>(6);
 

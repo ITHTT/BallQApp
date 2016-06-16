@@ -65,6 +65,11 @@ public class LoginActivity extends BaseActivity{
         setViewListener();
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void setViewListener(){
         etPhoneNum.addTextChangedListener(new TextWatcher() {
             @Override

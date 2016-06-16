@@ -1,5 +1,6 @@
 package com.tysci.ballq.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.BallQMatchGuessBettingActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -56,6 +59,11 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
             setRefreshing();
             requestDatas(ballQMatchEntity.getEid(),ballQMatchEntity.getEtype(),currentPages,false);
         }
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     private void setRefreshing(){
@@ -156,9 +164,31 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
 
     }
 
+    @OnClick(R.id.vgToGuess)
+    protected void onClickGuess(View view){
+        Intent intent=new Intent(baseActivity, BallQMatchGuessBettingActivity.class);
+        intent.putExtra(BallQMatchGuessBettingActivity.class.getSimpleName(),ballQMatchEntity);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.vgToTip)
+    protected void onClickTip(View view){
+
+    }
+
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 
 }

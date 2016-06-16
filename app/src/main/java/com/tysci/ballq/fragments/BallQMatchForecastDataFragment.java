@@ -56,7 +56,22 @@ public class BallQMatchForecastDataFragment extends BaseFragment{
     }
 
     @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }

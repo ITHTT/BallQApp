@@ -68,6 +68,11 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         }, localImages);
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void getLocalImages(){
         localImages=new ArrayList<>(2);
         localImages.add(R.mipmap.icon_login_or_register_bg_1);

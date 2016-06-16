@@ -26,7 +26,22 @@ public class BallQUserAttentionMatchListFragment extends AppSwipeRefreshLoadMore
     }
 
     @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @Override
     protected void initViews(View view, Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 }

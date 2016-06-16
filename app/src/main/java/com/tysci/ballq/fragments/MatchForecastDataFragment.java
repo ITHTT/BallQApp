@@ -61,6 +61,11 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         requestDatas(currentPages, false);
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     public void setMatchEntity(BallQMatchEntity matchEntity) {
         this.matchEntity = matchEntity;
     }
@@ -173,38 +178,38 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         if(data.getRate1()+data.getRate2()+data.getRate3()==0){
             PieChartData pie01=new PieChartData();
             pie01.setValue(1/3);
-            pie01.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie01.getValue())+"%");
+            pie01.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie01.getValue()) + "%");
             pie01.setColor(Color.parseColor("#ca574b"));
             pieChartDataList.add(pie01);
 
             PieChartData pie02=new PieChartData();
             pie02.setValue(1/3);
-            pie02.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie02.getValue())+"%");
+            pie02.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie02.getValue()) + "%");
             pie02.setColor(Color.parseColor("#c3c3c3"));
             pieChartDataList.add(pie02);
 
             PieChartData pie03=new PieChartData();
             pie03.setValue(1/3);
-            pie03.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie03.getValue())+"%");
+            pie03.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie03.getValue()) + "%");
             pie03.setColor(Color.parseColor("#66b249"));
             pieChartDataList.add(pie03);
 
         }else{
             PieChartData pie01=new PieChartData();
             pie01.setValue(data.getRate1());
-            pie01.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie01.getValue())+"%");
+            pie01.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie01.getValue()) + "%");
             pie01.setColor(Color.parseColor("#ca574b"));
             pieChartDataList.add(pie01);
 
             PieChartData pie02=new PieChartData();
             pie02.setValue(data.getRate2());
-            pie02.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie02.getValue())+"%");
+            pie02.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie02.getValue()) + "%");
             pie02.setColor(Color.parseColor("#c3c3c3"));
             pieChartDataList.add(pie02);
 
             PieChartData pie03=new PieChartData();
             pie03.setValue(data.getRate3());
-            pie03.setLabel(String.format(Locale.getDefault(),"%.0f",100*pie03.getValue())+"%");
+            pie03.setLabel(String.format(Locale.getDefault(), "%.0f", 100 * pie03.getValue()) + "%");
             pie03.setColor(Color.parseColor("#66b249"));
             pieChartDataList.add(pie03);
         }
@@ -239,5 +244,15 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }

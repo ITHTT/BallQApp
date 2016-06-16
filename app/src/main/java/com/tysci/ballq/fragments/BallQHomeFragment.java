@@ -38,6 +38,16 @@ public class BallQHomeFragment extends BaseFragment{
     }
 
     @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @Override
     protected void initViews(View view, Bundle savedInstanceState) {
         setTitle();
         tabLayout.setTabPxWidth(CommonUtils.getScreenDisplayMetrics(this.getContext()).widthPixels/3);
@@ -49,6 +59,11 @@ public class BallQHomeFragment extends BaseFragment{
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(fragments.size());
         tabLayout.setViewPager(viewPager);
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     private void setTitle(){

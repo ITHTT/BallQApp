@@ -53,6 +53,16 @@ ViewPager.OnPageChangeListener{
     }
 
     @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @Override
     protected void initViews(View view, Bundle savedInstanceState) {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -61,6 +71,11 @@ ViewPager.OnPageChangeListener{
         viewPager.addOnPageChangeListener(this);
         getMatchFilterDateInfo();
         addContentFragments();
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
     }
 
     private void addContentFragments(){

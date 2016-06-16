@@ -74,6 +74,11 @@ public class RegisterActivity extends BaseActivity{
     }
 
     @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
     protected void getIntentData(Intent intent) {
         if(intent!=null){
             isModifyPassword=intent.getBooleanExtra(Tag,false);

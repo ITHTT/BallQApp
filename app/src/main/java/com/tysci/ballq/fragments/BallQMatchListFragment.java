@@ -43,6 +43,11 @@ public class BallQMatchListFragment extends AppSwipeRefreshLoadMoreRecyclerViewF
         requestDatas();
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     public void setFilter(String filter) {
         this.filter = filter;
     }
@@ -132,6 +137,16 @@ public class BallQMatchListFragment extends AppSwipeRefreshLoadMoreRecyclerViewF
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 
 }

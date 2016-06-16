@@ -54,6 +54,11 @@ public class BallQMatchLeagueTableDataFragment extends BaseFragment implements S
         getDatas();
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void getDatas(){
         Bundle data=getArguments();
         if(data!=null){
@@ -124,6 +129,16 @@ public class BallQMatchLeagueTableDataFragment extends BaseFragment implements S
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 
 

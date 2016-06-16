@@ -92,6 +92,11 @@ public class BallQBallWarpDetailActivity extends BaseActivity{
     }
 
     @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
     protected void getIntentData(Intent intent) {
         KLog.e("获取数据。。。");
         ballWarpInfo=intent.getParcelableExtra(Tag);

@@ -68,6 +68,9 @@
 
         <activity android:name=".activitys.BallQMatchDetailActivity"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.BallQMatchGuessBettingActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

@@ -34,6 +34,11 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
         requestDatas(currentPages,false);
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void requestDatas(int pages,final boolean isLoadMore){
         String url= HttpUrls.HOST_URL_V5+"articles/?p=" + pages;
         Map<String,String> params=null;
@@ -122,5 +127,15 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }

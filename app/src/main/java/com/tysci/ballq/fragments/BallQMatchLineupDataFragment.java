@@ -46,6 +46,12 @@ public class BallQMatchLineupDataFragment extends AppSwipeRefreshLoadMoreRecycle
         getDatas();
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+
     private void getDatas(){
         Bundle data=getArguments();
         if(data!=null){
@@ -62,6 +68,7 @@ public class BallQMatchLineupDataFragment extends AppSwipeRefreshLoadMoreRecycle
         HttpClientUtil.getHttpClientUtil().sendGetRequest(Tag, url, 30, new HttpClientUtil.StringResponseCallBack() {
             @Override
             public void onBefore(Request request) {
+
 
             }
 
@@ -221,5 +228,15 @@ public class BallQMatchLineupDataFragment extends AppSwipeRefreshLoadMoreRecycle
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }

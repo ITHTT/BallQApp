@@ -36,6 +36,11 @@ public class BallQMatchClashDataFragment extends AppSwipeRefreshLoadMoreRecycler
         getDatas();
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void getDatas(){
         Bundle data=this.getArguments();
         if(data!=null){
@@ -155,5 +160,15 @@ public class BallQMatchClashDataFragment extends AppSwipeRefreshLoadMoreRecycler
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }

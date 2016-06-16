@@ -49,6 +49,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
+    @Override
     protected void getIntentData(Intent intent) {
 
     }

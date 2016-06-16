@@ -53,13 +53,28 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
     }
 
     @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @Override
     protected void initViews(View view, Bundle savedInstanceState) {
         swipeRefresh.setOnRefreshListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         recyclerView.setOnLoadMoreListener(this);
        // recyclerView.setAdapter(new BallQHomeTipOffAdapter());
-        setRefreshing();
+        showLoading();
         requestDatas(currentPages,false);
+    }
+
+    @Override
+    protected View getLoadingTargetView() {
+        return swipeRefresh;
     }
 
     private void setRefreshing(){
@@ -104,7 +119,17 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
             @Override
             public void onError(Call call, Exception error) {
                 if(!isLoadMore){
-                    recyclerView.setStartLoadMore();
+                    if(adapter!=null) {
+                       recyclerView.setStartLoadMore();
+                    }else{
+                        showErrorInfo(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showLoading();
+                                requestDatas(1,false);
+                            }
+                        });
+                    }
                 }else{
                     recyclerView.setLoadMoreDataFailed();
                 }
@@ -113,6 +138,7 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
+                hideLoad();
                 onResponseSuccess(response,isLoadMore);
             }
 

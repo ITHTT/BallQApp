@@ -32,6 +32,11 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
         requestDatas(currentPages,false);
     }
 
+    @Override
+    protected View getLoadingTargetView() {
+        return null;
+    }
+
     private void requestDatas(int pages, final boolean isLoadMore){
         String url= HttpUrls.HOT_CIRCLE_LIST_URL+"?pageNo="+pages+"&pageSize=10";
         HttpClientUtil.getHttpClientUtil().sendGetRequest(Tag, url, 30, new HttpClientUtil.StringResponseCallBack() {
@@ -108,5 +113,15 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
     @Override
     protected boolean isCancledEventBus() {
         return false;
+    }
+
+    @Override
+    protected void notifyEvent(String action) {
+
+    }
+
+    @Override
+    protected void notifyEvent(String action, Bundle data) {
+
     }
 }
