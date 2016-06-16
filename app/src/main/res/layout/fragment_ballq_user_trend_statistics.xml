@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
@@ -12,7 +11,7 @@
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:paddingLeft="80dp"
                 android:paddingRight="10dp"
                 android:background="@mipmap/icon_select_circle_type_bg"
@@ -27,10 +26,10 @@
                     android:textColor="@color/gold"
                     android:text="天朝德玛"/>
                 <TextView
-                    android:id="@+id/tv_user_profit_rate"
+                    android:id="@+id/tv_user_win_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="13sp"
+                    android:textSize="14sp"
                     android:textColor="#ffffff"
                     android:layout_gravity="bottom"
                     android:gravity="right"
@@ -41,43 +40,24 @@
                 android:layout_height="40dp"
                 android:paddingLeft="80dp"
                 android:paddingRight="10dp"
-                android:paddingTop="5dp">
+                android:gravity="center_vertical">
                 <TextView
-                    android:id="@+id/tv_all_count"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_all_profit"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="12.5sp"
+                    android:gravity="left"
+                    android:textSize="13sp"
                     android:singleLine="true"
-                    android:text="6 场"/>
+                    android:text="总盈亏:-525.25"/>
                 <TextView
-                    android:id="@+id/tv_win_count"
+                    android:id="@+id/tv_user_profit_rate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="right"
                     android:textSize="14sp"
                     android:singleLine="true"
-                    android:text="4 赢"/>
-                <TextView
-                    android:id="@+id/tv_lose_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="12.5sp"
-                    android:singleLine="true"
-                    android:text="1 输"/>
-                <TextView
-                    android:id="@+id/tv_go_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="12.5sp"
-                    android:singleLine="true"
-                    android:text="1 走"/>
+                    android:text="投资回报率:-7.91%"/>
             </LinearLayout>
         </LinearLayout>
         <include
@@ -92,4 +72,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#b3b3b3"/>
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.tysci.ballq.views.widgets.loadmorerecyclerview.AutoLoadMoreRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

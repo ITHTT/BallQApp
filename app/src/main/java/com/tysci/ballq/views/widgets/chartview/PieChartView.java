@@ -127,7 +127,7 @@ public class PieChartView extends View {
         float x= centerX+(float) (radius*Math.cos(PIAngle));
         float y=centerY+(float)(radius*Math.sin(PIAngle));
         paint.setColor(Color.parseColor("#ffffff"));
-        paint.setTextSize(13);
+        paint.setTextSize(CommonUtils.dip2px(getContext(),13));
         paint.setStrokeWidth(1f);
         int textWidth = (int) paint.measureText(label, 0, label.length());
         Paint.FontMetrics fontMetrics=paint.getFontMetrics();

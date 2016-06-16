@@ -33,6 +33,7 @@ public class MainMenuItemView extends LinearLayout {
     private String menuBrief;
 
     private int checkedColor=Color.parseColor("#050404");
+    private int textColor=Color.parseColor("#ffffff");
 
     public MainMenuItemView(Context context) {
         super(context);
@@ -69,6 +70,8 @@ public class MainMenuItemView extends LinearLayout {
             menuName=ta.getString(R.styleable.MainMenuItemView_menu_name);
             menuBrief=ta.getString(R.styleable.MainMenuItemView_menu_brief);
             isChecked=ta.getBoolean(R.styleable.MainMenuItemView_is_checked,false);
+            checkedColor=ta.getColor(R.styleable.MainMenuItemView_checked_color,checkedColor);
+            textColor=ta.getColor(R.styleable.MainMenuItemView_text_color,textColor);
             ta.recycle();
             if(menuIconRes>=0){
                 ivMenuIcon.setImageResource(menuIconRes);
@@ -83,6 +86,7 @@ public class MainMenuItemView extends LinearLayout {
                 tvMenuBrief.setVisibility(View.GONE);
             }
         }
+        tvMenuTitle.setTextColor(textColor);
         setCheckedState(isChecked);
     }
 

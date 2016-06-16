@@ -89,6 +89,5 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
     protected abstract void onLoadMoreData();
 
     protected abstract void onRefreshData();
-
-
+    
 }

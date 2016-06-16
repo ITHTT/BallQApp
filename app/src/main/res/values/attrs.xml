@@ -5,6 +5,8 @@
         <attr name="menu_name" format="string"/>
         <attr name="menu_brief" format="string"/>
         <attr name="is_checked" format="boolean"/>
+        <attr name="checked_color" format="color"/>
+        <attr name="text_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="CircleImageView">
