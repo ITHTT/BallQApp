@@ -40,12 +40,13 @@ public class BallQMatchListFragment extends AppSwipeRefreshLoadMoreRecyclerViewF
 
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
+        showLoading();
         requestDatas();
     }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return swipeRefresh;
     }
 
     public void setFilter(String filter) {
@@ -71,7 +72,7 @@ public class BallQMatchListFragment extends AppSwipeRefreshLoadMoreRecyclerViewF
 
     @Override
     protected void onRefreshData() {
-
+        requestDatas();
     }
 
     private void requestDatas(){
@@ -96,10 +97,21 @@ public class BallQMatchListFragment extends AppSwipeRefreshLoadMoreRecyclerViewF
             }
             @Override
             public void onError(Call call, Exception error) {
+                if(matchAdapter==null){
+                    showErrorInfo(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            showLoading();
+                            requestDatas();
+                        }
+                    });
+                }else{
 
+                }
             }
             @Override
             public void onSuccess(Call call, String response) {
+                hideLoad();
                 KLog.json(response);
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);

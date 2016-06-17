@@ -19,7 +19,6 @@ import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
-import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.CircleImageView;
 import com.tysci.ballq.views.widgets.MainMenuItemView;
@@ -110,6 +109,7 @@ public class MainActivity extends BaseActivity {
             View v=layoutLeftMenus.getChildAt(i);
             if(v instanceof MainMenuItemView){
                 ((MainMenuItemView)v).setCheckedState(v == view);
+                slidingMenu.toggle();
             }
         }
 
@@ -119,6 +119,7 @@ public class MainActivity extends BaseActivity {
             View v=layoutRightMenus.getChildAt(i);
             if(v instanceof MainMenuItemView){
                 ((MainMenuItemView)v).setCheckedState(v == view);
+                slidingMenu.toggle();
             }
         }
         setSelectedMenuItem(view.getId());
@@ -143,12 +144,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void handleEventBus(String message) {
-        super.handleEventBus(message);
-        KLog.e("接收到的消息:"+message);
-    }
-
-    @Override
     protected boolean isCanceledEventBus() {
         return false;
     }
@@ -156,6 +151,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void saveInstanceState(Bundle outState) {
 
+    }
+
+    @Override
+    protected void back() {
+        slidingMenu.toggle(true);
     }
 
     @Override
@@ -173,6 +173,9 @@ public class MainActivity extends BaseActivity {
         onMenuItemClick(view);
         int id=view.getId();
         switch(id){
+            case R.id.iv_titlebar_next_menu01:
+                slidingMenu.showSecondaryMenu();
+                break;
             case R.id.iv_user_header:
                 if(UserInfoUtil.checkLogin(this)){
 
