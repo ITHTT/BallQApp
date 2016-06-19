@@ -74,6 +74,12 @@
 
         <activity android:name=".activitys.UserProfileActivity"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserTrendStatisticActivity"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserTrendStatisticDetailActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

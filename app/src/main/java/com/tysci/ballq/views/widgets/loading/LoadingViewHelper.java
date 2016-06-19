@@ -59,7 +59,6 @@ public class LoadingViewHelper implements LoadingViewHelperInterface{
         // 如果已经是那个view，那就不需要再进行替换操作了
         if (parentView.getChildAt(viewIndex) != view) {
             ViewGroup parent = (ViewGroup) view.getParent();
-            KLog.e("parent:" + parent);
             if (parent != null) {
                 parent.removeView(view);
             }

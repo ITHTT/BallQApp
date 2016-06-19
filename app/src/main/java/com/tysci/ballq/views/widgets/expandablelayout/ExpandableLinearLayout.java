@@ -18,6 +18,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.utils.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,6 +206,7 @@ public class ExpandableLinearLayout extends LinearLayout implements ExpandableLa
      */
     @Override
     public void expand() {
+        KLog.e("isAnimating:"+isAnimating);
         if (isAnimating) return;
 
         createExpandAnimator(getCurrentPosition(), layoutSize, duration, interpolator).start();

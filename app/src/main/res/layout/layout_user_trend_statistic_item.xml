@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
-    android:paddingTop="10dp"
+    android:layout_height="120dp"
     android:background="@color/gray">
         <LinearLayout
             android:layout_width="match_parent"
@@ -209,6 +208,7 @@
             app:bb_cornerTopLeftRadius="0dp"
             app:bb_cornerTopRightRadius="5dp">
             <TextView
+                android:id="@+id/tv_trend_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"

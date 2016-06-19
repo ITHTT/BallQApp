@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
         titleBar.setRightMenuIcon(R.mipmap.icon_main_right_menu, this);
         addMenusItemOnClickListener();
 
-        setSelectedMenuItem(R.id.menu_index);
+        setSelectedLeftMenuItem(R.id.menu_index);
     }
 
     @Override
@@ -103,29 +103,40 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onMenuItemClick(View view){
-        LinearLayout layoutLeftMenus= (LinearLayout) mainLeftMenu.findViewById(R.id.layout_left_menus);
-        int size=layoutLeftMenus.getChildCount();
-        for(int i=0;i<size;i++){
-            View v=layoutLeftMenus.getChildAt(i);
-            if(v instanceof MainMenuItemView){
-                ((MainMenuItemView)v).setCheckedState(v == view);
-                slidingMenu.toggle();
+        if(view instanceof MainMenuItemView) {
+            LinearLayout layoutLeftMenus = (LinearLayout) mainLeftMenu.findViewById(R.id.layout_left_menus);
+            int size = layoutLeftMenus.getChildCount();
+            boolean isLeftMenu=false;
+            for (int i = 0; i < size; i++) {
+                View v = layoutLeftMenus.getChildAt(i);
+                if (v instanceof MainMenuItemView) {
+                    ((MainMenuItemView) v).setCheckedState(v == view);
+                    if(v==view){
+                        isLeftMenu=true;
+                    }
+                }
             }
-        }
 
-        LinearLayout layoutRightMenus=(LinearLayout)mainRightMenu.findViewById(R.id.layout_right_menus);
-        size=layoutRightMenus.getChildCount();
-        for(int i=0;i<size;i++){
-            View v=layoutRightMenus.getChildAt(i);
-            if(v instanceof MainMenuItemView){
-                ((MainMenuItemView)v).setCheckedState(v == view);
+            if(isLeftMenu){
                 slidingMenu.toggle();
+                setSelectedLeftMenuItem(view.getId());
+                return;
+            }
+
+            LinearLayout layoutRightMenus = (LinearLayout) mainRightMenu.findViewById(R.id.layout_right_menus);
+            size = layoutRightMenus.getChildCount();
+            for (int i = 0; i < size; i++) {
+                View v = layoutRightMenus.getChildAt(i);
+                if (v instanceof MainMenuItemView) {
+                    slidingMenu.showSecondaryMenu();
+                    setSelectedRightMenuItem(view.getId());
+                    return;
+                }
             }
         }
-        setSelectedMenuItem(view.getId());
     }
 
-    private void setSelectedMenuItem(int id){
+    private void setSelectedLeftMenuItem(int id){
         BaseFragment fragment=null;
         switch (id){
             case R.id.menu_index:
@@ -140,6 +151,23 @@ public class MainActivity extends BaseActivity {
             FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.layout_container,fragment,fragment.getClass().getSimpleName());
             transaction.commitAllowingStateLoss();
+        }
+    }
+
+    private void setSelectedRightMenuItem(int id){
+        if(!UserInfoUtil.checkLogin(this)){
+            UserInfoUtil.userLogin(this);
+        }else{
+            Class cls=null;
+            switch (id){
+                case R.id.menu_user_trend_statistics:
+                    cls=UserTrendStatisticActivity.class;
+                break;
+            }
+            if(cls!=null){
+                Intent intent=new Intent(this,cls);
+                startActivity(intent);
+            }
         }
     }
 
