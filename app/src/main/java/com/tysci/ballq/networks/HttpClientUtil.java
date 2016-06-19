@@ -296,7 +296,7 @@ public class HttpClientUtil {
                             try {
                                 responseCallBack.onSuccess(call, finalResult);
                             }catch(Exception e){
-                                responseCallBack.onError(call,e);
+                                //responseCallBack.onError(call,e);
                             }
                         }
                         responseCallBack.onFinish(resultCall);

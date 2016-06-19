@@ -210,9 +210,15 @@ public class UserTrendStatisticActivity extends BaseActivity{
                 type=0;
                 break;
         }
+        BallQUserTrendStatisticLayout trendStatisticLayout= (BallQUserTrendStatisticLayout) view;
         Intent intent=new Intent(this,UserTrendStatisticDetailActivity.class);
         intent.putExtra("user_id",uid);
         intent.putExtra("etype",type);
+        intent.putExtra("trend_title",trendStatisticLayout.getTrendTitle());
+        intent.putExtra("trend_all",trendStatisticLayout.getAllNum());
+        intent.putExtra("trend_win",trendStatisticLayout.getAllWinNum());
+        intent.putExtra("trend_lose",trendStatisticLayout.getAllLoseNum());
+        intent.putExtra("trend_gone",trendStatisticLayout.getAllGoneNum());
         startActivity(intent);
     }
 

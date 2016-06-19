@@ -43,8 +43,12 @@ public class MainActivity extends BaseActivity {
         setTitleBarLeftIcon(R.mipmap.icon_main_left_menu);
         titleBar.setRightMenuIcon(R.mipmap.icon_main_right_menu, this);
         addMenusItemOnClickListener();
-
         setSelectedLeftMenuItem(R.id.menu_index);
+
+        if(UserInfoUtil.checkLogin(this)){
+            showUserInfo(UserInfoUtil.getUserInfo(this));
+            UserInfoUtil.getUserInfo(this,Tag,UserInfoUtil.getUserId(this),false,null);
+        }
     }
 
     @Override

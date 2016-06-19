@@ -69,4 +69,24 @@ public class BallQUserTrendStatisticLayout extends LinearLayout{
     public void setTrendTitle(String title){
         tvTrendTitle.setText(title);
     }
+
+    public String getAllNum(){
+        return tvAllNums.getText().toString();
+    }
+
+    public String getAllWinNum(){
+        return tvAllWinNum.getText().toString();
+    }
+
+    public String getAllLoseNum(){
+        return tvAllLoseNum.getText().toString();
+    }
+
+    public String getAllGoneNum(){
+        return tvAllGoNum.getText().toString();
+    }
+
+    public String getTrendTitle(){
+        return tvTrendTitle.getText().toString();
+    }
 }

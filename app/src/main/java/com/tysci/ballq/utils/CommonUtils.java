@@ -1,8 +1,15 @@
 package com.tysci.ballq.utils;
 
 import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -179,6 +186,29 @@ public class CommonUtils {
     public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
+    }
+
+    public static void setTextViewFormatString(TextView textView, String text, String item, int color, float size){
+        if(TextUtils.isEmpty(text)){
+            text=textView.getText().toString();
+        }else {
+            textView.setText(text);
+        }
+        if(TextUtils.isEmpty(item)){
+            return;
+        }
+        int start=0;
+        int end=-1;
+        start=text.indexOf(item);
+        SpannableStringBuilder style = new SpannableStringBuilder(text);
+        int itemLength=item.length();
+        while(start>=0){
+            end=start+itemLength;
+            style.setSpan( new RelativeSizeSpan(size), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            start=text.indexOf(item,end);
+        }
+        textView.setText(style);
     }
 
 

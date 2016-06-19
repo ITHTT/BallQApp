@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.UserProfileActivity;
 import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventObject;
 import com.tysci.ballq.modles.event.EventType;
@@ -153,6 +154,12 @@ public class UserInfoUtil {
             return true;
         }
         return false;
+    }
+
+    public static void lookUserInfo(Context context,int uid){
+        Intent intent=new Intent(context, UserProfileActivity.class);
+        intent.putExtra(UserProfileActivity.class.getSimpleName(),uid);
+        context.startActivity(intent);
     }
 
     /**

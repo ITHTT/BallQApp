@@ -106,6 +106,14 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
             }
         });
 
+        holder.ivUserIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context=holder.itemView.getContext();
+                UserInfoUtil.lookUserInfo(context,info.getUid());
+            }
+        });
+
     }
 
     private String getBettingInfo(String choice, String otype, String odata){

@@ -13,12 +13,17 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.db.chart.Tools;
-import com.db.chart.model.LineSet;
-import com.db.chart.view.AxisController;
-import com.db.chart.view.LineChartView;
-import com.db.chart.view.animation.Animation;
-import com.db.chart.view.animation.easing.BounceEase;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultFillFormatter;
+import com.github.mikephil.charting.formatter.FillFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.modles.BallQTrendProfitStatisticEntity;
@@ -36,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -49,10 +55,20 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
     protected ImageView isV;
     @Bind(R.id.tv_user_name)
     protected TextView tvUserName;
+    @Bind(R.id.tv_user_profit_rate)
+    protected TextView tvUserProfitRate;
     @Bind(R.id.tvTrendProfit)
     protected TextView tvTrendProfit;
     @Bind(R.id.tvTrendProfitably)
     protected TextView tvTrendProfitabley;
+    @Bind(R.id.tv_all_count)
+    protected TextView tvAllCount;
+    @Bind(R.id.tv_win_count)
+    protected TextView tvWinCount;
+    @Bind(R.id.tv_lose_count)
+    protected TextView tvLoseCount;
+    @Bind(R.id.tv_go_count)
+    protected TextView tvGoCount;
     @Bind(R.id.textView1)
     protected TextView textView1;
     @Bind(R.id.textView2)
@@ -78,7 +94,7 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
     @Bind(R.id.layout_trend_week_profit)
     protected BallQTrendProfitStatisticLayout trendWeek;
     @Bind(R.id.lineChartView)
-    protected LineChartView lineChartView;
+    protected LineChart lineChartView;
 
     private String uid=null;
     private int etype=-1;
@@ -97,18 +113,42 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
         trendTo.setTrendProfitTitle("按大小球统计盈利");
         trendGold.setTrendProfitTitle("按球币统计盈利");
         trendWeek.setTrendProfitTitle("按天统计盈利");
+        tvUserProfitRate.setVisibility(View.GONE);
+
+        lineChartView.setDescription("");
+        lineChartView.setDragEnabled(false);
+        lineChartView.setTouchEnabled(false);
+        lineChartView.setDrawBorders(false);
+        lineChartView.setDrawGridBackground(false);
+        lineChartView.setNoDataText("暂无相关数据");
+
+       lineChartView.getLegend().setEnabled(false);
+        lineChartView.getAxis(YAxis.AxisDependency.RIGHT).setEnabled(false);
+
     }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return this.findViewById(R.id.layout_trend_static_info);
     }
 
     @Override
     protected void getIntentData(Intent intent) {
         uid=intent.getStringExtra("user_id");
         etype=intent.getIntExtra("etype",-1);
+        setTitle(intent.getStringExtra("trend_title"));
+        tvAllCount.setText(intent.getStringExtra("trend_all")+" 场");
+        String winCount=intent.getStringExtra("trend_win");
+        CommonUtils.setTextViewFormatString(tvWinCount,winCount+" 场",winCount,Color.parseColor("#e35354"),1f);
+
+        String loseCount=intent.getStringExtra("trend_lose");
+        CommonUtils.setTextViewFormatString(tvLoseCount,loseCount+" 场",loseCount,Color.parseColor("#469c4a"),1f);
+
+        String goneCount=intent.getStringExtra("trend_gone");
+        CommonUtils.setTextViewFormatString(tvGoCount,goneCount+" 场",goneCount,Color.parseColor("#d4d4d4"),1f);
+
         if(!TextUtils.isEmpty(uid)){
+            showLoading();
             getTrendStatisticDetailInfo(etype,uid);
         }
 
@@ -119,7 +159,7 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
         return false;
     }
 
-    private void getTrendStatisticDetailInfo(int etype,String uid){
+    private void getTrendStatisticDetailInfo(final int etype, final String uid){
         String url= HttpUrls.HOST_URL_V5+(isOldUser?"old/":"")+"user/"+uid+"/betting_stats/"+(etype>=0?"?etype="+etype:"");
         KLog.e("url:"+url);
         HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, url, null, new HttpClientUtil.StringResponseCallBack() {
@@ -130,12 +170,20 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
 
             @Override
             public void onError(Call call, Exception error) {
+                showErrorInfo(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       showLoading();
+                        getTrendStatisticDetailInfo(etype,uid);
+                    }
+                });
 
             }
 
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
+                hideLoad();
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){
@@ -194,9 +242,11 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
                                 setTrendProfitType(6,weeks);
                                 trendWeek.setTrendProfitStatistValue(weeks);
                             }
+                            return;
                         }
                     }
                 }
+                //showEmptyInfo();
             }
 
             @Override
@@ -288,14 +338,82 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
         }
     }
 
-    private void setLineChartViewData(List<BallQTrendProfitStatisticEntity>datas){
+//    private void setLineChartViewData(List<BallQTrendProfitStatisticEntity>datas){
+//        if(datas!=null&&datas.size()>0){
+//            lineChartView.setVisibility(View.VISIBLE);
+//            LineSet lineSet=new LineSet();
+//            String[]dates=datas.get(0).getMonth().split("-");
+//            final int year = Integer.parseInt(dates[0]);
+//            String endMonth=String.valueOf(year + "/" + dates[dates.length-1]);
+//            String startMonth=String.valueOf((year - 1) + "/" + dates[dates.length-1]);
+//
+//            int size=datas.size();
+//            int count=13-size;
+//            float min=0f;
+//            float max=0f;
+//            for(int i=0;i<count;i++){
+//                if(i==0) {
+//                    lineSet.addPoint(startMonth,0f);
+//                }else{
+//                    lineSet.addPoint("",0f);
+//                }
+//            }
+//            for(int i=size-1;i>=0;i--){
+//                float value=0f;
+//                if(i+1<size){
+//                    value=(float) (datas.get(i).getEarn() + datas.get(i + 1).getEarn()) / 100f;
+//                    if(i==0) {
+//                        lineSet.addPoint(endMonth, value);
+//                    }else{
+//                        lineSet.addPoint("", value);
+//                    }
+//                }else{
+//                    value=(float)datas.get(i).getEarn()/100f;
+//                    lineSet.addPoint("",value);
+//                }
+//                KLog.e("value:"+value);
+//                if(min>value){
+//                    min=value;
+//                }
+//                if(max<value){
+//                    max=value;
+//                }
+//            }
+//
+//            lineSet.setSmooth(true);
+//            lineSet
+//                    .setDotsColor(Color.parseColor("#ffc755"))
+//                    .setThickness(4).beginAt(0);
+//            lineChartView.addData(lineSet);
+//            KLog.e("max:"+max);
+//            KLog.e("min:"+min);
+//            int maxValue= (int) Math.ceil(max);
+//            int minValue=(int)Math.floor(min);
+//            KLog.e("MaxValue:"+maxValue);
+//            KLog.e("MinValue:"+minValue);
+//            lineChartView.setBorderSpacing(Tools.fromDpToPx(0))
+//                    .setAxisBorderValues(minValue-10,maxValue+10,(maxValue-minValue)/4+20)
+//                    .setYLabels(AxisController.LabelPosition.OUTSIDE)
+//                    .setXLabels(AxisController.LabelPosition.OUTSIDE)
+//                    .setLabelsColor(Color.parseColor("#3a3a3a"))
+//                    .setXAxis(true)
+//                    .setYAxis(false);
+//            lineChartView.show();
+//        }else{
+//            lineChartView.setVisibility(View.GONE);
+//        }
+//    }
+
+        private void setLineChartViewData(List<BallQTrendProfitStatisticEntity>datas){
         if(datas!=null&&datas.size()>0){
             lineChartView.setVisibility(View.VISIBLE);
-            LineSet lineSet=new LineSet();
             String[]dates=datas.get(0).getMonth().split("-");
             final int year = Integer.parseInt(dates[0]);
             String endMonth=String.valueOf(year + "/" + dates[dates.length-1]);
             String startMonth=String.valueOf((year - 1) + "/" + dates[dates.length-1]);
+
+            List<String>xVals=new ArrayList<>(13);
+            List<Entry>yVals=new ArrayList<>(13);
 
             int size=datas.size();
             int count=13-size;
@@ -303,9 +421,13 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
             float max=0f;
             for(int i=0;i<count;i++){
                 if(i==0) {
-                    lineSet.addPoint(startMonth,0f);
+                    //lineSet.addPoint(startMonth,0f);
+                    xVals.add(startMonth);
+                    yVals.add(new Entry(0f,yVals.size()));
                 }else{
-                    lineSet.addPoint("",0f);
+                    //lineSet.addPoint("",0f);
+                    xVals.add("");
+                    yVals.add(new Entry(0f,yVals.size()));
                 }
             }
             for(int i=size-1;i>=0;i--){
@@ -313,13 +435,18 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
                 if(i+1<size){
                     value=(float) (datas.get(i).getEarn() + datas.get(i + 1).getEarn()) / 100f;
                     if(i==0) {
-                        lineSet.addPoint(endMonth, value);
+                        //lineSet.addPoint(endMonth, value);
+                        xVals.add(endMonth);
+                        yVals.add(new Entry(value,yVals.size()));
                     }else{
-                        lineSet.addPoint("", value);
+                        xVals.add("");
+                        yVals.add(new Entry(value,yVals.size()));
                     }
                 }else{
                     value=(float)datas.get(i).getEarn()/100f;
-                    lineSet.addPoint("",value);
+                    //lineSet.addPoint("",value);
+                    xVals.add("");
+                    yVals.add(new Entry(value,yVals.size()));
                 }
                 KLog.e("value:"+value);
                 if(min>value){
@@ -330,30 +457,69 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
                 }
             }
 
-            lineSet.setSmooth(true);
-            lineSet
-                    .setDotsColor(Color.parseColor("#ffc755"))
-                    .setThickness(4).beginAt(0);
-            lineChartView.addData(lineSet);
+//            lineSet.setSmooth(true);
+//            lineSet
+//                    .setDotsColor(Color.parseColor("#ffc755"))
+//                    .setThickness(4).beginAt(0);
+//            lineChartView.addData(lineSet);
             KLog.e("max:"+max);
             KLog.e("min:"+min);
             int maxValue= (int) Math.ceil(max);
             int minValue=(int)Math.floor(min);
             KLog.e("MaxValue:"+maxValue);
             KLog.e("MinValue:"+minValue);
-            lineChartView.setBorderSpacing(Tools.fromDpToPx(0))
-                    .setAxisBorderValues(minValue-10,maxValue+10,(maxValue-minValue)/4+20)
-                    .setYLabels(AxisController.LabelPosition.OUTSIDE)
-                    .setXLabels(AxisController.LabelPosition.OUTSIDE)
-                    .setLabelsColor(Color.parseColor("#3a3a3a"))
-                    .setXAxis(true)
-                    .setYAxis(false);
-            lineChartView.show();
+
+            LineDataSet dataSet = new LineDataSet(yVals,null);
+
+            dataSet.setLineWidth(1.75f); // 线宽
+            dataSet.setCircleSize(3f);// 显示的圆形大小
+            dataSet.setColor(Color.parseColor("#d3bd6e"));// 显示颜色
+            dataSet.setCircleColor(Color.parseColor("#d3bd6e"));// 圆形的颜色
+            dataSet.setHighLightColor(Color.parseColor("#eacb70")); // 高亮的线的颜色
+
+            dataSet.setDrawFilled(true);//设置折线下方是否填充颜色
+            dataSet.setFillColor(Color.parseColor("#f2efdf"));//设置填充色值
+            dataSet.setFillAlpha(220);//设置填充透明度
+            dataSet.setFillFormatter(new FillFormatter() {
+                @Override
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return 0f;
+                }
+            });
+            dataSet.setValueTextSize(11);
+
+            XAxis xAxis=lineChartView.getXAxis();
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            xAxis.setDrawGridLines(false);
+            xAxis.setSpaceBetweenLabels(1);
+            xAxis.setLabelsToSkip(1);
+            xAxis.setAvoidFirstLastClipping(true);
+            xAxis.setTextSize(12.5f);
+
+
+            YAxis yAxis= lineChartView.getAxis(YAxis.AxisDependency.LEFT);;
+            yAxis.setLabelCount(4,true);
+            yAxis.setDrawZeroLine(true);
+            yAxis.setDrawAxisLine(false);
+            yAxis.setAxisMinValue(minValue);
+            yAxis.setAxisMaxValue(maxValue);
+            yAxis.setSpaceBottom(5f);
+            yAxis.setSpaceTop(5f);
+            yAxis.setTextSize(12.5f);
+
+            LineData lineData=new LineData(xVals,dataSet);
+
+            lineChartView.setData(lineData);
+            lineChartView.animateXY(3000,3000);
         }else{
             lineChartView.setVisibility(View.GONE);
         }
     }
 
+    @OnClick(R.id.layout_user_header_info)
+    protected void lookUserInfo(View view){
+        UserInfoUtil.lookUserInfo(this,Integer.parseInt(uid));
+    }
 
     @Override
     protected void saveInstanceState(Bundle outState) {

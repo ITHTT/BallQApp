@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="12.5sp"
+                android:textSize="15sp"
                 android:singleLine="true"
                 android:text="6 场"/>
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:singleLine="true"
                 android:text="4 赢"/>
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="12.5sp"
+                android:textSize="15sp"
                 android:singleLine="true"
                 android:text="1 输"/>
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textSize="12.5sp"
+                android:textSize="15sp"
                 android:singleLine="true"
                 android:text="1 走"/>
         </LinearLayout>

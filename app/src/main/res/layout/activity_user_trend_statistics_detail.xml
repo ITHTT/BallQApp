@@ -6,6 +6,7 @@
     <include
         layout="@layout/layout_title_bar"/>
     <LinearLayout
+        android:id="@+id/layout_trend_static_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -25,19 +26,25 @@
                     android:focusableInTouchMode="true">
                     <include
                         layout="@layout/layout_user_trend_statistics_header"/>
-                    <com.db.chart.view.LineChartView
+                    <!--<com.db.chart.view.LineChartView-->
+                        <!--android:id="@+id/lineChartView"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="200dp"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"/>-->
+                    <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChartView"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:paddingBottom="20dp"
-                        android:paddingTop="10dp">
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
                         <LinearLayout
                             android:layout_width="100dp"
                             android:layout_height="70dp"
