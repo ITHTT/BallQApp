@@ -16,6 +16,7 @@ import com.tysci.ballq.R;
 import com.tysci.ballq.activitys.BallQTipOffDetailActivity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
+import com.tysci.ballq.utils.BallQMatchStateUtil;
 import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
@@ -81,12 +82,14 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         holder.tvLikeCount.setText(String.valueOf(info.getLike_count()));
         holder.tvCommentNum.setText(String.valueOf(info.getComcount()));
         holder.tvBonCount.setText(String.valueOf(info.getBtyc()));
-        holder.tvWinPercent.setText(String.format(Locale.getDefault(),"%.2f",info.getWins()*100)+"%");
+        holder.tvRor.setText(String.format(Locale.getDefault(),"%.2f",info.getRor())+"%");
+        holder.tvWinPercent.setText(String.format(Locale.getDefault(), "%.2f", info.getWins() * 100) + "%");
         holder.tvTipCount.setText(String.valueOf(info.getTipcount()));
 
         holder.tvUserNickName.setText(info.getFname());
         GlideImageLoader.loadImage(holder.itemView.getContext(), info.getPt(), R.mipmap.icon_user_default, holder.ivUserIcon);
         UserInfoUtil.setUserHeaderVMark(info.getIsv(), holder.isV, holder.ivUserIcon);
+        holder.tvSam.setText(String.valueOf(info.getSam()));
 
         if(info.getConfidence()==0){
             holder.layoutConfidenceData.setVisibility(View.GONE);
@@ -95,6 +98,11 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
             KLog.e("confidence:"+info.getConfidence());
             holder.rattingBar.setRattingValue(info.getConfidence()/10);
         }
+
+        holder.tvGameState.setText(BallQMatchStateUtil.getMatchState(info.getMstatus(),info.getEtype()));
+
+
+        setBettingResult(holder, info.getStatus());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +195,24 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
             }
         }
         return null;
+    }
+
+    private void setBettingResult(BallQHomeTipOffViewHolder holder,int status){
+        switch (status){
+            case 1:
+                holder.ivBetResult.setImageResource(R.mipmap.icon_tip_game_win);
+                break;
+            case 2:
+                holder.ivBetResult.setImageResource(R.mipmap.icon_tip_game_lose);
+                break;
+            case 3:
+                holder.ivBetResult.setImageResource(R.mipmap.icon_tip_game_gone);
+                break;
+            default:
+                holder.ivBetResult.setImageResource(0);
+                break;
+        }
+
     }
 
     @Override

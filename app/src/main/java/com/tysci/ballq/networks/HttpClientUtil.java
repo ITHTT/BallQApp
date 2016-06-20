@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import com.tysci.ballq.networks.cookie.CookieJarImpl;
 import com.tysci.ballq.networks.cookie.store.PersistentCookieStore;
+import com.tysci.ballq.utils.KLog;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -296,6 +297,7 @@ public class HttpClientUtil {
                             try {
                                 responseCallBack.onSuccess(call, finalResult);
                             }catch(Exception e){
+                                KLog.e(e.getMessage());
                                 //responseCallBack.onError(call,e);
                             }
                         }

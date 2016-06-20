@@ -43,7 +43,7 @@
             <com.tysci.ballq.views.widgets.MainMenuItemView
                 android:id="@+id/menu_index"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_home"
                 app:menu_name="首页"
                 app:menu_brief="全球1500+位分析师入驻"
@@ -55,7 +55,7 @@
             <com.tysci.ballq.views.widgets.MainMenuItemView
                 android:id="@+id/menu_match"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_ballq_go"
                 app:menu_name="比赛"
                 app:menu_brief="比分、爆料、数据、竞猜" />
@@ -66,7 +66,7 @@
             <com.tysci.ballq.views.widgets.MainMenuItemView
                 android:id="@+id/menu_find"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_find"
                 app:menu_name="发现"
                 app:menu_brief="话题、圈子、图集、反馈" />
@@ -77,7 +77,7 @@
             <com.tysci.ballq.views.widgets.MainMenuItemView
                 android:id="@+id/menu_ballq_go"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_ballq_go"
                 app:menu_name="大战球商GO"
                 app:menu_brief="PK球商GO赢大奖"/>
@@ -88,7 +88,7 @@
             <com.tysci.ballq.views.widgets.MainMenuItemView
                 android:id="@+id/menu_rank"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_rank"
                 app:menu_name="排行榜"
                 app:menu_brief="大牌都在这里" />

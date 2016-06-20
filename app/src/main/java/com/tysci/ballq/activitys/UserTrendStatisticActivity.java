@@ -51,6 +51,7 @@ public class UserTrendStatisticActivity extends BaseActivity{
     protected BallQUserTrendStatisticLayout layoutBasketBallTrend;
 
     private String uid=null;
+    private UserInfoEntity userInfo;
     @Override
     protected int getContentViewId() {
         return R.layout.activity_user_trend_statistics_info;
@@ -113,7 +114,8 @@ public class UserTrendStatisticActivity extends BaseActivity{
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){
                         JSONObject dataObj=obj.getJSONObject("data");
-                        if(dataObj!=null){
+                        userInfo=obj.getObject("data",UserInfoEntity.class);
+                        if(dataObj!=null&&!dataObj.isEmpty()){
                             GlideImageLoader.loadImage(UserTrendStatisticActivity.this,dataObj.getString("pt"),R.mipmap.icon_user_default,ivUserIcon);
                             UserInfoUtil.setUserHeaderVMark(dataObj.getIntValue("isv"),isV,ivUserIcon);
                             tvUserName.setText(dataObj.getString("fname"));
@@ -219,6 +221,9 @@ public class UserTrendStatisticActivity extends BaseActivity{
         intent.putExtra("trend_win",trendStatisticLayout.getAllWinNum());
         intent.putExtra("trend_lose",trendStatisticLayout.getAllLoseNum());
         intent.putExtra("trend_gone",trendStatisticLayout.getAllGoneNum());
+        if(userInfo!=null){
+            intent.putExtra("user_info",userInfo);
+        }
         startActivity(intent);
     }
 

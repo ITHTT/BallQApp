@@ -167,6 +167,8 @@ public class MainActivity extends BaseActivity {
                 case R.id.menu_user_trend_statistics:
                     cls=UserTrendStatisticActivity.class;
                 break;
+                case R.id.menu_user_guessing_record:
+                    cls=UserBettingGuessRecordActivity.class;
             }
             if(cls!=null){
                 Intent intent=new Intent(this,cls);

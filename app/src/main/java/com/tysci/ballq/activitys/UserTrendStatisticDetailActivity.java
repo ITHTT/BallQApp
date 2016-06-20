@@ -14,19 +14,18 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.DefaultFillFormatter;
 import com.github.mikephil.charting.formatter.FillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.modles.BallQTrendProfitStatisticEntity;
+import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
@@ -147,6 +146,13 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
         String goneCount=intent.getStringExtra("trend_gone");
         CommonUtils.setTextViewFormatString(tvGoCount,goneCount+" 场",goneCount,Color.parseColor("#d4d4d4"),1f);
 
+        UserInfoEntity userInfo=intent.getParcelableExtra("user_info");
+        if(userInfo!=null){
+            GlideImageLoader.loadImage(this,userInfo.getPt(),R.mipmap.icon_user_default,ivUserIcon);
+            UserInfoUtil.setUserHeaderVMark(userInfo.getIsv(),isV,ivUserIcon);
+            tvUserName.setText(userInfo.getFname());
+        }
+
         if(!TextUtils.isEmpty(uid)){
             showLoading();
             getTrendStatisticDetailInfo(etype,uid);
@@ -188,9 +194,9 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null){
                         JSONObject dataObj=obj.getJSONObject("data");
-                        if(dataObj!=null){
+                        if(dataObj!=null&&!dataObj.isEmpty()){
                             JSONObject generalObj=dataObj.getJSONObject("general");
-                            if(generalObj!=null){
+                            if(generalObj!=null&&!generalObj.isEmpty()){
                                 setTrendStataisticInfo(generalObj);
                             }
 

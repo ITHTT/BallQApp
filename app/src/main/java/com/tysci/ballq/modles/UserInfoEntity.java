@@ -1,9 +1,12 @@
 package com.tysci.ballq.modles;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Administrator on 2016/5/31.
  */
-public class UserInfoEntity {
+public class UserInfoEntity implements Parcelable {
 
     /**
      * uid : 3348
@@ -276,4 +279,82 @@ public class UserInfoEntity {
     public int getIsf() {
         return isf;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.uid);
+        dest.writeInt(this.bcount);
+        dest.writeInt(this.btyc);
+        dest.writeInt(this.rank);
+        dest.writeInt(this.btc);
+        dest.writeFloat(this.ror);
+        dest.writeInt(this.frc);
+        dest.writeInt(this.is_old_user);
+        dest.writeString(this.pt);
+        dest.writeString(this.blt);
+        dest.writeInt(this.tearn);
+        dest.writeString(this.fname);
+        dest.writeInt(this.blc);
+        dest.writeString(this.bio);
+        dest.writeString(this.title1);
+        dest.writeString(this.title2);
+        dest.writeInt(this.bwc);
+        dest.writeInt(this.bsc);
+        dest.writeInt(this.acount);
+        dest.writeInt(this.bgc);
+        dest.writeInt(this.ccount);
+        dest.writeFloat(this.wins);
+        dest.writeInt(this.isv);
+        dest.writeInt(this.show_assert);
+        dest.writeInt(this.flc);
+        dest.writeInt(this.isf);
+    }
+
+    public UserInfoEntity() {
+    }
+
+    private UserInfoEntity(Parcel in) {
+        this.uid = in.readInt();
+        this.bcount = in.readInt();
+        this.btyc = in.readInt();
+        this.rank = in.readInt();
+        this.btc = in.readInt();
+        this.ror = in.readFloat();
+        this.frc = in.readInt();
+        this.is_old_user = in.readInt();
+        this.pt = in.readString();
+        this.blt = in.readString();
+        this.tearn = in.readInt();
+        this.fname = in.readString();
+        this.blc = in.readInt();
+        this.bio = in.readString();
+        this.title1 = in.readString();
+        this.title2 = in.readString();
+        this.bwc = in.readInt();
+        this.bsc = in.readInt();
+        this.acount = in.readInt();
+        this.bgc = in.readInt();
+        this.ccount = in.readInt();
+        this.wins = in.readFloat();
+        this.isv = in.readInt();
+        this.show_assert = in.readInt();
+        this.flc = in.readInt();
+        this.isf = in.readInt();
+    }
+
+    public static final Parcelable.Creator<UserInfoEntity> CREATOR = new Parcelable.Creator<UserInfoEntity>() {
+        public UserInfoEntity createFromParcel(Parcel source) {
+            return new UserInfoEntity(source);
+        }
+
+        public UserInfoEntity[] newArray(int size) {
+            return new UserInfoEntity[size];
+        }
+    };
 }

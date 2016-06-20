@@ -55,7 +55,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:gravity="center"
-                                android:text="0"
+                                android:text="0.00"
                                 android:textColor="#ce483d"
                                 android:textSize="13sp" />
                             <TextView
@@ -79,7 +79,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
                                 android:gravity="center"
-                                android:text="0"
+                                android:text="0.00%"
                                 android:textColor="#3a3a3a"
                                 android:textSize="13sp" />
                             <TextView
@@ -129,7 +129,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text="0.00%"
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>
@@ -151,7 +151,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text="0.00"
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>
@@ -173,7 +173,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text="0.00"
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>
@@ -201,7 +201,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text="0.00"
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>
@@ -221,7 +221,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text="0.00"
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>
@@ -241,7 +241,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentRight="true"
-                                    android:text="0"
+                                    android:text=""
                                     android:textColor="#7c7c7c"
                                     android:textSize="13sp" />
                             </RelativeLayout>

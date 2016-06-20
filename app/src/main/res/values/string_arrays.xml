@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reward_moneys">
+        <item>1</item>
+        <item>6</item>
+        <item>10</item>
+        <item>66</item>
+        <item>100</item>
+        <item>200</item>
+    </string-array>
+
+</resources>

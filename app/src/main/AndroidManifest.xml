@@ -80,6 +80,9 @@
 
         <activity android:name=".activitys.UserTrendStatisticDetailActivity"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserBettingGuessRecordActivity"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

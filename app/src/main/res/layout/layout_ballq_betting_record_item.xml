@@ -78,7 +78,7 @@
                 android:textColor="@color/black"
                 android:text="0 - 1"/>
             <TextView
-                android:id="@+id/tv_at_team_name"
+                android:id="@+id/tv_away_team_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13.5sp"

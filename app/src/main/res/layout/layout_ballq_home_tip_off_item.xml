@@ -183,7 +183,7 @@
                 android:layout_gravity="bottom|right"
                 android:contentDescription=""
                 android:paddingRight="10dp"
-                android:src="@mipmap/watermark_gone"/>
+                android:src="@mipmap/icon_tip_game_gone"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

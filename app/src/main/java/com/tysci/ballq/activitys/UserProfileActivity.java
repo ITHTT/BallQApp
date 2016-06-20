@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -17,11 +18,13 @@ import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.widgets.CircleImageView;
+import com.tysci.ballq.views.widgets.MainMenuItemView;
 
 import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -201,4 +204,37 @@ public class UserProfileActivity extends BaseActivity{
             divider03.setVisibility(View.GONE);
         }
     }
+
+    private void setClickMenuItem(View view){
+        LinearLayout layoutUserMenus= (LinearLayout) this.findViewById(R.id.layout_user_menus);
+        int size = layoutUserMenus.getChildCount();
+        for (int i = 0; i < size; i++) {
+            View v = layoutUserMenus.getChildAt(i);
+            if (v instanceof MainMenuItemView) {
+                ((MainMenuItemView) v).setCheckedState(v == view);
+            }
+        }
+
+    }
+
+    @OnClick({R.id.menu_user_trend_statistics,R.id.menu_user_guessing_record,R.id.menu_user_attentions,R.id.menu_user_tip_off_record
+              ,R.id.menu_user_ball_wrap_record,R.id.menu_user_achievement,R.id.menu_user_old_guess_record})
+    protected void onClickMenuItem(View view){
+        setClickMenuItem(view);
+        Intent intent=null;
+        switch(view.getId()){
+            case R.id.menu_user_trend_statistics:
+                intent=new Intent(this,UserTrendStatisticActivity.class);
+                intent.putExtra(UserTrendStatisticActivity.class.getSimpleName(),String.valueOf(uid));
+                break;
+            case R.id.menu_user_guessing_record:
+                break;
+        }
+        if(intent!=null){
+            startActivity(intent);
+        }
+
+    }
+
+
 }
