@@ -40,6 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -168,6 +169,7 @@ public class BallQTipOffDetailActivity extends BaseActivity {
         TextView tvTipContent=(TextView)view.findViewById(R.id.tv_tip_content);
         LinearLayout layoutOtherTipInfo=(LinearLayout)view.findViewById(R.id.layout_other_tips);
         TextView tvOtherTipCount=(TextView)view.findViewById(R.id.tvOtherTipNum);
+        view.findViewById(R.id.bt_rewards).setOnClickListener(this);
 
         GlideImageLoader.loadImage(this, data.getPt(), R.mipmap.icon_user_default, ivUserIcon);
         UserInfoUtil.setUserHeaderVMark(data.getIsv(), isV, ivUserIcon);
@@ -209,12 +211,6 @@ public class BallQTipOffDetailActivity extends BaseActivity {
             userCommentAdapter=new BallQUserCommentAdapter(userCommentEntityList);
             recyclerView.setAdapter(userCommentAdapter);
         }
-
-
-
-
-
-
     }
 
 
@@ -311,7 +307,13 @@ public class BallQTipOffDetailActivity extends BaseActivity {
 
     @Override
     protected void onViewClick(View view) {
-
+        switch(view.getId()){
+            case R.id.bt_rewards:
+                if(tipOffInfo!=null){
+                    UserRewardActivity.userReward(this,"tip",String.valueOf(tipOffInfo.getUid()),tipOffInfo.getId(),tipOffInfo.getPt(),tipOffInfo.getIsv());
+                }
+                break;
+        }
     }
 
     @Override

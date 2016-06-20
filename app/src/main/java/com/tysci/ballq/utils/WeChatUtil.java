@@ -11,6 +11,9 @@ import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -92,6 +95,28 @@ public class WeChatUtil {
         String url=HttpUrls.GET_WECHAT_USER_IFNO_URL+"?access_token="+token+"&openid="+openId;
     }
 
+    public static String buildTransaction(final String type) {
+        return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
 
-
+    public static HashMap<String,String> getWeChatPayParams(Context context,String etype,float moneys){
+        KLog.e("moneys:"+moneys);
+        KLog.e("type:"+etype);
+        HashMap<String,String>params=new HashMap<>();
+        params.put("appid", APP_ID_WECHAT);
+        params.put("mch_id", APP_MCH_ID_WECHAT);
+        params.put("nonce_str", buildTransaction(APP_MCH_ID_WECHAT));
+        params.put("product_id", buildTransaction(APP_MCH_ID_WECHAT));
+        params.put("body", "Wechat");
+        params.put("total_fee", (int) (moneys * 100) + "");
+        String openId="";
+        JSONObject obj=UserInfoUtil.getWechatUserInfo(context);
+        if(obj!=null){
+            openId=obj.getString("openid");
+        }
+        KLog.e("openId:"+openId);
+        params.put("openid",openId);
+        params.put("bounty_type", etype /*"article" : "tip"*/);
+        return params;
+    }
 }
