@@ -189,6 +189,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         switch(baseResp.errCode){
             case BaseResp.ErrCode.ERR_OK:
                 KLog.e("授权成功");
+                KLog.e("openId:"+baseResp.openId);
                 SendAuth.Resp resp= (SendAuth.Resp) baseResp;
                 getWeChatToken(resp.code);
                 break;

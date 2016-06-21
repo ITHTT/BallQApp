@@ -192,7 +192,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_trend_statistics"
                     app:menu_name="走势统计"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -204,7 +204,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_guess_record"
                     app:menu_name="竞猜记录"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -216,7 +216,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_follow"
                     app:menu_name="关注的人"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
                 <View
                     android:id="@+id/divider01"
                     android:layout_width="match_parent"
@@ -229,7 +229,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_tip_off_record"
                     app:menu_name="爆料记录"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
                 <View
                     android:id="@+id/divider02"
                     android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_ball_wrap_record"
                     app:menu_name="球经记录"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70" />
+                    app:checked_color="#20eacb70" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -254,7 +254,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_achievement"
                     app:menu_name="他的成就"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
                 <View
                     android:id="@+id/divider03"
                     android:layout_width="match_parent"
@@ -267,7 +267,7 @@
                     app:menu_icon="@mipmap/icon_user_menu_old_datas"
                     app:menu_name="老用户战绩"
                     app:text_color="#4d4d4d"
-                    app:checked_color="#eacb70"/>
+                    app:checked_color="#20eacb70"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -56,14 +57,26 @@
             android:layout_height="wrap_content"
             android:text="信心指数："
             android:textColor="#cdaa44"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:typeface="monospace" />
+        <com.tysci.ballq.views.widgets.CustomRattingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            app:rattingBar_width="20dp"
+            app:rattingBar_height="20dp"
+            app:rattingBar_num="5"
+            app:rattingBar_padding="5dp"/>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/webLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp">
         <TextView
@@ -167,7 +180,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/icon_comment" />
+            android:src="@mipmap/icon_comment_count" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

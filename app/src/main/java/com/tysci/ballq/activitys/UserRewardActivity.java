@@ -83,13 +83,17 @@ public class UserRewardActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     public static void userReward(Context context,String type,String uid,int id,String pt,int isV){
-        Intent intent=new Intent(context,UserRewardActivity.class);
-        intent.putExtra("uid",uid);
-        intent.putExtra("id",id);
-        intent.putExtra("pt",pt);
-        intent.putExtra("is_v",isV);
-        intent.putExtra("type",type);
-        context.startActivity(intent);
+        if(UserInfoUtil.checkLogin(context)) {
+            Intent intent = new Intent(context, UserRewardActivity.class);
+            intent.putExtra("uid", uid);
+            intent.putExtra("id", id);
+            intent.putExtra("pt", pt);
+            intent.putExtra("is_v", isV);
+            intent.putExtra("type", type);
+            context.startActivity(intent);
+        }else{
+            UserInfoUtil.userLogin(context);
+        }
     }
 
     @Override
@@ -136,8 +140,12 @@ public class UserRewardActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     public void onWeChatPayWay(float rewardMoneys) {
-        weChatPay(rewardMoneys);
-
+        if(UserInfoUtil.getWechatUserInfo(this)==null){
+            /**进行微信授权登录*/
+            WeChatUtil.weChatLogin(this);
+        }else {
+            weChatPay(rewardMoneys);
+        }
     }
 
     @Override

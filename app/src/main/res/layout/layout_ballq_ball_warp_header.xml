@@ -75,7 +75,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="@string/app_name"
-            android:src="@mipmap/icon_comment" />
+            android:src="@mipmap/icon_comment_count" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

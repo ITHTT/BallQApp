@@ -89,7 +89,7 @@ public class BallQHomeTipOffAdapter extends RecyclerView.Adapter<BallQHomeTipOff
         holder.tvUserNickName.setText(info.getFname());
         GlideImageLoader.loadImage(holder.itemView.getContext(), info.getPt(), R.mipmap.icon_user_default, holder.ivUserIcon);
         UserInfoUtil.setUserHeaderVMark(info.getIsv(), holder.isV, holder.ivUserIcon);
-        holder.tvSam.setText(String.valueOf(info.getSam()));
+        holder.tvSam.setText(String.valueOf(info.getSam()/100));
 
         if(info.getConfidence()==0){
             holder.layoutConfidenceData.setVisibility(View.GONE);
