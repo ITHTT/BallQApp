@@ -18,6 +18,7 @@ import com.tysci.ballq.activitys.LoginActivity;
 import com.tysci.ballq.activitys.RegisterActivity;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.modles.UserInfoEntity;
+import com.tysci.ballq.modles.event.EventObject;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
@@ -44,6 +45,9 @@ import okhttp3.Request;
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
     private static final int REQUEST_CODE_LOGIN=0x0001;
     private static final int REQUEST_CODE_REGISTER=0x0002;
+
+    /**请求标记，0表示登录，1表示分享，2表示打赏授权*/
+    public static  int REQUEST_TAG=0;
 
     @Bind(R.id.view_pager)
     protected ConvenientBanner convenientBanner;
@@ -81,7 +85,10 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
     @Override
     protected void getIntentData(Intent intent) {
-
+        if(WeChatUtil.wxApi != null) {
+            KLog.e("注册回调方法...");
+            WeChatUtil.wxApi.handleIntent(intent, this);
+        }
     }
 
     @Override
@@ -191,7 +198,14 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 KLog.e("授权成功");
                 KLog.e("openId:"+baseResp.openId);
                 SendAuth.Resp resp= (SendAuth.Resp) baseResp;
-                getWeChatToken(resp.code);
+                if(REQUEST_TAG==0) {
+                    getWeChatToken(resp.code);
+                }else if(REQUEST_TAG==2){
+                    EventObject eventObject=new EventObject();
+                    eventObject.getData().putString("code",resp.code);
+                    eventObject.addReceiver(WXPayEntryActivity.class);
+                    EventObject.postEventObject(eventObject,"user_reward");
+                }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 KLog.e("微信拒绝授权");
@@ -199,6 +213,10 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 KLog.e("用户取消授权");
                 break;
+        }
+        if(REQUEST_TAG>0){
+            REQUEST_TAG=0;
+            finish();
         }
     }
 
@@ -270,6 +288,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null&&!obj.isEmpty()){
                         if(!TextUtils.isEmpty(obj.getString("openid"))) {
+                            WeChatUtil.setOpenId(WXEntryActivity.this,obj.getString("openid"));
                             UserInfoUtil.setWechatUserInfo(WXEntryActivity.this,obj);
                             userWeChatLogin(obj);
                             return;

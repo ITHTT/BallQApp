@@ -3,11 +3,13 @@ package com.tysci.ballq.activitys;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.networks.GlideImageLoader;
@@ -174,7 +176,15 @@ public class UserRewardActivity extends BaseActivity implements AdapterView.OnIt
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
-
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        JSONObject dataObj=obj.getJSONObject("data");
+                        if(dataObj!=null&&!dataObj.isEmpty()){
+                            WeChatUtil.weChatPay(dataObj);
+                        }
+                    }
+                }
             }
 
             @Override

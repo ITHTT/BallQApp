@@ -31,6 +31,7 @@ import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.adapters.BallQUserCommentAdapter;
 import com.tysci.ballq.views.widgets.CircleImageView;
 import com.tysci.ballq.views.widgets.loadmorerecyclerview.AutoLoadMoreRecyclerView;
+import com.tysci.ballq.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -310,7 +311,7 @@ public class BallQTipOffDetailActivity extends BaseActivity {
         switch(view.getId()){
             case R.id.bt_rewards:
                 if(tipOffInfo!=null){
-                    UserRewardActivity.userReward(this,"tip",String.valueOf(tipOffInfo.getUid()),tipOffInfo.getId(),tipOffInfo.getPt(),tipOffInfo.getIsv());
+                    WXPayEntryActivity.userReward(this,"tip",String.valueOf(tipOffInfo.getUid()),tipOffInfo.getId(),tipOffInfo.getPt(),tipOffInfo.getIsv());
                 }
                 break;
         }
