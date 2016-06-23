@@ -100,8 +100,10 @@ public class HttpClientUtil {
      */
     public void cancelTag(Object tag)
     {
+        KLog.e("取消请求Tag:"+tag);
         for (Call call : okHttpClient.dispatcher().queuedCalls())
         {
+            KLog.e("Tag:"+call.request().tag());
             if (tag.equals(call.request().tag()))
             {
                 call.cancel();
@@ -109,6 +111,7 @@ public class HttpClientUtil {
         }
         for (Call call : okHttpClient.dispatcher().runningCalls())
         {
+            KLog.e("Tag:"+call.request().tag());
             if (tag.equals(call.request().tag()))
             {
                 call.cancel();
@@ -265,6 +268,9 @@ public class HttpClientUtil {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                if(e!=null&&"Canceled".equals(e.getMessage())){
+                    return;
+                }
                 final Call resultCall = call;
                 final Exception error = e;
                 devidlerHandler.post(new Runnable() {
@@ -384,7 +390,6 @@ public class HttpClientUtil {
                     });
                 }
             }
-
         });
     }
 

@@ -76,13 +76,15 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
     }
 
     private void onRefreshCompelete(){
-        swipeRefresh.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (swipeRefresh != null)
-                    swipeRefresh.setRefreshing(false);
-            }
-        }, 1000);
+        if(swipeRefresh!=null) {
+            swipeRefresh.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (swipeRefresh != null)
+                        swipeRefresh.setRefreshing(false);
+                }
+            }, 1000);
+        }
     }
 
     private void requestDatas(int matchId,int etype,int pages, final boolean isLoadMore){
@@ -97,7 +99,17 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
             @Override
             public void onError(Call call, Exception error) {
                 if (!isLoadMore) {
-                    recyclerView.setStartLoadMore();
+                    if(adapter!=null) {
+                        recyclerView.setStartLoadMore();
+                    }else{
+                        showErrorInfo(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showLoading();
+                                requestDatas(ballQMatchEntity.getEid(),ballQMatchEntity.getEtype(),currentPages,false);
+                            }
+                        });
+                    }
                 } else {
                     recyclerView.setLoadMoreDataFailed();
                 }
@@ -144,6 +156,9 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
             @Override
             public void onFinish(Call call) {
                 if (!isLoadMore) {
+                    if(recyclerView!=null){
+                        recyclerView.setRefreshComplete();
+                    }
                     onRefreshCompelete();
                 }
             }
@@ -155,7 +170,8 @@ public class BallQMatchTipOffListFragment extends BaseFragment implements SwipeR
         if(recyclerView.isLoadMoreing()){
             onRefreshCompelete();
         }else{
-            requestDatas(ballQMatchEntity.getEid(),ballQMatchEntity.getEtype(),currentPages,false);
+            recyclerView.setRefreshing();
+            requestDatas(ballQMatchEntity.getEid(), ballQMatchEntity.getEtype(), currentPages, false);
         }
     }
 

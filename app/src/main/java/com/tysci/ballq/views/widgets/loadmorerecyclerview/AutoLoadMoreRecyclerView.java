@@ -24,7 +24,8 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
     protected boolean isLoadFinished = false;
     /**是否正在加载更多数据*/
     protected boolean isLoadMoreing = false;
-
+    /**是否正在刷新*/
+    protected boolean isRefreshing=false;
     /**添加的头部视图*/
     private View mHeaderView = null;
     /**添加的底部视图*/
@@ -101,6 +102,33 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
         mWrapAdapter = new WrapAdapter(mHeaderView, mFootView, adapter);
         super.setAdapter(mWrapAdapter);
         mAdapter.registerAdapterDataObserver(mDataObserver);
+    }
+
+    public void setRefreshingTip(String tip){
+        if(loadMoreFooterView!=null){
+            loadMoreFooterView.setLoadFinishedTip(tip);
+            loadMoreFooterView.setLoadMoreDataFinishedState(true);
+        }
+    }
+
+    public void setRefreshing(){
+        this.isRefreshing=true;
+    }
+
+    public boolean isRefreshing(){
+        return this.isRefreshing;
+    }
+
+    public void setRefreshComplete(){
+        this.isRefreshing=false;
+        if(loadMoreFooterView!=null){
+            if(!isLoadFinished) {
+                loadMoreFooterView.setLoadingMoreState();
+            }else{
+                loadMoreFooterView.setLoadFinishedTip("没有更多数据了...");
+                loadMoreFooterView.setLoadMoreDataFinishedState(true);
+            }
+        }
     }
 
     /**

@@ -226,8 +226,8 @@ public class BallQMatchGuessBettingInfoAdapter extends RecyclerView.Adapter<Ball
 
     private String getBettingChoiceType(BallQMatchGuessBettingEntity data, int id) {
         String type=data.getOtype();
-        KLog.e("type:"+type);
-        KLog.e("id:"+id);
+        KLog.e("type:" + type);
+        KLog.e("id:" + id);
         if(type.equals("SP")){
             switch (id) {
                 case R.id.tvLeft:

@@ -55,7 +55,6 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
                     public void run() {
                         if(swipeRefresh!=null) {
                             swipeRefresh.setRefreshing(false);
-                            recyclerView.setStartLoadMore();
                         }
                     }
                 }, 1000);
@@ -65,7 +64,7 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
 
     @Override
     public void onLoadMore() {
-        if(!swipeRefresh.isRefreshing()){
+        if(!recyclerView.isRefreshing()){
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -73,13 +72,14 @@ public abstract class AppSwipeRefreshLoadMoreRecyclerViewFragment extends BaseFr
                 }
             },300);
         }else{
-            recyclerView.setLoadMoreDataComplete(refreshTip);
+            recyclerView.setRefreshingTip(refreshTip);
         }
     }
 
     @Override
     public void onRefresh() {
         if(!recyclerView.isLoadMoreing()){
+            recyclerView.setRefreshing();
             onRefreshData();
         }else{
             onRefreshCompelete();

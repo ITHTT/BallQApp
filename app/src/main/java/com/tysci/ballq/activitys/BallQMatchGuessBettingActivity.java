@@ -2,9 +2,11 @@ package com.tysci.ballq.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,8 +20,11 @@ import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.CommonUtils;
+import com.tysci.ballq.utils.KLog;
+import com.tysci.ballq.utils.ToastUtil;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.adapters.BallQMatchGuessBettingInfoAdapter;
+import com.tysci.ballq.views.dialogs.BallQMatchBettingGuessDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +37,8 @@ import okhttp3.Request;
 /**
  * Created by Administrator on 2016/6/16.
  */
-public class BallQMatchGuessBettingActivity extends BaseActivity {
+public class BallQMatchGuessBettingActivity extends BaseActivity implements BallQMatchGuessBettingInfoAdapter.OnBettingItemListener,
+        BallQMatchGuessBettingInfoAdapter.OnDeleteBettingRecordListener,BallQMatchBettingGuessDialog.OnBettingClickListener{
     @Bind(R.id.iv_home_team_icon)
     protected ImageView ivHomeTeamIcon;
     @Bind(R.id.tv_home_team_name)
@@ -49,10 +55,14 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
     protected TextView tvGameLeagueName;
     @Bind(R.id.recyclerView)
     protected RecyclerView recyclerView;
+    @Bind(R.id.bt_betting)
+    protected Button btBetting;
 
     private BallQMatchEntity matchEntity=null;
     private List<BallQMatchGuessBettingEntity> matchGuessBettingEntityList=null;
     private BallQMatchGuessBettingInfoAdapter adapter=null;
+
+    private BallQMatchBettingGuessDialog bettingDialog=null;
 
 
     @Override
@@ -62,6 +72,7 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -72,6 +83,12 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
 
     @Override
     protected void getIntentData(Intent intent) {
+        matchEntity=intent.getParcelableExtra(Tag);
+        if(matchEntity!=null){
+            initMatchInfo(matchEntity);
+            showLoading();
+            getMatchGuessInfo(matchEntity.getEid(),matchEntity.getEtype());
+        }
 
     }
 
@@ -106,9 +123,9 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
     }
 
     private void initMatchInfo(BallQMatchEntity data){
-        GlideImageLoader.loadImage(this, data.getHtlogo(), R.drawable.icon_circle_item_bg, ivHomeTeamIcon);
+        GlideImageLoader.loadImage(this, data.getHtlogo(), R.drawable.icon_default_team_logo, ivHomeTeamIcon);
         tvHomeTeamName.setText(data.getHtname());
-        GlideImageLoader.loadImage(this,data.getAtlogo(),R.drawable.icon_circle_item_bg,ivAwayTeamIcon);
+        GlideImageLoader.loadImage(this, data.getAtlogo(), R.drawable.icon_default_team_logo, ivAwayTeamIcon);
         tvAwayTeamName.setText(data.getAtname());
         tvGameLeagueName.setText(data.getTourname());
     }
@@ -129,31 +146,35 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
 
             @Override
             public void onError(Call call, Exception error) {
-                showErrorInfo(new View.OnClickListener(){
+                showErrorInfo(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showLoading();
-                        getMatchGuessInfo(matchEntity.getEid(),matchEntity.getEtype());
+                        getMatchGuessInfo(matchEntity.getEid(), matchEntity.getEtype());
                     }
                 });
             }
 
             @Override
             public void onSuccess(Call call, String response) {
-                if(!TextUtils.isEmpty(response)){
-                    JSONObject obj=JSONObject.parseObject(response);
-                    if(obj!=null){
-                        JSONArray objArrays=obj.getJSONArray("data");
-                        if(objArrays!=null&&!objArrays.isEmpty()){
+                KLog.json(response);
+                if (!TextUtils.isEmpty(response)) {
+                    JSONObject obj = JSONObject.parseObject(response);
+                    if (obj != null) {
+                        JSONArray objArrays = obj.getJSONArray("data");
+                        if (objArrays != null && !objArrays.isEmpty()) {
                             hideLoad();
-                            if(matchGuessBettingEntityList==null){
-                                matchGuessBettingEntityList=new ArrayList<BallQMatchGuessBettingEntity>(3);
+                            if (matchGuessBettingEntityList == null) {
+                                matchGuessBettingEntityList = new ArrayList<BallQMatchGuessBettingEntity>(3);
                             }
-                            CommonUtils.getJSONListObject(objArrays,matchGuessBettingEntityList,BallQMatchGuessBettingEntity.class);
-                            if(adapter==null){
-                                adapter=new BallQMatchGuessBettingInfoAdapter(matchGuessBettingEntityList);
+                            CommonUtils.getJSONListObject(objArrays, matchGuessBettingEntityList, BallQMatchGuessBettingEntity.class);
+                            if (adapter == null) {
+                                adapter = new BallQMatchGuessBettingInfoAdapter(matchGuessBettingEntityList);
+                                adapter.setOnBettingItemListener(BallQMatchGuessBettingActivity.this);
+                                adapter.setDividerPosition(objArrays.size());
+                                adapter.setOnDeleteBettingRecordListener(BallQMatchGuessBettingActivity.this);
                                 recyclerView.setAdapter(adapter);
-                            }else{
+                            } else {
                                 adapter.notifyDataSetChanged();
                             }
                             return;
@@ -168,5 +189,61 @@ public class BallQMatchGuessBettingActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private boolean checkBettingInfo(String bettingInfo){
+        if(adapter!=null){
+            int position=adapter.getDividerPosition();
+            if(position==-1){
+                return true;
+            }
+            int size= matchGuessBettingEntityList.size();
+            for(int i=position;i<size;i++){
+                if(bettingInfo.equals(matchGuessBettingEntityList.get(i).getBettingInfo())){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onBettingItem(int position, String bettingInfo, BallQMatchGuessBettingEntity info, String bettingType) {
+        boolean isBetting=checkBettingInfo(bettingInfo);
+        if(isBetting) {
+            if (bettingDialog == null) {
+                bettingDialog = new BallQMatchBettingGuessDialog(this);
+                bettingDialog.setBallQData(matchEntity);
+                bettingDialog.setOnBettingClickListener(this);
+            }
+            bettingDialog.reset();
+            KLog.e("BettingType:" + bettingType);
+            bettingDialog.setBettingInfo(bettingInfo);
+            //bettingDialog.setBettingType(type);
+            bettingDialog.setBettingInfoType(info, bettingType);
+            bettingDialog.show();
+        }else{
+            ToastUtil.show(this, "该类型投注已被选择,请选择其他类型");
+        }
+    }
+
+    @Override
+    public void onDeleteBettingRecord(int position, int moneys) {
+        bettingDialog.addAllBettingMoneys(moneys);
+        int dividerPosition=adapter.getDividerPosition();
+        if(dividerPosition==matchGuessBettingEntityList.size()){
+            if(btBetting.getVisibility()!=View.GONE){
+                btBetting.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onBettingClick(BallQMatchGuessBettingEntity info) {
+        if(btBetting.getVisibility()!= View.VISIBLE){
+            btBetting.setVisibility(View.VISIBLE);
+        }
+        matchGuessBettingEntityList.add(info);
+        adapter.notifyDataSetChanged();
     }
 }

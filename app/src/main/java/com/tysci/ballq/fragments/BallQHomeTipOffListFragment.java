@@ -93,7 +93,7 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
                 public void run() {
                     if (swipeRefresh != null) {
                         swipeRefresh.setRefreshing(false);
-                        recyclerView.setStartLoadMore();
+                       // recyclerView.setStartLoadMore();
                     }
                 }
             }, 1000);
@@ -145,7 +145,12 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
             @Override
             public void onFinish(Call call) {
                 if(!isLoadMore){
+                    if(recyclerView!=null){
+                        recyclerView.setRefreshComplete();
+                    }
                     onRefreshCompelete();
+                }else{
+                    recyclerView.setLoadMoreDataFailed();
                 }
             }
         });
@@ -188,7 +193,7 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
 
     @Override
     public void onLoadMore() {
-        if(swipeRefresh.isRefreshing()){
+        if(recyclerView.isRefreshing()){
             recyclerView.setLoadMoreDataComplete("刷新数据中...");
         }else{
             recyclerView.postDelayed(new Runnable() {
@@ -204,6 +209,7 @@ public class BallQHomeTipOffListFragment extends BaseFragment implements SwipeRe
     @Override
     public void onRefresh() {
         if(recyclerView.isLoadMoreing()){
+            recyclerView.setRefreshing();
             onRefreshCompelete();
         }else{
             requestDatas(1,false);
