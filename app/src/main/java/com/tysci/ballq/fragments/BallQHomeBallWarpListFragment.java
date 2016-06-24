@@ -36,10 +36,10 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return swipeRefresh;
     }
 
-    private void requestDatas(int pages,final boolean isLoadMore){
+    private void requestDatas(final int pages,final boolean isLoadMore){
         String url= HttpUrls.HOST_URL_V5+"articles/?p=" + pages;
         Map<String,String> params=null;
         if(UserInfoUtil.checkLogin(baseActivity)){
@@ -57,7 +57,17 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
             public void onError(Call call, Exception error) {
                 if(recyclerView!=null) {
                     if (!isLoadMore) {
-                        recyclerView.setStartLoadMore();
+                        if(adapter!=null) {
+                            recyclerView.setStartLoadMore();
+                        }else{
+                            showErrorInfo(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showLoading();
+                                    requestDatas(pages,isLoadMore);
+                                }
+                            });
+                        }
                     } else {
                         recyclerView.setLoadMoreDataFailed();
                     }
@@ -68,6 +78,7 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
             public void onSuccess(Call call, String response) {
                 if(!isLoadMore){
                     onRefreshCompelete();
+                    hideLoad();
                 }
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
@@ -101,11 +112,15 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
                         }
                     }
                 }
+                if(isLoadMore){
+                    recyclerView.setLoadMoreDataComplete("没有更多数据了");
+                }
             }
 
             @Override
             public void onFinish(Call call) {
                 if(!isLoadMore){
+                    recyclerView.setRefreshComplete();
                     onRefreshCompelete();
                 }
             }

@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
@@ -16,6 +18,7 @@ import com.tysci.ballq.modles.BallQMatchForecastDataEntity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.views.adapters.BallQMatchForecastDataAdapter;
+import com.tysci.ballq.views.widgets.chartview.LineChartView;
 import com.tysci.ballq.views.widgets.chartview.PieChartData;
 import com.tysci.ballq.views.widgets.chartview.PieChartView;
 import com.tysci.ballq.views.widgets.loadmorerecyclerview.AutoLoadMoreRecyclerView;
@@ -48,7 +51,7 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
 
     @Override
     protected int getViewLayoutId() {
-        return R.layout.fragment_match_forecast_data;
+        return R.layout.layout_swiperefresh_recyclerview;
     }
 
     @Override
@@ -58,12 +61,13 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         recyclerView.setOnLoadMoreListener(this);
         headerView= LayoutInflater.from(baseActivity).inflate(R.layout.layout_match_forecast_data_header,null);
         recyclerView.addHeaderView(headerView);
+        showLoading();
         requestDatas(currentPages, false);
     }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return swipeRefresh;
     }
 
     public void setMatchEntity(BallQMatchEntity matchEntity) {
@@ -95,7 +99,7 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         }
     }
 
-    private void requestDatas(int pages, final boolean isLoadMore){
+    private void requestDatas(final int pages, final boolean isLoadMore){
         String url="http://apib.ballq.cn/bigdata/oroc/v1/"+matchEntity.getEid()+"/"+oddsType
                    +"/?limit=10&p="+pages;
         KLog.e("url:" + url);
@@ -109,7 +113,17 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
             public void onError(Call call, Exception error) {
                 if(recyclerView!=null) {
                     if (!isLoadMore) {
-                        recyclerView.setStartLoadMore();
+                        if(adapter!=null) {
+                            recyclerView.setStartLoadMore();
+                        }else{
+                            showErrorInfo(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showLoading();
+                                    requestDatas(pages,false);
+                                }
+                            });
+                        }
                     } else {
                         recyclerView.setLoadMoreDataFailed();
                     }
@@ -159,14 +173,17 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
                                     headerView.findViewById(R.id.layout_forecast_data).setVisibility(View.VISIBLE);
                                 }
                             }
+                            return;
                         }
                     }
                 }
+                showEmptyInfo();
             }
 
             @Override
             public void onFinish(Call call) {
                 if(!isLoadMore){
+                    recyclerView.setRefreshComplete();
                     onRefreshCompelete();
                 }
             }
@@ -218,19 +235,125 @@ public class MatchForecastDataFragment extends BaseFragment implements SwipeRefr
         pieChartView.setPieChartDataList(pieChartDataList);
     }
 
+    private void setMatchLineChartData(BallQMatchForecastDataEntity data){
+        if(data!=null){
+            final LineChartView lineChartView= (LineChartView) (headerView).findViewById(R.id.lineChartView);
+            lineChartView.setToShowHistoryList(true);
+            final TextView lineTopDataX = (TextView) headerView.findViewById(R.id.topDataX);
+            final TextView lineCenterDataX = (TextView) headerView.findViewById(R.id.centerDataX);
+            final TextView lineBottomDataX = (TextView) headerView.findViewById(R.id.bottomDataX);
+            List<BallQMatchForecastDataEntity.MatchForecastDataEntity> matchs=data.getMatchs();
+            final List<List<LineChartView.XY>> historyList = new ArrayList<>();
+            boolean isFirst=true;
+            for(BallQMatchForecastDataEntity.MatchForecastDataEntity m:matchs){
+                final List<String> odds = m.getRt_odds();
+                if (isFirst) {
+                    /**
+                     * 主数据
+                     */
+                    final List<LineChartView.XY> mainList = new ArrayList<>();
+                    try {
+                        for (String odd : odds) {
+                            try {
+                                final String[] temp = odd.split("@");
+                                final LineChartView.XY xy = new LineChartView.XY(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]));
+                                mainList.add(xy);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    lineChartView.setMainList(mainList);
+                    lineChartView.setResultDate(m.getMatch_date());
+                    /**
+                     * 主盘口
+                     */
+                    final List<LineChartView.XY> fillList = new ArrayList<>();
+                    try {
+                        for (String pan : m.getHandicap_records()) {
+                            try {
+                                final String[] temp = pan.split("@");
+                                final LineChartView.XY xy = new LineChartView.XY(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]));
+                                fillList.add(xy);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    lineChartView.setHandicapList(fillList);
+                    isFirst = false;
+                } else {
+                    /**
+                     * 历史数据
+                     */
+                    final List<LineChartView.XY> history = new ArrayList<>();
+                    try {
+                        for (String odd : odds) {
+                            try {
+                                final String[] temp = odd.split("@");
+                                final LineChartView.XY xy = new LineChartView.XY(Integer.parseInt(temp[0]), Float.parseFloat(temp[1]));
+                                history.add(xy);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    historyList.add(history);
+                }
+            }
+            lineChartView.setHistoryList(historyList);
+            /**
+             * 刷新折线图
+             */
+            lineChartView.postInvalidate();
+
+            lineChartView.setOnDrawListener(new LineChartView.OnDrawListener() {
+                @Override
+                public void onDrawFinished() {
+                    RelativeLayout.LayoutParams lp;
+                    // TOP
+                    lp = (RelativeLayout.LayoutParams) lineTopDataX.getLayoutParams();
+                    lp.topMargin = lineChartView.getTopY() - 10;
+                    lineTopDataX.setLayoutParams(lp);
+                    KLog.e("TopDataX:" + lineChartView.getTopDataX());
+                    lineTopDataX.setText(lineChartView.getTopDataX());
+                    // CENTER
+                    lp = (RelativeLayout.LayoutParams) lineCenterDataX.getLayoutParams();
+                    lp.topMargin = lineChartView.getCenterY() - 10;
+                    lineCenterDataX.setLayoutParams(lp);
+                    KLog.e("CenterDataX:" + lineChartView.getCenterDataX());
+                    lineCenterDataX.setText(lineChartView.getCenterDataX());
+                    // BOTTOM
+                    lp = (RelativeLayout.LayoutParams) lineBottomDataX.getLayoutParams();
+                    lp.topMargin = lineChartView.getBottomY() - 10;
+                    lineBottomDataX.setLayoutParams(lp);
+                    KLog.e("BottomDataX:" + lineChartView.getBottomDataX());
+                    lineBottomDataX.setText(lineChartView.getBottomDataX());
+                }
+            });
+        }
+    }
+
     @Override
     public void onRefresh() {
         if(recyclerView.isLoadMoreing()){
             onRefreshCompelete();
         }else{
-            requestDatas(1,false);
+            recyclerView.setRefreshing();
+            requestDatas(1, false);
         }
     }
 
     @Override
     public void onLoadMore() {
-        if(swipeRefresh.isRefreshing()){
-            recyclerView.setLoadMoreDataComplete("刷新数据中...");
+        if(recyclerView.isRefreshing()){
+            recyclerView.setRefreshingTip("刷新数据中...");
         }else{
             recyclerView.postDelayed(new Runnable() {
                 @Override

@@ -29,15 +29,16 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
 
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
+        showLoading();
         requestDatas(currentPages,false);
     }
 
     @Override
     protected View getLoadingTargetView() {
-        return null;
+        return swipeRefresh;
     }
 
-    private void requestDatas(int pages, final boolean isLoadMore){
+    private void requestDatas(final int pages, final boolean isLoadMore){
         String url= HttpUrls.HOT_CIRCLE_LIST_URL+"?pageNo="+pages+"&pageSize=10";
         HttpClientUtil.getHttpClientUtil().sendGetRequest(Tag, url, 30, new HttpClientUtil.StringResponseCallBack() {
             @Override
@@ -47,7 +48,17 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
             @Override
             public void onError(Call call, Exception error) {
                 if(!isLoadMore){
-                    onRefreshCompelete();
+                    if(adapter==null){
+                        recyclerView.setStartLoadMore();
+                    }else{
+                        showErrorInfo(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                showLoading();
+                                requestDatas(pages,isLoadMore);
+                            }
+                        });
+                    }
                 }else{
                     recyclerView.setLoadMoreDataFailed();
                 }
@@ -55,6 +66,9 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
+                if(!isLoadMore){
+                    hideLoad();
+                }
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null&&!obj.isEmpty()){
@@ -90,10 +104,14 @@ public class BallQHomeCircleListFragment extends AppSwipeRefreshLoadMoreRecycler
                         }
                     }
                 }
+                if(isLoadMore){
+                    recyclerView.setLoadMoreDataComplete("没有更多数据了...");
+                }
             }
             @Override
             public void onFinish(Call call) {
                 if(!isLoadMore){
+                    recyclerView.setRefreshComplete();
                     onRefreshCompelete();
                 }
             }

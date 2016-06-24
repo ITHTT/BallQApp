@@ -8,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.modles.BallQUserCollectionEntity;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,6 +19,11 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/6/20.
  */
 public class BallQUserCollectionRecordAdapter extends RecyclerView.Adapter<BallQUserCollectionRecordAdapter.BallQUserCollectionRecordViewHolder>{
+    private List<BallQUserCollectionEntity> userCollectionEntityList=null;
+
+    public BallQUserCollectionRecordAdapter(List<BallQUserCollectionEntity> userCollectionEntityList) {
+        this.userCollectionEntityList = userCollectionEntityList;
+    }
 
     @Override
     public BallQUserCollectionRecordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,7 +38,7 @@ public class BallQUserCollectionRecordAdapter extends RecyclerView.Adapter<BallQ
 
     @Override
     public int getItemCount() {
-        return 0;
+        return userCollectionEntityList.size();
     }
 
     @Override

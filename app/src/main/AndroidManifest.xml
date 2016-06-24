@@ -113,6 +113,18 @@
         <activity android:name=".activitys.UserRewardActivity"
             android:launchMode="singleTop"/>
 
+        <activity android:name=".activitys.UserCollectionRecordActivity"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserMessageRecordActivity"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserAttentionActivity"
+            android:launchMode="singleTop"/>
+
+        <activity android:name=".activitys.UserAccountActivity"
+            android:launchMode="singleTop"/>
+
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"

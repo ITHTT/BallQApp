@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.tysci.ballq.utils.KLog;
+import android.view.animation.AlphaAnimation;
 
 
 /**
@@ -17,10 +16,13 @@ public class LoadingViewHelper implements LoadingViewHelperInterface{
     private int viewIndex;
     private ViewGroup.LayoutParams params;
     private View currentView;
+    private AlphaAnimation hideAnima =null;
 
     public LoadingViewHelper(View view) {
         super();
         this.view = view;
+       // hideAnima=new AlphaAnimation(1.0f,0.0f);
+        //hideAnima.setDuration(300);
     }
 
     private void init() {
@@ -63,7 +65,7 @@ public class LoadingViewHelper implements LoadingViewHelperInterface{
                 parent.removeView(view);
             }
             View childView=parentView.getChildAt(viewIndex);
-            //childView.startAnimation(loadAnimation(parentView.getContext(), R.anim.anim_loading_hide));
+             //childView.startAnimation(hideAnima);
             parentView.removeView(childView);
 
             //view.startAnimation(loadAnimation(parentView.getContext(),R.anim.anim_loading_show));

@@ -9,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.modles.BallQUserMessageRecordEntity;
 import com.tysci.ballq.views.widgets.CircleImageView;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,6 +21,11 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/6/20.
  */
 public class BallQUserMessageRecordAdapter extends RecyclerView.Adapter<BallQUserMessageRecordAdapter.BallQUserMessageRecordViewHolder>{
+    private List<BallQUserMessageRecordEntity> userMessageRecordEntityList;
+
+    public BallQUserMessageRecordAdapter(List<BallQUserMessageRecordEntity> userMessageRecordEntityList) {
+        this.userMessageRecordEntityList = userMessageRecordEntityList;
+    }
 
     @Override
     public BallQUserMessageRecordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,7 +40,7 @@ public class BallQUserMessageRecordAdapter extends RecyclerView.Adapter<BallQUse
 
     @Override
     public int getItemCount() {
-        return 0;
+        return userMessageRecordEntityList.size();
     }
 
     @Override

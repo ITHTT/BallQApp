@@ -3,6 +3,7 @@ package com.tysci.ballq.fragments;
 import android.os.Bundle;
 import android.view.View;
 
+import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseFragment;
 
 /**
@@ -11,7 +12,7 @@ import com.tysci.ballq.base.BaseFragment;
 public class UserAttentionFragment extends BaseFragment{
     @Override
     protected int getViewLayoutId() {
-        return 0;
+        return R.layout.fragment_user_attention_or_fans;
     }
 
     @Override

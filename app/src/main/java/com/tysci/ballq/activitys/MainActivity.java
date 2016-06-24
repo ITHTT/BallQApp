@@ -108,8 +108,19 @@ public class MainActivity extends BaseActivity {
 
     private void onMenuItemClick(View view){
         if(view instanceof MainMenuItemView) {
+            LinearLayout layoutRightMenus = (LinearLayout) mainRightMenu.findViewById(R.id.layout_right_menus);
+            int size = layoutRightMenus.getChildCount();
+            for (int i = 0; i < size; i++) {
+                View v = layoutRightMenus.getChildAt(i);
+                if (v instanceof MainMenuItemView) {
+                    slidingMenu.showSecondaryMenu();
+                    setSelectedRightMenuItem(view.getId());
+                    return;
+                }
+            }
+
             LinearLayout layoutLeftMenus = (LinearLayout) mainLeftMenu.findViewById(R.id.layout_left_menus);
-            int size = layoutLeftMenus.getChildCount();
+            size = layoutLeftMenus.getChildCount();
             boolean isLeftMenu=false;
             for (int i = 0; i < size; i++) {
                 View v = layoutLeftMenus.getChildAt(i);
@@ -124,18 +135,6 @@ public class MainActivity extends BaseActivity {
             if(isLeftMenu){
                 slidingMenu.toggle();
                 setSelectedLeftMenuItem(view.getId());
-                return;
-            }
-
-            LinearLayout layoutRightMenus = (LinearLayout) mainRightMenu.findViewById(R.id.layout_right_menus);
-            size = layoutRightMenus.getChildCount();
-            for (int i = 0; i < size; i++) {
-                View v = layoutRightMenus.getChildAt(i);
-                if (v instanceof MainMenuItemView) {
-                    slidingMenu.showSecondaryMenu();
-                    setSelectedRightMenuItem(view.getId());
-                    return;
-                }
             }
         }
     }
@@ -166,9 +165,22 @@ public class MainActivity extends BaseActivity {
             switch (id){
                 case R.id.menu_user_trend_statistics:
                     cls=UserTrendStatisticActivity.class;
-                break;
+                    break;
                 case R.id.menu_user_guessing_record:
                     cls=UserBettingGuessRecordActivity.class;
+                    break;
+                case R.id.menu_user_collection:
+                    cls=UserCollectionRecordActivity.class;
+                    break;
+                case R.id.menu_user_message:
+                    cls=UserMessageRecordActivity.class;
+                    break;
+                case R.id.menu_user_attentions:
+                    cls=UserAttentionActivity.class;
+                    break;
+                case R.id.menu_user_asset:
+                    cls=UserAccountActivity.class;
+                    break;
             }
             if(cls!=null){
                 Intent intent=new Intent(this,cls);
