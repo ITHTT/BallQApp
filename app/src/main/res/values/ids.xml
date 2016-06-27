@@ -4,5 +4,6 @@
     <item name="id_autolayout" type="id"/>
     <item name="cb_item_tag" type="id"/>
     <item name="header_tag" type="id"/>
+    <item name="tag" type="id"/>
     
 </resources>

@@ -113,28 +113,25 @@ public class MainActivity extends BaseActivity {
             for (int i = 0; i < size; i++) {
                 View v = layoutRightMenus.getChildAt(i);
                 if (v instanceof MainMenuItemView) {
-                    slidingMenu.showSecondaryMenu();
-                    setSelectedRightMenuItem(view.getId());
-                    return;
+                    if(v==view) {
+                        slidingMenu.showSecondaryMenu();
+                        setSelectedRightMenuItem(view.getId());
+                        return;
+                    }
                 }
             }
 
             LinearLayout layoutLeftMenus = (LinearLayout) mainLeftMenu.findViewById(R.id.layout_left_menus);
             size = layoutLeftMenus.getChildCount();
-            boolean isLeftMenu=false;
             for (int i = 0; i < size; i++) {
                 View v = layoutLeftMenus.getChildAt(i);
                 if (v instanceof MainMenuItemView) {
                     ((MainMenuItemView) v).setCheckedState(v == view);
                     if(v==view){
-                        isLeftMenu=true;
+                        slidingMenu.toggle();
+                        setSelectedLeftMenuItem(view.getId());
                     }
                 }
-            }
-
-            if(isLeftMenu){
-                slidingMenu.toggle();
-                setSelectedLeftMenuItem(view.getId());
             }
         }
     }

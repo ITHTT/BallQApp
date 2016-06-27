@@ -52,7 +52,7 @@
                 android:textColor="#d4d4d4"
                 android:text="(当前可用金币0.00)"/>
         </LinearLayout>
-        <com.tysci.ballq.view.NoScrollGridView
+        <com.tysci.ballq.views.widgets.NoScrollGridView
             android:id="@+id/gv_game_betting_moneys"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

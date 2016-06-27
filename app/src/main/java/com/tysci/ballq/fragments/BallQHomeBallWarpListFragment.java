@@ -125,7 +125,6 @@ public class BallQHomeBallWarpListFragment extends AppSwipeRefreshLoadMoreRecycl
                 }
             }
         });
-
     }
 
     @Override

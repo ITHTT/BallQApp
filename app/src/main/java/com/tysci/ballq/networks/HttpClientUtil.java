@@ -268,7 +268,7 @@ public class HttpClientUtil {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                if(e!=null&&"Canceled".equals(e.getMessage())){
+                if(call.isCanceled()){
                     return;
                 }
                 final Call resultCall = call;
@@ -284,6 +284,9 @@ public class HttpClientUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
+                if(call.isCanceled()){
+                    return;
+                }
                 final Call resultCall = call;
                 String result = null;
                 Exception error=null;

@@ -9,6 +9,7 @@ import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.views.adapters.BallQFragmentPagerAdapter;
 import com.tysci.ballq.views.widgets.SegmentTabLayout;
+import com.tysci.ballq.views.widgets.SlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,34 @@ public class BallQMatchForecastDataFragment extends BaseFragment{
     @Override
     protected void initViews(View view, Bundle savedInstanceState) {
         tabLayout.setTabData(titles);
+        tabLayout.setOnTabSelectListener(new SlidingTabLayout.OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                viewPager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.setCurrentTab(position);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         Bundle data=getArguments();
         if(data!=null){
             BallQMatchEntity matchEntity=data.getParcelable("match_data");

@@ -1,5 +1,7 @@
 package com.tysci.ballq.views.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tysci.ballq.R;
+import com.tysci.ballq.activitys.BallQCircleNoteDetailActivity;
 import com.tysci.ballq.modles.BallQCircleNoteEntity;
 import com.tysci.ballq.modles.BallQNoteContentEntity;
 import com.tysci.ballq.modles.BallQUserAchievementEntity;
@@ -38,8 +41,8 @@ public class BallQHomeCircleNoteAdapter extends RecyclerView.Adapter<BallQHomeCi
     }
 
     @Override
-    public void onBindViewHolder(BallQHomeCircleNoteViewHolder holder, int position) {
-        BallQCircleNoteEntity info = ballQNoteEntities.get(position);
+    public void onBindViewHolder(final BallQHomeCircleNoteViewHolder holder, int position) {
+        final BallQCircleNoteEntity info = ballQNoteEntities.get(position);
         BallQUserEntity userInfo = info.getCreater();
 
         setCircleNoteContent(info, holder);
@@ -61,6 +64,16 @@ public class BallQHomeCircleNoteAdapter extends RecyclerView.Adapter<BallQHomeCi
         } else {
             holder.divider.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context=holder.itemView.getContext();
+                Intent intent=new Intent(context, BallQCircleNoteDetailActivity.class);
+                intent.putExtra(BallQCircleNoteDetailActivity.class.getSimpleName(),info.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
