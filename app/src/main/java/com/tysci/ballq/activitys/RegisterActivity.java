@@ -279,8 +279,8 @@ public class RegisterActivity extends BaseActivity{
 
         Map<String,String>params=new HashMap<String,String>(3);
         params.put("username",phone);
-        params.put("new_password",vcode);
-        params.put("verify_code",password);
+        params.put("new_password",password);
+        params.put("verify_code",vcode);
         HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.RESET_USER_PASSWORD_URL, params, new HttpClientUtil.StringResponseCallBack() {
             @Override
             public void onBefore(Request request) {
@@ -339,8 +339,8 @@ public class RegisterActivity extends BaseActivity{
 
         Map<String,String>params=new HashMap<String,String>(3);
         params.put("phone_number",phone);
-        params.put("password",vcode);
-        params.put("verify_code",password);
+        params.put("password",password);
+        params.put("verify_code",vcode);
         params.put("nickname","BallQ"+System.currentTimeMillis());
         HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, HttpUrls.USER_REGISTER_URL, params, new HttpClientUtil.StringResponseCallBack() {
             @Override

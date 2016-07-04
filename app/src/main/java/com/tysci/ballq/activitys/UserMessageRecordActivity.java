@@ -38,8 +38,6 @@ public class UserMessageRecordActivity extends BaseActivity{
     protected void initViews() {
         setTitle("我的消息");
         addFragments();
-
-
     }
 
     @Override

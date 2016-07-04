@@ -228,6 +228,8 @@ public class UserProfileActivity extends BaseActivity{
                 intent.putExtra(UserTrendStatisticActivity.class.getSimpleName(),String.valueOf(uid));
                 break;
             case R.id.menu_user_guessing_record:
+                intent=new Intent(this,UserBettingGuessRecordActivity.class);
+                intent.putExtra(UserBettingGuessRecordActivity.class.getSimpleName(),String.valueOf(uid));
                 break;
         }
         if(intent!=null){

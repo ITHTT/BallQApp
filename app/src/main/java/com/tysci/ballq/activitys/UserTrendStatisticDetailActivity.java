@@ -449,10 +449,16 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
                         yVals.add(new Entry(value,yVals.size()));
                     }
                 }else{
-                    value=(float)datas.get(i).getEarn()/100f;
-                    //lineSet.addPoint("",value);
-                    xVals.add("");
-                    yVals.add(new Entry(value,yVals.size()));
+                    if(size==1){
+                        value=(float) (datas.get(i).getEarn() + datas.get(0).getEarn()) / 100f;
+                        xVals.add(endMonth);
+                        yVals.add(new Entry(value,yVals.size()));
+                    }else {
+                        value = (float) datas.get(i).getEarn() / 100f;
+                        //lineSet.addPoint("",value);
+                        xVals.add("");
+                        yVals.add(new Entry(value, yVals.size()));
+                    }
                 }
                 KLog.e("value:"+value);
                 if(min>value){
@@ -470,8 +476,8 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
 //            lineChartView.addData(lineSet);
             KLog.e("max:"+max);
             KLog.e("min:"+min);
-            int maxValue= (int) Math.ceil(max);
-            int minValue=(int)Math.floor(min);
+            int maxValue= (int) Math.ceil(max)+10;
+            int minValue=(int)Math.floor(min)-10;
             KLog.e("MaxValue:"+maxValue);
             KLog.e("MinValue:"+minValue);
 
@@ -500,7 +506,7 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
             xAxis.setSpaceBetweenLabels(1);
             xAxis.setLabelsToSkip(1);
             xAxis.setAvoidFirstLastClipping(true);
-            xAxis.setTextSize(12.5f);
+            xAxis.setTextSize(12f);
 
 
             YAxis yAxis= lineChartView.getAxis(YAxis.AxisDependency.LEFT);;
@@ -509,9 +515,9 @@ public class UserTrendStatisticDetailActivity extends BaseActivity{
             yAxis.setDrawAxisLine(false);
             yAxis.setAxisMinValue(minValue);
             yAxis.setAxisMaxValue(maxValue);
-            yAxis.setSpaceBottom(5f);
-            yAxis.setSpaceTop(5f);
-            yAxis.setTextSize(12.5f);
+            yAxis.setSpaceBottom(1f);
+            yAxis.setSpaceTop(1f);
+            yAxis.setTextSize(12f);
 
             LineData lineData=new LineData(xVals,dataSet);
 

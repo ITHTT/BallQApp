@@ -12,6 +12,7 @@ import com.tysci.ballq.modles.BallQUserCommentEntity;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.utils.UserInfoUtil;
+import com.tysci.ballq.views.interfaces.OnLongClickUserHeaderListener;
 import com.tysci.ballq.views.widgets.CircleImageView;
 
 import java.util.Date;
@@ -25,9 +26,14 @@ import butterknife.ButterKnife;
  */
 public class BallQUserCommentAdapter extends RecyclerView.Adapter<BallQUserCommentAdapter.BallQUserCommentViewHolder>{
     private List<BallQUserCommentEntity> userCommentEntityList;
+    private OnLongClickUserHeaderListener onLongClickUserHeaderListener;
 
     public BallQUserCommentAdapter(List<BallQUserCommentEntity> userCommentEntityList) {
         this.userCommentEntityList = userCommentEntityList;
+    }
+
+    public void setOnLongClickUserHeaderListener(OnLongClickUserHeaderListener onLongClickUserHeaderListener) {
+        this.onLongClickUserHeaderListener = onLongClickUserHeaderListener;
     }
 
     @Override
@@ -37,8 +43,8 @@ public class BallQUserCommentAdapter extends RecyclerView.Adapter<BallQUserComme
     }
 
     @Override
-    public void onBindViewHolder(BallQUserCommentViewHolder holder, int position) {
-        BallQUserCommentEntity info=userCommentEntityList.get(position);
+    public void onBindViewHolder(final BallQUserCommentViewHolder holder, final int position) {
+        final BallQUserCommentEntity info=userCommentEntityList.get(position);
         GlideImageLoader.loadImage(holder.itemView.getContext(),info.getPt(),R.mipmap.icon_user_default,holder.ivUserIcon);
         UserInfoUtil.setUserHeaderVMark(info.getIsV(),holder.isV,holder.ivUserIcon);
         UserInfoUtil.setUserAchievementInfo(holder.itemView.getContext(),info.getTitle1(),holder.ivAchievement01,info.getTitle2(),holder.ivAchievement02);
@@ -50,6 +56,22 @@ public class BallQUserCommentAdapter extends RecyclerView.Adapter<BallQUserComme
         }else{
             holder.tvCreateDate.setText("");
         }
+        holder.ivUserIcon.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(onLongClickUserHeaderListener!=null){
+                    onLongClickUserHeaderListener.onLongClickUserHead(v,position);
+                }
+                return true;
+            }
+        });
+
+        holder.ivUserIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserInfoUtil.lookUserInfo(holder.itemView.getContext(),info.getUid());
+            }
+        });
     }
 
     @Override

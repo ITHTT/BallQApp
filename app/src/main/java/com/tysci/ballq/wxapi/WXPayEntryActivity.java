@@ -1,11 +1,9 @@
 package com.tysci.ballq.wxapi;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -39,7 +37,6 @@ import okhttp3.Request;
 
 public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler,AdapterView.OnItemClickListener,UserRewardPayWayDialog.OnUserRewardListener
 {
-
     @Bind(R.id.ivUserIcon)
     protected CircleImageView ivUserIcon;
     @Bind(R.id.isV)

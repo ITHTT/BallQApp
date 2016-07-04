@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -105,7 +104,7 @@ public class UserRewardPayWayDialog extends Dialog implements View.OnClickListen
                             JSONObject dataObj=dataArrays.getJSONObject(0);
                             if(dataObj!=null&&!dataObj.isEmpty()){
                                 userMoneys=dataObj.getFloat("rmb");
-                                tvUserMoneys.setText("零钱支付("+String.format(Locale.getDefault(),"%.2f",userMoneys)+")");
+                                tvUserMoneys.setText("零钱支付("+String.format(Locale.getDefault(),"%.2f",userMoneys/100f)+")");
                             }
                         }
                     }

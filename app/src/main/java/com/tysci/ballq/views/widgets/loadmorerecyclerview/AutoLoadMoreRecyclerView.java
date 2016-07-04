@@ -125,7 +125,18 @@ public class AutoLoadMoreRecyclerView extends RecyclerView {
             if(!isLoadFinished) {
                 loadMoreFooterView.setLoadingMoreState();
             }else{
-                loadMoreFooterView.setLoadFinishedTip("没有更多数据了...");
+                loadMoreFooterView.setLoadMoreDataFinishedState(false);
+            }
+        }
+    }
+
+    public void setRefreshComplete(String tip){
+        this.isRefreshing=false;
+        if(loadMoreFooterView!=null){
+            if(!isLoadFinished) {
+                loadMoreFooterView.setLoadingMoreState();
+            }else{
+                loadMoreFooterView.setLoadFinishedTip(tip);
                 loadMoreFooterView.setLoadMoreDataFinishedState(true);
             }
         }

@@ -39,13 +39,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         setContentView(getContentViewId());
         titleBar= (TitleBar) this.findViewById(R.id.title_bar);
         setTitleBarLeftIcon(R.mipmap.icon_back_gold);
-        if(getLoadingTargetView()!=null){
-            loadingViewController=new LoadingViewController(getLoadingTargetView());
-        }
         if(!isCanceledEventBus()){
             EventBus.getDefault().register(this);
         }
         ButterKnife.bind(this);
+        if(getLoadingTargetView()!=null){
+            loadingViewController=new LoadingViewController(getLoadingTargetView());
+        }
         initViews();
         if(getIntent()!=null){
             getIntentData(this.getIntent());
