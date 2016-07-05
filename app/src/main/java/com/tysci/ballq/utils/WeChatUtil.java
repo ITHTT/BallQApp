@@ -1,18 +1,26 @@
 package com.tysci.ballq.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tysci.ballq.R;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -181,5 +189,60 @@ public class WeChatUtil {
         req.timeStamp = data.getString("timestamp");
         req.sign = data.getString("paySign");
         wxApi.sendReq(req);
+    }
+
+    /**
+     * 微信分享
+     * @param context
+     * @param title
+     * @param excerpt
+     * @param shareUrl
+     * @param tag
+     * @param logo
+     * @return
+     */
+    public static boolean shareWebPage(Context context,int tag,String title, String excerpt, String shareUrl) {
+        if(wxApi!=null) {
+            boolean isInstalled = wxApi.isWXAppInstalled() && wxApi.isWXAppSupportAPI();
+            if (!isInstalled) {
+                Toast.makeText(context, "请先安装微信APP", Toast.LENGTH_SHORT);
+                return false;
+            }
+            WXWebpageObject webPage = new WXWebpageObject();
+            webPage.webpageUrl = shareUrl;
+            WXMediaMessage msg = new WXMediaMessage(webPage);
+            if (title != null && !"".equals(title)) {
+                if (title.length() < 100) msg.title = title;
+                else msg.title = title.substring(0, 100);
+            } else {
+                msg.title = "球商";
+            }
+            if (excerpt != null && !"".equals(excerpt)) {
+                if (excerpt.length() < 100) {
+                    msg.description = excerpt;
+                } else {
+                    msg.description = excerpt.substring(0, 100);
+                }
+            } else {
+                msg.description = "竞猜";
+            }
+            Bitmap thumb = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_ballq_logo);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            thumb.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            msg.thumbData = baos.toByteArray();
+            try {
+                baos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            SendMessageToWX.Req req = new SendMessageToWX.Req();
+            req.transaction = buildTransaction("webpage");
+            req.message = msg;
+            req.scene = tag;
+            req.openId = getOpenId(context);
+            wxApi.sendReq(req);
+            return true;
+        }
+        return false;
     }
 }

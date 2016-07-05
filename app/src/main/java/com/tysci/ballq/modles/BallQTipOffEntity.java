@@ -52,6 +52,7 @@ public class BallQTipOffEntity implements Parcelable {
     private int sorder;
     private int settled;
     private int boncount;
+    private String url;
 
     public int getFid() {
         return fid;
@@ -413,6 +414,15 @@ public class BallQTipOffEntity implements Parcelable {
         this.boncount = boncount;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -462,14 +472,16 @@ public class BallQTipOffEntity implements Parcelable {
         dest.writeFloat(this.wins);
         dest.writeInt(this.htid);
         dest.writeInt(this.mtcount);
-        dest.writeInt(this.settled);
         dest.writeInt(this.sorder);
+        dest.writeInt(this.settled);
+        dest.writeInt(this.boncount);
+        dest.writeString(this.url);
     }
 
     public BallQTipOffEntity() {
     }
 
-    private BallQTipOffEntity(Parcel in) {
+    protected BallQTipOffEntity(Parcel in) {
         this.fid = in.readInt();
         this.atid = in.readInt();
         this.uid = in.readInt();
@@ -511,16 +523,20 @@ public class BallQTipOffEntity implements Parcelable {
         this.otype = in.readString();
         this.wins = in.readFloat();
         this.htid = in.readInt();
-        this.mtcount=in.readInt();
-        this.settled=in.readInt();
-        this.sorder=in.readInt();
+        this.mtcount = in.readInt();
+        this.sorder = in.readInt();
+        this.settled = in.readInt();
+        this.boncount = in.readInt();
+        this.url = in.readString();
     }
 
     public static final Parcelable.Creator<BallQTipOffEntity> CREATOR = new Parcelable.Creator<BallQTipOffEntity>() {
+        @Override
         public BallQTipOffEntity createFromParcel(Parcel source) {
             return new BallQTipOffEntity(source);
         }
 
+        @Override
         public BallQTipOffEntity[] newArray(int size) {
             return new BallQTipOffEntity[size];
         }

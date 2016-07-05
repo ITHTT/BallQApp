@@ -26,6 +26,7 @@ import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.modles.BallQUserCommentEntity;
 import com.tysci.ballq.modles.BallQUserRewardHeaderEntity;
+import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
@@ -39,6 +40,7 @@ import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.adapters.BallQUserCommentAdapter;
 import com.tysci.ballq.views.adapters.BallQUserRewardHeaderAdapter;
 import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
+import com.tysci.ballq.views.dialogs.ShareDialog;
 import com.tysci.ballq.views.interfaces.OnLongClickUserHeaderListener;
 import com.tysci.ballq.views.widgets.CircleImageView;
 import com.tysci.ballq.views.widgets.CustomRattingBar;
@@ -91,6 +93,8 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
     private String cacheCommentInfo="";
 
     private LoadingProgressDialog loadingProgressDialog=null;
+
+    private ShareDialog shareDialog=null;
 
     @Override
     protected int getContentViewId() {
@@ -437,7 +441,6 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
                         }
                     }
                 }
-
             }
 
             @Override
@@ -544,7 +547,43 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
                     WXPayEntryActivity.userReward(this,"tip",String.valueOf(tipOffInfo.getUid()),tipOffInfo.getId(),tipOffInfo.getPt(),tipOffInfo.getIsv());
                 }
                 break;
+            case R.id.iv_titlebar_next_menu01:
+                showShareDialog();
+                break;
         }
+    }
+
+    private void showShareDialog(){
+        if(tipOffInfo!=null) {
+            if (shareDialog == null) {
+                shareDialog = new ShareDialog(this);
+                shareDialog.setShareType("0")
+                        .setShareTitle(tipOffInfo.getFname() + "在球商爆料")
+                        .setShareExcerpt(getShareBriefInfo())
+                        .setShareUrl(tipOffInfo.getUrl());
+            }
+            shareDialog.show();
+        }
+    }
+
+    private String getShareBriefInfo() {
+        if (tipOffInfo == null) return "";
+        final StringBuilder sb = new StringBuilder();
+        sb.append(tipOffInfo.getHtname());
+        sb.append("VS");
+        sb.append(tipOffInfo.getAtname());
+        sb.append(",");
+        if (TextUtils.isEmpty(tipOffInfo.getOdata())) {
+            sb.append(tipOffInfo.getCont());
+        } else {
+            String otype = MatchBettingInfoUtil.getBettingResultInfo(tipOffInfo.getChoice(), tipOffInfo.getOtype(), tipOffInfo.getOdata());
+            if (!TextUtils.isEmpty(otype)) {
+                sb.append(otype.replaceAll(" ", "").replaceAll("@", "赔率"));
+                sb.append(",");
+            }
+        }
+        sb.append(tipOffInfo.getCont());
+        return sb.toString();
     }
 
     private void showProgressDialog(String msg){
@@ -586,6 +625,7 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
             params.put("token",UserInfoUtil.getUserToken(this));
         }else{
             UserInfoUtil.userLogin(this);
+            return;
         }
         if (!TextUtils.isEmpty(replyerId)) {
             if (!commentInfo.contains(replyerName)) {
@@ -598,12 +638,10 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
             @Override
             public void onBefore(Request request) {
                 showProgressDialog("提交中...");
-
             }
             @Override
             public void onError(Call call, Exception error) {
                 ToastUtil.show(BallQTipOffDetailActivity.this,"评论失败");
-
             }
 
             @Override
@@ -658,23 +696,112 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
     @OnClick(R.id.ivLike)
     protected void onClickUserLike(View view){
         if(!UserInfoUtil.checkLogin(this)){
-            UserInfoUtil.checkLogin(this);
+            UserInfoUtil.userLogin(this);
             return;
         }
+        if(tipOffInfo!=null) {
+            String url = HttpUrls.HOST_URL_V5 + "likes/";
+            HashMap<String,String> params=null;
+            if(UserInfoUtil.checkLogin(this)){
+                params=new HashMap<>(5);
+                params.put("user",UserInfoUtil.getUserId(this));
+                params.put("token",UserInfoUtil.getUserToken(this));
+            }else{
+                UserInfoUtil.userLogin(this);
+                return;
+            }
+            params.put("object_type","tip");
+            params.put("object_id",String.valueOf(tipOffInfo.getId()));
+            params.put("action",ivLike.isSelected()?"cancel":"add");
+            HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, url, params, new HttpClientUtil.StringResponseCallBack() {
+                @Override
+                public void onBefore(Request request) {
+                    ivLike.setEnabled(false);
+                }
 
-        String url=HttpUrls.HOST_URL_V5+"likes/";
+                @Override
+                public void onError(Call call, Exception error) {
+                    ToastUtil.show(BallQTipOffDetailActivity.this,"请求失败");
+                }
 
+                @Override
+                public void onSuccess(Call call, String response) {
+                    KLog.json(response);
+                    if(!TextUtils.isEmpty(response)){
+                        JSONObject obj=JSONObject.parseObject(response);
+                        if(obj!=null&&!obj.isEmpty()){
+                            int status=obj.getIntValue("status");
+                            if(status==8400){
+                                ivLike.setSelected(true);
+                            }else if(status==8401){
+                                ivLike.setSelected(false);
+                            }
+                            ToastUtil.show(BallQTipOffDetailActivity.this,obj.getString("message"));
+                            return;
+                        }
+                    }
+                    ToastUtil.show(BallQTipOffDetailActivity.this,"点赞失败");
+                }
 
+                @Override
+                public void onFinish(Call call) {
+                    ivLike.setEnabled(true);
+                }
+            });
+        }
     }
 
     @Override
     protected void notifyEvent(String action) {
-
+        if(!TextUtils.isEmpty(action)){
+            if(action.equals(EventType.EVENT_WECHAT_SHARE_SUCCESS)){
+                KLog.e("获取分享成功的消息。。。");
+                handleWeChatShareSuccessResponse();
+            }
+        }
     }
 
     @Override
     protected void notifyEvent(String action, Bundle data) {
 
+    }
+
+    private void handleWeChatShareSuccessResponse(){
+        if(shareDialog!=null){
+            shareDialog.dismiss();
+            if(UserInfoUtil.checkLogin(this)) {
+                String url = HttpUrls.HOST_URL_V5 + "user/share_stats/";
+                HashMap<String,String>params=new HashMap<>(4);
+                params.put("user",UserInfoUtil.getUserId(this));
+                params.put("token",UserInfoUtil.getUserToken(this));
+                params.put("share_type","0");
+                params.put("share_id",String.valueOf(tipOffInfo.getId()));
+                HttpClientUtil.getHttpClientUtil().sendPostRequest(Tag, url, params, new HttpClientUtil.StringResponseCallBack() {
+                    @Override
+                    public void onBefore(Request request) {
+
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception error) {
+                        KLog.e("请求失败");
+
+                    }
+
+                    @Override
+                    public void onSuccess(Call call, String response) {
+                        KLog.json(response);
+
+                    }
+
+                    @Override
+                    public void onFinish(Call call) {
+
+                    }
+                });
+            }
+
+        }
     }
 
     @Override

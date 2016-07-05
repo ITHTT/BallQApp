@@ -10,4 +10,6 @@ public class EventType {
     public static final String EVENT_USER_EXIT="event_user_exit";
     /**刷新用户信息*/
     public static final String EVENT_REFRESH_USER_INFO="event_user_info";
+
+    public static final String EVENT_WECHAT_SHARE_SUCCESS="event_wechat_share_success";
 }

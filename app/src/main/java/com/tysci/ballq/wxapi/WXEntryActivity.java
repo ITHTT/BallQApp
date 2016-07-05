@@ -19,6 +19,7 @@ import com.tysci.ballq.activitys.RegisterActivity;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventObject;
+import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
@@ -28,6 +29,8 @@ import com.tysci.ballq.views.dialogs.LoadingProgressDialog;
 import com.tysci.ballq.views.widgets.convenientbanner.ConvenientBanner;
 import com.tysci.ballq.views.widgets.convenientbanner.holder.CBViewHolderCreator;
 import com.tysci.ballq.views.widgets.convenientbanner.holder.Holder;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,6 +114,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         //super.onNewIntent(intent);
         if(WeChatUtil.wxApi != null) {
             KLog.e("注册回调方法...");
+            REQUEST_TAG=0;
             WeChatUtil.wxApi.handleIntent(intent, this);
         }
     }
@@ -197,14 +201,19 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
             case BaseResp.ErrCode.ERR_OK:
                 KLog.e("授权成功");
                 KLog.e("openId:"+baseResp.openId);
-                SendAuth.Resp resp= (SendAuth.Resp) baseResp;
-                if(REQUEST_TAG==0) {
-                    getWeChatToken(resp.code);
-                }else if(REQUEST_TAG==2){
-                    EventObject eventObject=new EventObject();
-                    eventObject.getData().putString("code",resp.code);
-                    eventObject.addReceiver(WXPayEntryActivity.class);
-                    EventObject.postEventObject(eventObject,"user_reward");
+                if(baseResp instanceof SendAuth.Resp) {
+                    SendAuth.Resp resp = (SendAuth.Resp) baseResp;
+                    if (REQUEST_TAG == 0) {
+                        getWeChatToken(resp.code);
+                    } else if (REQUEST_TAG == 2) {
+                        EventObject eventObject = new EventObject();
+                        eventObject.getData().putString("code", resp.code);
+                        eventObject.addReceiver(WXPayEntryActivity.class);
+                        EventObject.postEventObject(eventObject, "user_reward");
+                    }
+                }
+                if(REQUEST_TAG==1){
+                    EventBus.getDefault().post(EventType.EVENT_WECHAT_SHARE_SUCCESS);
                 }
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
