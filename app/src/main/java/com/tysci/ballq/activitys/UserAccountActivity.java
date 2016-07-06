@@ -199,6 +199,7 @@ public class UserAccountActivity extends BaseActivity{
 
     @OnClick(R.id.tvGetScoreByCompleteTask)
     protected void onTaskPointsRecord(View view){
-
+        Intent intent=new Intent(this,BallQTaskPointsRecordActivity.class);
+        startActivity(intent);
     }
 }
