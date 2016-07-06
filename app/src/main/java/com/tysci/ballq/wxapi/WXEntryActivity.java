@@ -156,7 +156,6 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
         }
     }
 
-
     /**
      * 微信登录
      * @param view

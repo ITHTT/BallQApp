@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 
@@ -193,6 +194,11 @@ public class UserAccountActivity extends BaseActivity{
 
     @Override
     protected void notifyEvent(String action, Bundle data) {
+
+    }
+
+    @OnClick(R.id.tvGetScoreByCompleteTask)
+    protected void onTaskPointsRecord(View view){
 
     }
 }

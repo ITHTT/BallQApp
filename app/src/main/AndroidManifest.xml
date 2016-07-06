@@ -130,6 +130,9 @@
         <activity android:name=".activitys.BallQCircleNoteDetailActivity"
             android:launchMode="singleTop"/>
 
+        <activity android:name=".activitys.BallQTaskPointsRecordActivity"
+            android:launchMode="singleTop"/>
+
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"

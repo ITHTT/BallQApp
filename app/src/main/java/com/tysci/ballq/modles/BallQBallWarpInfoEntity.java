@@ -29,6 +29,7 @@ public class BallQBallWarpInfoEntity implements Parcelable{
     private int isv;
     private int isc;
     private int isf;
+    private String url;
 
     public int getArtcount() {
         return artcount;
@@ -207,6 +208,15 @@ public class BallQBallWarpInfoEntity implements Parcelable{
     }
 
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -236,6 +246,7 @@ public class BallQBallWarpInfoEntity implements Parcelable{
         dest.writeInt(this.isv);
         dest.writeInt(this.isc);
         dest.writeInt(this.isf);
+        dest.writeString(this.url);
     }
 
     public BallQBallWarpInfoEntity() {
@@ -264,9 +275,10 @@ public class BallQBallWarpInfoEntity implements Parcelable{
         this.isv = in.readInt();
         this.isc = in.readInt();
         this.isf = in.readInt();
+        this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<BallQBallWarpInfoEntity> CREATOR = new Parcelable.Creator<BallQBallWarpInfoEntity>() {
+    public static final Creator<BallQBallWarpInfoEntity> CREATOR = new Creator<BallQBallWarpInfoEntity>() {
         public BallQBallWarpInfoEntity createFromParcel(Parcel source) {
             return new BallQBallWarpInfoEntity(source);
         }

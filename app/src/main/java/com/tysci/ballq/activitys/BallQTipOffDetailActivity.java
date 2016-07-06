@@ -26,6 +26,7 @@ import com.tysci.ballq.modles.BallQMatchEntity;
 import com.tysci.ballq.modles.BallQTipOffEntity;
 import com.tysci.ballq.modles.BallQUserCommentEntity;
 import com.tysci.ballq.modles.BallQUserRewardHeaderEntity;
+import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventType;
 import com.tysci.ballq.networks.GlideImageLoader;
 import com.tysci.ballq.networks.HttpClientUtil;
@@ -249,6 +250,7 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
                     }
                 }
                 if(userCommentAdapter==null){
+                    onRefreshCompelete();
                     showEmptyInfo();
                 }
             }
@@ -554,7 +556,7 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
     }
 
     private void showShareDialog(){
-        if(tipOffInfo!=null) {
+        if(tipOffInfo!=null&&!TextUtils.isEmpty(tipOffInfo.getUrl())) {
             if (shareDialog == null) {
                 shareDialog = new ShareDialog(this);
                 shareDialog.setShareType("0")
@@ -840,5 +842,12 @@ public class BallQTipOffDetailActivity extends BaseActivity implements SwipeRefr
             replyerId = String.valueOf(info.getUid());
             etComment.setHint(replyerName);
         }
+    }
+
+    @Override
+    protected void userLogin(UserInfoEntity userInfoEntity) {
+        super.userLogin(userInfoEntity);
+        setRefreshing();
+        getTipOffInfo(tipOffInfo.getEid(),tipOffInfo.getId());
     }
 }
