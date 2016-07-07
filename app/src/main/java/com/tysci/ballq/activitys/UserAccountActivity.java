@@ -19,6 +19,7 @@ import com.tysci.ballq.networks.HttpUrls;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.UserInfoUtil;
 import com.tysci.ballq.views.adapters.BallQFragmentPagerAdapter;
+import com.tysci.ballq.views.dialogs.BallQGoldCoinBuyDialog;
 import com.tysci.ballq.views.widgets.SegmentTabLayout;
 import com.tysci.ballq.views.widgets.SlidingTabLayout;
 
@@ -48,6 +49,8 @@ public class UserAccountActivity extends BaseActivity{
     protected TextView tvUserGoldCoin;
 
     private String[] titles={"交易记录","金币"};
+
+    private BallQGoldCoinBuyDialog goldCoinBuyDialog=null;
 
     @Override
     protected int getContentViewId() {
@@ -201,5 +204,13 @@ public class UserAccountActivity extends BaseActivity{
     protected void onTaskPointsRecord(View view){
         Intent intent=new Intent(this,BallQTaskPointsRecordActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.tvBuyGoldCoin)
+    protected void onBuyGoldCoin(View view){
+        if(goldCoinBuyDialog==null){
+            goldCoinBuyDialog=new BallQGoldCoinBuyDialog(this);
+        }
+        goldCoinBuyDialog.show();
     }
 }

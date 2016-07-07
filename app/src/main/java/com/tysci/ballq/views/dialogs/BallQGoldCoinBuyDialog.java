@@ -7,19 +7,27 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tysci.ballq.R;
 import com.tysci.ballq.activitys.UserAccountActivity;
+import com.tysci.ballq.modles.BallQGoldCoinBuyEntity;
 import com.tysci.ballq.networks.HttpClientUtil;
 import com.tysci.ballq.networks.HttpUrls;
+import com.tysci.ballq.utils.CommonUtils;
 import com.tysci.ballq.utils.KLog;
 import com.tysci.ballq.utils.RandomUtils;
 import com.tysci.ballq.utils.UserInfoUtil;
+import com.tysci.ballq.views.adapters.BallQGoldCoinBuyAdapter;
 import com.tysci.ballq.views.widgets.LoadDataLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -28,10 +36,13 @@ import okhttp3.Request;
 /**
  * Created by HTT on 2016/7/6.
  */
-public class BallQGoldCoinBuyDialog extends Dialog {
+public class BallQGoldCoinBuyDialog extends Dialog implements View.OnClickListener{
     private RecyclerView recyclerView;
     private LoadDataLayout loadDataLayout;
     private View layoutContent;
+
+    private List<BallQGoldCoinBuyEntity> goldCoinBuyEntityList=null;
+    private BallQGoldCoinBuyAdapter adapter=null;
 
 
     public BallQGoldCoinBuyDialog(Context context) {
@@ -54,6 +65,8 @@ public class BallQGoldCoinBuyDialog extends Dialog {
 
         loadDataLayout=(LoadDataLayout)this.findViewById(R.id.layout_loading_data);
         layoutContent=this.findViewById(R.id.layout_content);
+
+        this.findViewById(R.id.ivDismiss).setOnClickListener(this);
 
         getGoldCoinBuyInfo();
     }
@@ -85,7 +98,26 @@ public class BallQGoldCoinBuyDialog extends Dialog {
             @Override
             public void onSuccess(Call call, String response) {
                 KLog.json(response);
-
+                if(!TextUtils.isEmpty(response)){
+                    JSONObject obj=JSONObject.parseObject(response);
+                    if(obj!=null&&!obj.isEmpty()){
+                        JSONArray arrays=obj.getJSONArray("data");
+                        if(arrays!=null&&!arrays.isEmpty()){
+                            loadDataLayout.hideLoad();
+                            layoutContent.setVisibility(View.VISIBLE);
+                            if(goldCoinBuyEntityList==null){
+                                goldCoinBuyEntityList=new ArrayList<BallQGoldCoinBuyEntity>(10);
+                            }
+                            CommonUtils.getJSONListObject(arrays,goldCoinBuyEntityList,BallQGoldCoinBuyEntity.class);
+                            if(adapter==null){
+                                adapter=new BallQGoldCoinBuyAdapter(goldCoinBuyEntityList);
+                                recyclerView.setAdapter(adapter);
+                            }
+                            return;
+                        }
+                    }
+                }
+                loadDataLayout.setLoadEmpty();
             }
 
             @Override
@@ -124,5 +156,14 @@ public class BallQGoldCoinBuyDialog extends Dialog {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ivDismiss:
+                dismiss();
+                break;
+        }
     }
 }

@@ -35,7 +35,7 @@ public class BallQTaskPointsRecordAdapter extends RecyclerView.Adapter<BallQTask
     public void onBindViewHolder(BallQTaskPointsRecordViewHolder holder, int position) {
         BallQTaskPointsRecordEntity info=pointsRecordEntityList.get(position);
         holder.ivTaskState.setSelected(info.getDone()==1);
-        holder.tvTaskContent.setText(info.getContent());
+        holder.tvTaskContent.setText(info.getName());
         holder.tvTaskPoints.setText("+" + info.getPoint());
         holder.divider.setVisibility(position==getItemCount()-1?View.GONE:View.VISIBLE);
     }

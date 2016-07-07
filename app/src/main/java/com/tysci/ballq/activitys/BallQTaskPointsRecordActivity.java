@@ -98,17 +98,20 @@ public class BallQTaskPointsRecordActivity extends BaseActivity{
                 if(!TextUtils.isEmpty(response)){
                     JSONObject obj=JSONObject.parseObject(response);
                     if(obj!=null&&!obj.isEmpty()){
-                        taskProgress.setProgress(obj.getIntValue("point"));
-                        setTaskProgressState();
-                        JSONArray datas=obj.getJSONArray("data");
-                        if(datas!=null&&!datas.isEmpty()){
-                            if(taskPointsRecordEntityList==null){
-                                taskPointsRecordEntityList=new ArrayList<BallQTaskPointsRecordEntity>(10);
-                            }
-                            CommonUtils.getJSONListObject(datas,taskPointsRecordEntityList,BallQTaskPointsRecordEntity.class);
-                            if(adapter==null){
-                                adapter=new BallQTaskPointsRecordAdapter(taskPointsRecordEntityList);
-                                rvTaskRecords.setAdapter(adapter);
+                        JSONObject data=obj.getJSONObject("data");
+                        if(data!=null&&!data.isEmpty()){
+                            taskProgress.setProgress(data.getIntValue("point"));
+                            setTaskProgressState();
+                            JSONArray datas=data.getJSONArray("mission");
+                            if(datas!=null&&!datas.isEmpty()){
+                                if(taskPointsRecordEntityList==null){
+                                    taskPointsRecordEntityList=new ArrayList<BallQTaskPointsRecordEntity>(10);
+                                }
+                                CommonUtils.getJSONListObject(datas,taskPointsRecordEntityList,BallQTaskPointsRecordEntity.class);
+                                if(adapter==null){
+                                    adapter=new BallQTaskPointsRecordAdapter(taskPointsRecordEntityList);
+                                    rvTaskRecords.setAdapter(adapter);
+                                }
                             }
                         }
                     }
