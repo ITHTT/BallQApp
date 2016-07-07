@@ -35,7 +35,7 @@ public class BallQHomePageLayout extends LinearLayout{
     }
 
     private void initViews(Context context){
-        LayoutInflater.from(context).inflate(R.layout.layout_ballq_home_page,this,true);
+        LayoutInflater.from(context).inflate(R.layout.fragment_ballq_home_page,this,true);
 
     }
 }

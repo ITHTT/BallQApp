@@ -46,8 +46,7 @@
                 android:layout_height="55dp"
                 app:menu_icon="@mipmap/icon_main_menu_home"
                 app:menu_name="首页"
-                app:menu_brief="全球1500+位分析师入驻"
-                app:is_checked="true"/>
+                app:menu_brief="全球1500+位分析师入驻" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

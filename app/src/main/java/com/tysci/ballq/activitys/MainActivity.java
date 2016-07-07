@@ -14,6 +14,7 @@ import com.tysci.ballq.R;
 import com.tysci.ballq.base.BaseActivity;
 import com.tysci.ballq.base.BaseFragment;
 import com.tysci.ballq.fragments.BallQHomeFragment;
+import com.tysci.ballq.fragments.BallQHomePageFragment;
 import com.tysci.ballq.fragments.BallQMatchFragment;
 import com.tysci.ballq.modles.UserInfoEntity;
 import com.tysci.ballq.modles.event.EventType;
@@ -43,7 +44,7 @@ public class MainActivity extends BaseActivity {
         setTitleBarLeftIcon(R.mipmap.icon_main_left_menu);
         titleBar.setRightMenuIcon(R.mipmap.icon_main_right_menu, this);
         addMenusItemOnClickListener();
-        setSelectedLeftMenuItem(R.id.menu_index);
+        setSelectedLeftMenuItem(-1);
 
         if(UserInfoUtil.checkLogin(this)){
             showUserInfo(UserInfoUtil.getUserInfo(this));
@@ -139,6 +140,9 @@ public class MainActivity extends BaseActivity {
     private void setSelectedLeftMenuItem(int id){
         BaseFragment fragment=null;
         switch (id){
+            case -1:
+                fragment=new BallQHomePageFragment();
+                break;
             case R.id.menu_index:
                 fragment=new BallQHomeFragment();
                 break;
